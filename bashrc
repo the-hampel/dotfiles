@@ -2,6 +2,8 @@
 # ~/.bashrc
 #
 
+export LC_ALL=C
+
 [[ $- != *i* ]] && return
 
 colors() {
@@ -99,8 +101,10 @@ alias np='nano -w PKGBUILD'
 alias more=less
 alias vi=vim
 
-alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8375:8375 -v $PWD:/work -v /home/alex:/home/alex triqs-2.1 jupyter.sh'
-alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -v $PWD:/work -v /home/alex:/home/alex triqs-2.1 bash'
+alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8375:8375 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 jupyter.sh'
+alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
+alias plasmarestart='kwin_x11 --replace; plasmashell --replace'
+
 
 xhost +local:root > /dev/null 2>&1
 
