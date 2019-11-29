@@ -102,7 +102,7 @@ alias more=less
 alias vi=vim
 
 alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8375:8375 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 jupyter.sh'
-alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
+alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8376:8376 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
 alias plasmarestart='kwin_x11 --replace; plasmashell --replace'
 
 
