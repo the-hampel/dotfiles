@@ -14,11 +14,13 @@ endif
 
 set nu
 set nocompatible
+set cpoptions+=x
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " Sections:
 "    -> General
+"    -> plugins
 "    -> VIM user interface
 "    -> Colors and Fonts
 "    -> Files and backups
@@ -34,6 +36,14 @@ set nocompatible
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+execute pathogen#infect()
+
+
+" Airline theme
+ let g:airline_theme='gruvbox'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -43,7 +53,6 @@ set history=700
 
 " Enable filetype plugins
 filetype plugin on
-filetype indent on
 
 " Set to auto read when a file is changed from the outside
 set autoread
@@ -118,7 +127,7 @@ set tm=500
 " Enable syntax highlighting
 syntax enable
 
-colorscheme desert
+colorscheme gruvbox
 set background=dark
 
 " Set extra options when running in GUI mode

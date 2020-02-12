@@ -45,6 +45,7 @@ case ${TERM} in
 		;;
 esac
 
+source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
 use_color=true
 
 # Set colorful PS1 only on colorful terminals.
@@ -102,7 +103,8 @@ alias more=less
 alias vi=vim
 
 alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8375:8375 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 jupyter.sh'
-alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8376:8376 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
+alias triqs_net='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8376:8376 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
+alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
 alias plasmarestart='kwin_x11 --replace; plasmashell --replace'
 
 
@@ -192,3 +194,20 @@ fi
 
 alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/alex/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/alex/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/alex/miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/alex/miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
+source activate sci

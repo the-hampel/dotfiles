@@ -1,0 +1,4 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =2
+let g:netrw_dirhist_1='/home/ahampel/work/nickelates/dmft/71-lunio3/pbnm/full-scan/Jscan/inp-intersite'
+let g:netrw_dirhist_2='/local/scratch/ahampel/qe-6.4.1/test-suite/pw_atom'
