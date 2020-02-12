@@ -6,13 +6,15 @@ $(HOME)/.%: %
 		ln -sn $(PWD)/$< $@
 
 # Install all files added to git:
-files:=$(filter-out Makefile,$(shell git ls-files))
+# files:=$(filter-out Makefile bashrc,$(shell git ls-files))
 # You could also set this to all files in the directory:
 #files:=$(filter-out Makefile,$(wildcard *))
 # Or to an explicit list of files:
-#files=
-#files+=gitconfig
-#files+=tmux.conf
+files=
+files+=gitconfig
+files+=tmux.conf
+files+=vimrc
+files+=vim
 
 .PHONY: install
 install: $(addprefix $(HOME)/.,$(files))
