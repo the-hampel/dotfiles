@@ -36,6 +36,9 @@ set cpoptions+=x
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+map <C-b> :w<BAR>Latexmk<CR><BAR><C-w><BAR>:wincmd<space>k<CR>
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -65,6 +68,8 @@ let g:mapleader = ","
 " Fast saving
 nmap <leader>w :w!<cr>
 
+" YCM keys
+let g:ycm_key_list_select_completion = ['<Down>']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -151,7 +156,7 @@ set ffs=unix,dos,mac
 set expandtab
 
 " Be smart when using tabs ;)
-set smarttab
+" set smarttab
 
 " 1 tab == 4 spaces
 set shiftwidth=4
