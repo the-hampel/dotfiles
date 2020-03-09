@@ -2,6 +2,9 @@
 # ~/.bashrc
 #
 
+export PS1="\h$ >"
+
+
 export LC_ALL=C
 
 [[ $- != *i* ]] && return
@@ -62,36 +65,20 @@ match_lhs=""
 	&& match_lhs=$(dircolors --print-database)
 [[ $'\n'${match_lhs} == *$'\n'"TERM "${safe_term}* ]] && use_color=true
 
-if ${use_color} ; then
-	# Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
-	if type -P dircolors >/dev/null ; then
-		if [[ -f ~/.dir_colors ]] ; then
-			eval $(dircolors -b ~/.dir_colors)
-		elif [[ -f /etc/DIR_COLORS ]] ; then
-			eval $(dircolors -b /etc/DIR_COLORS)
-		fi
-	fi
-
-	if [[ ${EUID} == 0 ]] ; then
-		#PS1='\[\033[01;31m\][\h\[\033[01;36m\] \W\[\033[01;31m\]]\$\[\033[00m\] '
-	    PS1=">"
-    else
-		#PS1='\[\033[01;32m\][\u@\h\[\033[01;37m\] \W\[\033[01;32m\]]\$\[\033[00m\] '
-	    PS1=">"
+# Enable colors for ls, etc.  Prefer ~/.dir_colors #64489
+if type -P dircolors >/dev/null ; then
+    if [[ -f ~/.dir_colors ]] ; then
+        eval $(dircolors -b ~/.dir_colors)
+    elif [[ -f /etc/DIR_COLORS ]] ; then
+        eval $(dircolors -b /etc/DIR_COLORS)
     fi
-
-	alias ls='ls --color=auto'
-	alias grep='grep --colour=auto'
-	alias egrep='egrep --colour=auto'
-	alias fgrep='fgrep --colour=auto'
-else
-	if [[ ${EUID} == 0 ]] ; then
-		# show root@ when we don't have colors
-		PS1='\u@\h \W \$ '
-	else
-		PS1='\u@\h \w \$ '
-	fi
 fi
+
+
+alias ls='ls --color=auto'
+alias grep='grep --colour=auto'
+alias egrep='egrep --colour=auto'
+alias fgrep='fgrep --colour=auto'
 
 unset use_color safe_term match_lhs sh
 
@@ -105,8 +92,8 @@ alias vi=vim
 alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 jupyter.sh'
 alias triqs_net='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8376:8376 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
 alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
-alias plasmarestart='kwin_x11 --replace; plasmashell --replace'
 
+alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
 
 xhost +local:root > /dev/null 2>&1
 
