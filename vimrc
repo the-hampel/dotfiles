@@ -85,6 +85,7 @@ set wildignore=*.o,*~,*.pyc
 
 "Always show current position
 set ruler
+set cursorline
 
 " Height of the command bar
 set cmdheight=2
