@@ -1,6 +1,5 @@
 runtime! debian.vim
 
-
 " Source a global configuration file if available
 if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
@@ -42,6 +41,7 @@ map <C-b> :w<BAR>Latexmk<CR><BAR><C-w><BAR>:wincmd<space>k<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 execute pathogen#infect()
 
 

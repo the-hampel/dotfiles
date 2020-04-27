@@ -1,5 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =3
-let g:netrw_dirhist_1='/home/ahampel/work/nickelates/dmft/71-lunio3/pbnm/full-scan/Jscan/inp-intersite'
-let g:netrw_dirhist_2='/local/scratch/ahampel/qe-6.4.1/test-suite/pw_atom'
-let g:netrw_dirhist_3='/mnt/ext4/ahampel/dropbox/Dropbox (Simons Foundation)/git/mt-gitlab/uni-dmft'
+let g:netrw_dirhistcnt =6
+let g:netrw_dirhist_6='/mnt/home/ahampel/git/triqs-dev/triqs.src/cpp2py/cpp2py'
+let g:netrw_dirhist_5='/mnt/ext4/ahampel/dropbox/Dropbox (Simons Foundation)/git/Dockerfiles/triqs_dev'
+let g:netrw_dirhist_4='/mnt/home/ahampel/git/uni-dmft/tools'
+let g:netrw_dirhist_3='/mnt/home/ahampel/work/test/lno-csc/scf'
+let g:netrw_dirhist_2='/mnt/home/ahampel/git/uni-dmft'
+let g:netrw_dirhist_1='/mnt/home/ahampel/work/molybdenates/SrMoO3/rot_stfnes_Imma/pbe_fm_u0.7_ismear0/inp'
