@@ -1,5 +1,8 @@
 let g:netrw_dirhistmax  =10
-let g:netrw_dirhistcnt =6
+let g:netrw_dirhistcnt =9
+let g:netrw_dirhist_9='/mnt/ext4/ahampel/dropbox/Dropbox (Simons Foundation)/git/lattice_tools_dev'
+let g:netrw_dirhist_8='/mnt/ext4/ahampel/dropbox/Dropbox (Simons Foundation)/git/lattice_tools_dev/test/python/dft_data'
+let g:netrw_dirhist_7='/mnt/home/ahampel/git/triqs-dev/triqs.src/test/pytriqs/atom_diag'
 let g:netrw_dirhist_6='/mnt/home/ahampel/git/triqs-dev/triqs.src/cpp2py/cpp2py'
 let g:netrw_dirhist_5='/mnt/ext4/ahampel/dropbox/Dropbox (Simons Foundation)/git/Dockerfiles/triqs_dev'
 let g:netrw_dirhist_4='/mnt/home/ahampel/git/uni-dmft/tools'

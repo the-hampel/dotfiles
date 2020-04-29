@@ -14,7 +14,8 @@ endif
 set nu
 set nocompatible
 set cpoptions+=x
-
+set hidden " Allow to hide changed buffers!
+set nomore
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " Sections:
@@ -35,8 +36,9 @@ set cpoptions+=x
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-map <C-b> :w<BAR>Latexmk<CR><BAR><C-w><BAR>:wincmd<space>k<CR>
+inoremap <C-b> :w<BAR>Latexmk<CR><BAR><C-w><BAR>:wincmd<space>k<CR>
 
+inoremap ;; <Esc>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
@@ -44,9 +46,17 @@ map <C-b> :w<BAR>Latexmk<CR><BAR><C-w><BAR>:wincmd<space>k<CR>
 
 execute pathogen#infect()
 
+" Nerdtree
+filetype plugin indent on
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Airline theme
  let g:airline_theme='gruvbox'
+
+
+" no folding in markdown
+ let g:vim_markdown_folding_disabled = 1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -200,6 +210,9 @@ map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
+
+" delete wors
+map <C-d> <C-[>diwi
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>
