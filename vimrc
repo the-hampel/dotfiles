@@ -1,5 +1,6 @@
 runtime! debian.vim
 
+
 " Source a global configuration file if available
 if filereadable("/etc/vim/vimrc.local")
   source /etc/vim/vimrc.local
@@ -44,7 +45,28 @@ inoremap ;; <Esc>
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-execute pathogen#infect()
+call plug#begin('~/.vim/plugged')
+" opticals
+Plug 'morhetz/gruvbox'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+
+" helpers
+Plug 'vim-scripts/GrepCommands'
+Plug 'Latex-Box-Team/Latex-Box'
+Plug 'tpope/vim-fugitive'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'godlygeek/tabular'
+Plug 'plasticboy/vim-markdown'
+Plug 'terryma/vim-multiple-cursors'
+
+" autocomplete
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+" Initialize plugin system
+call plug#end()
+
 
 " Nerdtree
 filetype plugin indent on
@@ -53,7 +75,6 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " Airline theme
  let g:airline_theme='gruvbox'
-
 
 " no folding in markdown
  let g:vim_markdown_folding_disabled = 1
