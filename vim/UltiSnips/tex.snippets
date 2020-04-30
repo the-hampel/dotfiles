@@ -1,0 +1,25 @@
+snippet newbox "create newbox in latex" b
+\centering
+\begin{tcolorbox}[width=0.9\textwidth,size=small]
+\centering
+box content
+\end{tcolorbox}
+endsnippet
+
+snippet newfr "creates new frame for latex beamer" b
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\frametitle{dummy}
+	\begin{columns}
+	\column{0.5\textwidth}
+    	\includegraphics[width=1.0\textwidth]{example-image}
+	\column{0.5\textwidth}
+     	\begin{itemize}
+      	\setlength{\parskip}{4pt}
+			\item dummy
+  		\end{itemize}
+ \end{columns}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+endsnippet
+
