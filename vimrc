@@ -62,6 +62,7 @@ Plug 'plasticboy/vim-markdown'
 Plug 'terryma/vim-multiple-cursors'
 
 " autocomplete
+Plug 'SirVer/ultisnips', {'branch': '3.2'}
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Initialize plugin system
