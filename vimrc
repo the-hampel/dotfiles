@@ -46,6 +46,15 @@ let g:mapleader = ","
 " extra Esc key
 inoremap ;; <Esc>
 
+" close brackets automatically
+inoremap " ""<left>
+inoremap ' ''<left>
+inoremap ( ()<left>
+inoremap [ []<left>
+inoremap { {}<left>
+inoremap {<CR> {<CR>}<ESC>O
+inoremap {;<CR> {<CR>};<ESC>O
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -61,6 +70,7 @@ Plug 'vim-scripts/GrepCommands'
 Plug 'Latex-Box-Team/Latex-Box'
 Plug 'tpope/vim-fugitive'
 Plug 'scrooloose/nerdtree'
+Plug 'majutsushi/tagbar'
 Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
@@ -79,6 +89,9 @@ filetype plugin indent on
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
+" tagbar
+nnoremap .t :TagbarToggle<CR>:NERDTree<CR>
+
 " Airline theme
  let g:airline_theme='gruvbox'
 
@@ -87,6 +100,9 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 
 " LatexBox
 inoremap <C-b> :w<BAR>Latexmk<CR><BAR><C-w><BAR>:wincmd<space>k<CR>
+
+" remove search highlights"
+nnoremap .<space> :nohlsearch<CR>
 
 " coc.nvim stuff
 
