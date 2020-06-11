@@ -3,3 +3,11 @@
 	email = ahampel@flatironinstitute.org 
 [push]
 	default = simple
+[pull]
+    rebase = false
+[core]
+    editor = vim
+[diff]
+    tool = vimdiff
+[merge]
+    tool = vimdiff

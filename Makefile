@@ -12,6 +12,7 @@ $(HOME)/.%: %
 # Or to an explicit list of files:
 files=
 files+=gitconfig
+files+=glob_git_ignore
 files+=tmux.conf
 files+=vimrc
 files+=vim

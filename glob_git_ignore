@@ -1,0 +1,56 @@
+## General
+######################
+*.log
+*.swp
+*.swo
+*.swn
+*.prof*
+.dropbox.attr
+.netrwhist
+.DS_Store
+*.png
+stdout.*
+stderr.*
+
+## Singularity
+#####################
+*.sif
+*.simg
+
+## Coding
+######################
+*.h5
+*.dat
+*.o
+*.so
+*.dylib
+tags
+build*
+.idea
+.clangd
+cmake-build-*
+.ipynb_checkpoints
+*.pyc
+compile_commands.json
+
+## Latex
+######################
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.fls
+*.fdb_latexmk
+*.latexmain
+*.log
+*.lof
+*.lot
+*.out
+*.pdf
+*.pdfsync
+*.synctex
+*.synctex.gz
+*.synctex.gz(busy)
+*.toc
+*-converted-to.*
+*.bib.bak

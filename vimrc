@@ -106,6 +106,12 @@ inoremap <C-b> :w<BAR>Latexmk<CR><BAR><C-w><BAR>:wincmd<space>k<CR>
 " remove search highlights"
 nnoremap .<space> :nohlsearch<CR>
 
+" ultisnips"
+" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+let g:UltiSnipsExpandTrigger="<c-tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+
 " coc.nvim stuff
 
 "Give more space for displaying messages.
