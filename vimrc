@@ -344,6 +344,9 @@ let g:airline_symbols.whitespace = 'Ξ'
 " Use spaces instead of tabs
 set expandtab
 
+set list 
+set listchars=tab:>-
+
 " Be smart when using tabs ;)
 " set smarttab
 
