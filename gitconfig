@@ -2,8 +2,9 @@
 	name = Alexander Hampel
 	email = ahampel@flatironinstitute.org 
 [push]
-	default = simple
+	default = current
 [pull]
+    default = current
     rebase = false
 [core]
     editor = vim
@@ -12,3 +13,4 @@
     tool = vimdiff
 [merge]
     tool = vimdiff
+
