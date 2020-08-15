@@ -8,7 +8,7 @@
     rebase = false
 [core]
     editor = vim
-	excludesfile = /home/alex/.gitignore
+    excludesfile = ~/.glob_git_ignore
 [diff]
     tool = vimdiff
 [merge]
