@@ -46,14 +46,6 @@ let g:mapleader = ","
 " extra Esc key
 inoremap ;; <Esc>
 
-" close brackets automatically
-inoremap " ""<left>
-inoremap ' ''<left>
-inoremap ( ()<left>
-inoremap [ []<left>
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
-inoremap {;<CR> {<CR>};<ESC>O
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
@@ -75,6 +67,7 @@ Plug 'scrooloose/nerdcommenter'
 Plug 'godlygeek/tabular'
 Plug 'plasticboy/vim-markdown'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'rhysd/vim-clang-format'
 
 " autocomplete
 Plug 'SirVer/ultisnips', {'branch': '3.2'}
@@ -105,6 +98,18 @@ inoremap <C-b> :w<BAR>Latexmk<CR><BAR><C-w><BAR>:wincmd<space>k<CR>
 
 " remove search highlights"
 nnoremap .<space> :nohlsearch<CR>
+
+" clang-format
+let g:clang_format#style_options = {
+            \ "AccessModifierOffset" : -4,
+            \ "AllowShortIfStatementsOnASingleLine" : "true",
+            \ "AlwaysBreakTemplateDeclarations" : "true",
+            \ "Standard" : "C++11"}
+
+" map to <Leader>cf in C++ code
+autocmd FileType c,cpp,objc nnoremap <buffer><Leader>cf :<C-u>ClangFormat<CR>
+autocmd FileType c,cpp,objc vnoremap <buffer><Leader>cf :ClangFormat<CR>
+
 
 " ultisnips"
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.

@@ -1,16 +1,18 @@
 [user]
 	name = Alexander Hampel
 	email = ahampel@flatironinstitute.org 
-[push]
-	default = current
 [pull]
     default = current
-    rebase = false
+    rebase = true
 [core]
     editor = vim
     excludesfile = ~/.glob_git_ignore
 [diff]
-    tool = vimdiff
+	tool = vimdiff
 [merge]
     tool = vimdiff
 
+[difftool]
+	prompt = false
+[alias]
+	d = difftool

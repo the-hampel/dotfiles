@@ -91,7 +91,7 @@ alias vi=vim
 
 alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 jupyter.sh'
 alias triqs_net='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8376:8376 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
-alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
+alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -v $PWD:/work -v /home/alex:/home/alex triqs3-dev bash'
 
 alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
 
