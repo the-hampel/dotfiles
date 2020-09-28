@@ -3,7 +3,6 @@
 	email = ahampel@flatironinstitute.org 
 [pull]
     default = current
-	rebase = true
 [core]
     editor = vim
     excludesfile = ~/.glob_git_ignore
