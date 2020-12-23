@@ -32,7 +32,9 @@ endif
  " Backspace im Einfüge-Modus erlauben
  set backspace=indent,eol,start
 
+" show line numbers
 set nu
+
 set nocompatible
 set cpoptions+=x
 set hidden " Allow to hide changed buffers!

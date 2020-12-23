@@ -2,7 +2,7 @@
 # ~/.bashrc
 #
 
-export PS1="\h$ >"
+export PS1="\h>"
 
 
 export LC_ALL=C
@@ -36,20 +36,9 @@ colors() {
 	done
 }
 
-[ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
-
-# Change the window title of X terminals
-case ${TERM} in
-	xterm*|rxvt*|Eterm*|aterm|kterm|gnome*|interix|konsole*)
-		PROMPT_COMMAND='echo -ne "\033]0;${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\007"'
-		;;
-	screen*)
-		PROMPT_COMMAND='echo -ne "\033_${USER}@${HOSTNAME%%.*}:${PWD/#$HOME/\~}\033\\"'
-		;;
-esac
 
 source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
-use_color=true
+set use_color true
 
 # Set colorful PS1 only on colorful terminals.
 # dircolors --print-database uses its own built-in database
@@ -91,8 +80,8 @@ alias vi=vim
 
 alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/alex:/home/alex triqs3-dev jupyter.sh'
 alias triqs_net='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8376:8376 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
-alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/alex:/home/alex triqs3-dev bash'
-alias triqs2='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -v $PWD:/work -v /home/alex:/home/alex triqs-dev bash'
+alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/ahampel:/home/ahampel triqs3-dev bash'
+alias triqs2='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8370:8370 -v /home/ahampel:/home/ahampel triqs2 bash'
 
 alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
 
@@ -184,19 +173,3 @@ alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)
 
 export PATH="/home/alex/codes/scripts/linux:$PATH"
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/alex/miniconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/alex/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/alex/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/alex/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
-
-source activate sci
