@@ -171,5 +171,5 @@ fi
 
 alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
-export PATH="/home/alex/codes/scripts/linux:$PATH"
+export PATH="~/codes/scripts/linux:~/git/bin:$PATH"
 
