@@ -6,6 +6,8 @@ export PS1="\h>"
 
 
 export LC_ALL=C
+export CC=clang
+export CXX=clang++
 
 [[ $- != *i* ]] && return
 
@@ -69,6 +71,11 @@ alias grep='grep --colour=auto'
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
 
+alias jab_headset='pacmd set-card-profile bluez_card.30_50_75_A8_B1_AA handsfree_head_unit'
+alias jab_headphone='pacmd set-card-profile bluez_card.30_50_75_A8_B1_AA a2dp_sink'
+alias sen_headset='pacmd set-card-profile bluez_card.00_1B_66_AD_F9_D2 handsfree_head_unit'
+alias sen_headphone='pacmd set-card-profile bluez_card.00_1B_66_AD_F9_D2 a2dp_sink'
+
 unset use_color safe_term match_lhs sh
 
 alias cp="cp -i"                          # confirm before overwriting something
@@ -76,14 +83,22 @@ alias df='df -h'                          # human-readable sizes
 alias free='free -m'                      # show sizes in MB
 alias np='nano -w PKGBUILD'
 alias more=less
-alias vi=vim
+alias vi=nvim
+alias nv=nvim
+alias gits='git status'
+alias gitb='git branch -vv'
 
-alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/alex:/home/alex triqs3-dev jupyter.sh'
+#alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/alex:/home/alex triqs3-dev jupyter.sh'
 alias triqs_net='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8376:8376 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
 alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/ahampel:/home/ahampel triqs3-dev bash'
 alias triqs2='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8370:8370 -v /home/ahampel:/home/ahampel triqs2 bash'
 
 alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
+
+alias mount-home-ccq='sshfs flatiron:/mnt/home/ahampel /home/ahampel/ccq-home-fs'
+alias mount-ceph-ccq='sshfs flatiron:/mnt/ceph/users/ahampel /home/ahampel/ccq-ceph-fs'
+alias umount-ccq='fusermount -u /home/ahampel/ccq-home-fs &> /dev/null && fusermount -u /home/ahampel/ccq-ceph-fs &> /dev/null'
+
 
 xhost +local:root > /dev/null 2>&1
 
@@ -129,7 +144,7 @@ ex ()
 alias emacs='emacs -nw'
 alias triqs='docker run --rm -it --shm-size=4g -u $(id -u) -v /home/ahampel:/home/ahampel triqs-2.1 bash'
 
-export EDITOR="vim"
+export EDITOR="nvim"
 export CC=clang
 export CXX=clang++
 
