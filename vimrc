@@ -160,9 +160,6 @@ set autoread
 " Fast saving
 nmap <leader>w :w!<cr>
 
-" YCM keys
-let g:ycm_key_list_select_completion = ['<Down>']
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -306,8 +303,8 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " move between buffers
-nnoremap <C-]> :bnext<CR>
-nnoremap <C-[> :bprev<CR>
+nnoremap <leader>] :bnext<CR>
+nnoremap <leader>[ :bprev<CR>
 
 
 " Close the current buffer
