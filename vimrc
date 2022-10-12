@@ -71,6 +71,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'rhysd/vim-clang-format'
 Plug 'tpope/vim-unimpaired'
 Plug 'majutsushi/tagbar'
+Plug 'JuliaEditorSupport/julia-vim'
 
 if has('nvim')
     Plug 'neovim/nvim-lspconfig'
@@ -80,8 +81,9 @@ if has('nvim')
     Plug 'hrsh7th/cmp-path', {'branch': 'main'}
     Plug 'hrsh7th/cmp-cmdline', {'branch': 'main'}
     Plug 'hrsh7th/nvim-cmp', {'branch': 'main'}
-    Plug 'hrsh7th/cmp-vsnip', {'branch': 'main'}
-    Plug 'hrsh7th/vim-vsnip', {'branch': 'master'}
+    Plug 'hrsh7th/cmp-vsnip', 
+    Plug 'hrsh7th/vim-vsnip', 
+    Plug 'hrsh7th/vim-vsnip-integ'
 endif
 
 " Initialize plugin system
@@ -101,8 +103,28 @@ let g:tagbar_width = 30
 " Airline theme
  let g:airline_theme='gruvbox'
 
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
+let g:airline#extensions#tabline#buffer_idx_mode = 1    
+nmap <leader>1 <Plug>AirlineSelectTab1                  
+nmap <leader>2 <Plug>AirlineSelectTab2                  
+nmap <leader>3 <Plug>AirlineSelectTab3                  
+nmap <leader>4 <Plug>AirlineSelectTab4                  
+nmap <leader>5 <Plug>AirlineSelectTab5                  
+nmap <leader>6 <Plug>AirlineSelectTab6                  
+nmap <leader>7 <Plug>AirlineSelectTab7                  
+nmap <leader>8 <Plug>AirlineSelectTab8                  
+nmap <leader>9 <Plug>AirlineSelectTab9                  
+nmap <leader>0 <Plug>AirlineSelectTab0                  
+nmap <leader>- <Plug>AirlineSelectPrevTab               
+nmap <leader>+ <Plug>AirlineSelectNextTab               
+
 " no folding in markdown
  let g:vim_markdown_folding_disabled = 1
+
+" unicode insertion from julia plugin for all files
+let g:latex_to_unicode_file_types = ".*"
 
 " LatexBox
 inoremap <C-b> :w<BAR>Latexmk<CR><BAR><C-w><BAR>:wincmd<space>k<CR>
@@ -283,8 +305,10 @@ map <C-k> <C-W>k
 map <C-h> <C-W>h
 map <C-l> <C-W>l
 
-" delete wors
-map <C-d> <C-[>diwi
+" move between buffers
+nnoremap <C-]> :bnext<CR>
+nnoremap <C-[> :bprev<CR>
+
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>
@@ -298,9 +322,6 @@ map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
 
-" Opens a new tab with the current buffer's path
-" Super useful when editing files in the same directory
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
 " Switch CWD to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>:pwd<cr>
@@ -317,9 +338,6 @@ autocmd BufReadPost *
      \ if line("'\"") > 0 && line("'\"") <= line("$") |
      \   exe "normal! g`\"" |
      \ endif
-" Remember info about open buffers on close
-set viminfo^=%
-
 
 """"""""""""""""""""""""""""""
 " => Status line

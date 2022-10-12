@@ -31,6 +31,8 @@ lua << EOF
         c = cmp.mapping.close(),
       }),
       ['<CR>'] = cmp.mapping.confirm({ select = true }),
+      ['<Up>'] = cmp.mapping.close(),
+      ['<Down>'] = cmp.mapping.close(),
     },
     sources = cmp.config.sources({
       { name = 'nvim_lsp' },
@@ -79,8 +81,7 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagn
 -- You will likely want to reduce updatetime which affects CursorHold
 -- note: this setting is global and should be set only once
 vim.o.updatetime = 200
-vim.cmd [[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({focusable=false})]]
-
+vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line"})]]
 
   -- Setup lspconfig.
   local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -92,7 +93,6 @@ vim.cmd [[autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics({foc
     filetypes = { 'c', 'h', 'cpp', 'cxx', 'hxx', 'objc', 'objcpp' },
     capabilities = capabilities
     })
-  require'lspconfig'.bashls.setup{capabilities = capabilities}
   require'lspconfig'.jsonls.setup{capabilities = capabilities}
   require'lspconfig'.julials.setup{capabilities = capabilities}
 
@@ -101,12 +101,34 @@ EOF
 autocmd Syntax c,cpp,python,julia,bash nnoremap <buffer> gD <cmd>lua vim.lsp.buf.declaration()<CR>
 autocmd Syntax c,cpp,python,julia,bash nnoremap <buffer> gd <cmd>lua vim.lsp.buf.definition()<CR>
 autocmd Syntax c,cpp,python,julia,bash xnoremap <buffer> gd <cmd>lua vim.lsp.buf.definition()<CR>
-autocmd Syntax c,cpp,python,julia,bash nnoremap <buffer> <C-h> <cmd>lua vim.lsp.buf.rename()<CR>
-autocmd Syntax c,cpp,python,julia,bash xnoremap <buffer> <C-h> <cmd>lua vim.lsp.buf.rename()<CR>
+autocmd Syntax c,cpp,python,julia,bash nnoremap <buffer> <Leader>r <cmd>lua vim.lsp.buf.rename()<CR>
+autocmd Syntax c,cpp,python,julia,bash xnoremap <buffer> <Leader>r <cmd>lua vim.lsp.buf.rename()<CR>
 autocmd Syntax c,cpp,python,julia,bash nnoremap <buffer> == <cmd>lua vim.lsp.buf.formatting()<CR>
 autocmd Syntax c,cpp,python,julia,bash xnoremap <buffer> == <cmd>lua vim.lsp.buf.range_formatting()<CR>
 
 autocmd Syntax c,cpp nnoremap <Leader>of :ClangdSwitchSourceHeader<cr>
+
+" turn languange server on / off
+let g:diagnostics_is_on=1
+function! ToggleDiagnostics()
+  if g:diagnostics_is_on
+    echo "Diagnostics Off"
+    let g:diagnostics_is_on=0
+    lua vim.diagnostic.hide()
+  else
+    echo "Diagnostics On"
+    let g:diagnostics_is_on=1
+    lua vim.diagnostic.show()
+  endif
+endfunction
+autocmd Syntax c,cpp,python,julia,sh,json nnoremap <buffer> <leader><leader>d :call ToggleDiagnostics()<CR>
+
+function! DiagnosticsSetup()
+  if &diff
+    lua vim.diagnostic.disable()
+  endif
+endfunction
+autocmd Syntax c,cpp,python,julia,sh,json call DiagnosticsSetup()
 
 " Other useful lsp commands
 " "vim.lsp.diagnostic.goto_prev()

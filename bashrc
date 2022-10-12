@@ -4,10 +4,35 @@
 
 export PS1="\h>"
 
-
-export LC_ALL=C
+export LC_ALL=en_US.utf8
+export LANG=en_US.utf8
 export CC=clang
 export CXX=clang++
+
+export EDITOR="nvim"
+
+alias df='df -h'                          # human-readable sizes
+alias la='ls --color=auto -lh'
+alias free='free -m'                      # show sizes in MB
+alias np='nano -w PKGBUILD'
+alias more=less
+alias vi=nvim
+alias nv=nvim
+alias tmux='tmux -u'
+alias gits='git status'
+alias gitb='git branch -vv'
+
+#alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/alex:/home/alex triqs3-dev jupyter.sh'
+alias triqs='docker run -it --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/ahampel:/home/ahampel solid_dmft_ompi bash'
+
+
+
+alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
+
+alias mount-home-ccq='sshfs flatiron:/mnt/home/ahampel /home/ahampel/ccq-home-fs'
+alias mount-ceph-ccq='sshfs flatiron:/mnt/ceph/users/ahampel /home/ahampel/ccq-ceph-fs'
+alias umount-ccq='fusermount -u /home/ahampel/ccq-home-fs &> /dev/null && fusermount -u /home/ahampel/ccq-ceph-fs &> /dev/null'
+
 
 [[ $- != *i* ]] && return
 
@@ -66,7 +91,7 @@ if type -P dircolors >/dev/null ; then
 fi
 
 
-alias ls='ls --color=auto'
+alias ls='ls --color=auto -lh'
 alias grep='grep --colour=auto'
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
@@ -76,28 +101,11 @@ alias jab_headphone='pacmd set-card-profile bluez_card.30_50_75_A8_B1_AA a2dp_si
 alias sen_headset='pacmd set-card-profile bluez_card.00_1B_66_AD_F9_D2 handsfree_head_unit'
 alias sen_headphone='pacmd set-card-profile bluez_card.00_1B_66_AD_F9_D2 a2dp_sink'
 
+alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --first-parent"
+
+export PATH="~/codes/scripts/linux:~/git/bin:$PATH"
+
 unset use_color safe_term match_lhs sh
-
-alias cp="cp -i"                          # confirm before overwriting something
-alias df='df -h'                          # human-readable sizes
-alias free='free -m'                      # show sizes in MB
-alias np='nano -w PKGBUILD'
-alias more=less
-alias vi=nvim
-alias nv=nvim
-alias gits='git status'
-alias gitb='git branch -vv'
-
-#alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/alex:/home/alex triqs3-dev jupyter.sh'
-alias triqs_net='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8376:8376 -v $PWD:/work -v /home/alex:/home/alex triqs-2.2 bash'
-alias triqs='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/ahampel:/home/ahampel triqs3-dev bash'
-alias triqs2='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8370:8370 -v /home/ahampel:/home/ahampel triqs2 bash'
-
-alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
-
-alias mount-home-ccq='sshfs flatiron:/mnt/home/ahampel /home/ahampel/ccq-home-fs'
-alias mount-ceph-ccq='sshfs flatiron:/mnt/ceph/users/ahampel /home/ahampel/ccq-ceph-fs'
-alias umount-ccq='fusermount -u /home/ahampel/ccq-home-fs &> /dev/null && fusermount -u /home/ahampel/ccq-ceph-fs &> /dev/null'
 
 
 xhost +local:root > /dev/null 2>&1
@@ -141,13 +149,6 @@ ex ()
     echo "'$1' is not a valid file"
   fi
 
-alias emacs='emacs -nw'
-alias triqs='docker run --rm -it --shm-size=4g -u $(id -u) -v /home/ahampel:/home/ahampel triqs-2.1 bash'
-
-export EDITOR="nvim"
-export CC=clang
-export CXX=clang++
-
 if [ -n "$(which tmux 2>/dev/null)" ]; then
     function tmux() {
         local tmux=$(type -fp tmux)
@@ -184,7 +185,6 @@ if [ -n "$(which tmux 2>/dev/null)" ]; then
 fi
 }
 
-alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --all"
 
-export PATH="~/codes/scripts/linux:~/git/bin:$PATH"
-
+alias vi=nvim
+alias nv=nvim
