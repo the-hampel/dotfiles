@@ -29,6 +29,9 @@ endif
  " Vim Modus statt Vi Modus verwVenden
  set nocompatible
 
+ " no mouse selection mode
+ set mouse=
+
  " Backspace im Einfüge-Modus erlauben
  set backspace=indent,eol,start
 
@@ -365,17 +368,6 @@ if has("mac") || has("macunix")
   vmap <D-k> <M-k>
 endif
 
-" Delete trailing white space on save, useful for Python and CoffeeScript ;)
-func! DeleteTrailingWS()
-  exe "normal mz"
-  %s/\s\+$//ge
-  exe "normal `z"
-endfunc
-autocmd BufWrite *.py :call DeleteTrailingWS()
-autocmd BufWrite *.coffee :call DeleteTrailingWS()
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => vimgrep searching and cope displaying
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " When you press gv you vimgrep after the selected text

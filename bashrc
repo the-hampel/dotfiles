@@ -9,6 +9,9 @@ export LANG=en_US.utf8
 export CC=clang
 export CXX=clang++
 
+# output full docker build output
+export BUILDKIT_PROGRESS=plain
+
 export EDITOR="nvim"
 
 alias df='df -h'                          # human-readable sizes
@@ -96,10 +99,7 @@ alias grep='grep --colour=auto'
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
 
-alias jab_headset='pacmd set-card-profile bluez_card.30_50_75_A8_B1_AA handsfree_head_unit'
-alias jab_headphone='pacmd set-card-profile bluez_card.30_50_75_A8_B1_AA a2dp_sink'
-alias sen_headset='pacmd set-card-profile bluez_card.00_1B_66_AD_F9_D2 handsfree_head_unit'
-alias sen_headphone='pacmd set-card-profile bluez_card.00_1B_66_AD_F9_D2 a2dp_sink'
+alias flatiron='ssh flatiron -t ssh ccqlin027'
 
 alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --first-parent"
 
