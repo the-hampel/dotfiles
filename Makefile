@@ -11,6 +11,7 @@ $(HOME)/.%: %
 #files:=$(filter-out Makefile,$(wildcard *))
 # Or to an explicit list of files:
 files=
+files+=bashrc
 files+=gitconfig
 files+=glob_git_ignore
 files+=tmux.conf

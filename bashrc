@@ -28,6 +28,9 @@ alias gitb='git branch -vv'
 #alias jupyter='docker run -it --rm  --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/alex:/home/alex triqs3-dev jupyter.sh'
 alias triqs='docker run -it --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/ahampel:/home/ahampel solid_dmft_ompi bash'
 
+# python venv
+alias triqs-dev='source $HOME/triqs-dev/bin/activate'
+alias triqs-rel='source $HOME/triqs-rel/bin/activate'
 
 
 alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
@@ -67,7 +70,7 @@ colors() {
 }
 
 
-source "$HOME/.vim/bundle/gruvbox/gruvbox_256palette.sh"
+source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
 set use_color true
 
 # Set colorful PS1 only on colorful terminals.
@@ -185,6 +188,3 @@ if [ -n "$(which tmux 2>/dev/null)" ]; then
 fi
 }
 
-
-alias vi=nvim
-alias nv=nvim

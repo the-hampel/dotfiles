@@ -227,6 +227,7 @@ syntax enable
 
 colorscheme gruvbox
 set background=dark
+set term=screen-256color
 
 " Set extra options when running in GUI mode
 if has("gui_running")
