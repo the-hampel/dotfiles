@@ -11,6 +11,7 @@
 *.png
 stdout.*
 stderr.*
+_ref
 
 ## Singularity
 #####################
@@ -19,7 +20,6 @@ stderr.*
 
 ## Coding
 ######################
-*.h5
 *.dat
 *.o
 *.so
@@ -32,6 +32,7 @@ cmake-build-*
 .ipynb_checkpoints
 *.pyc
 compile_commands.json
+.cache
 
 ## Latex
 ######################
