@@ -18,10 +18,34 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     # default editor
     export EDITOR="nvim"
     alias vi=nvim
+    alias vimdiff='nvim -d'
 
+    alias quota='fi-quota'
+    alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
     source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
 
-    export PATH="~/codes/scripts/linux:~/git/bin:$PATH"
+    # load some default modules
+    module load slurm
+    module load tmux nodejs git fi-utils
+
+    export MODULEPATH=/mnt/home/ahampel/git/ccq-software-build/modules:$MODULEPATH
+    export MPLCONFIGDIR=/mnt/home/ahampel/.local/lib/matplotlib-cache
+
+    export PATH="/mnt/home/ahampel/.local/bin:$PATH"
+
+    export JUPYTERLAB_DIR=/mnt/home/ahampel/.jupyter/lab
+    [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
+
+    cleancrap (){ 
+        if [[ $# -eq 0 ]] ; then
+            echo 'No seedname supplied. Removing nothing.'
+            return 1
+        else
+            seedname=$1;
+        fi
+        list=`echo ${seedname}.scf.in\|${seedname}.nscf.in\|${seedname}.mod_scf.in\|${seedname}.win\|${seedname}.bnd.in\|${seedname}.bands.in\|${seedname}.proj.in\|${seedname}.pw2wan.in\|${seedname}.inp\|sjob_dmft_slurm-srun.sh\|dmft_config.ini`
+        ls -1 | egrep -v "^(${list})$" | xargs rm
+    }
 
 elif [ "$HOSTNAME" = thinkxtreme ]; then
     printf '%s\n' "thinkXtreme WSL detected"
@@ -50,15 +74,12 @@ fi
 
 alias df='df -h'                          # human-readable sizes
 alias la='ls --color=auto -lh'
+alias cp="cp -i"                          # confirm before overwriting something
 alias free='free -m'                      # show sizes in MB
 alias np='nano -w PKGBUILD'
 alias more=less
 alias tmux='tmux -u'
-alias gits='git status'
-alias gitb='git branch -vv'
 
-
-alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
 
 alias mount-home-ccq='sshfs flatiron:/mnt/home/ahampel /home/ahampel/ccq-home-fs'
 alias mount-ceph-ccq='sshfs flatiron:/mnt/ceph/users/ahampel /home/ahampel/ccq-ceph-fs'
@@ -71,10 +92,12 @@ alias fgrep='fgrep --colour=auto'
 
 alias flatiron='ssh flatiron -t ssh ccqlin027'
 
+alias gits='git status'
+alias gitb='git branch -vv'
 alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --first-parent"
 
 
-set use_color true
+
 
 [[ $- != *i* ]] && return
 
@@ -104,6 +127,8 @@ colors() {
 		echo; echo
 	done
 }
+
+set use_color true
 
 # Set colorful PS1 only on colorful terminals.
 # dircolors --print-database uses its own built-in database
