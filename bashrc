@@ -2,6 +2,10 @@
 # ~/.bashrc
 #
 
+if [ -z "$PS1" ]; then
+        return
+fi
+
 export PS1="\h>"
 
 export LC_ALL=en_US.utf8
@@ -61,6 +65,9 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
     # git autocompletion
     source /usr/share/bash-completion/completions/git
 
+    # compiler library config
+    export MKL_NUM_THREADS=1
+
     # old docker command
     alias triqs='docker run -it --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/ahampel:/home/ahampel solid_dmft_ompi bash'
 
@@ -93,7 +100,7 @@ alias fgrep='fgrep --colour=auto'
 alias flatiron='ssh flatiron -t ssh ccqlin027'
 
 alias gits='git status'
-alias gitb='git branch -vv'
+alias gitb='git branch -a -vv'
 alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --first-parent"
 
 
