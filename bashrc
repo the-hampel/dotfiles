@@ -103,8 +103,18 @@ alias gits='git status'
 alias gitb='git branch -a -vv'
 alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --first-parent"
 
+# simple terminal calculator via python
+calc() {
+        python3 -c 'from math import *; import sys; print(eval(" ".join(sys.argv[1:])))' "$@"
+    }
 
+bconv() {
+    python3 -c 'import sys; print(11604.5181217/float(sys.argv[1]))' "$@"
+    }
 
+TmeV() {
+    python3 -c 'import sys; print(8.61732814974056e-02*float(sys.argv[1]))' "$@"
+    }
 
 [[ $- != *i* ]] && return
 
