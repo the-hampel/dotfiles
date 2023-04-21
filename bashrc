@@ -27,6 +27,7 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     alias quota='fi-quota'
     alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
     source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+    alias getnode='srun -N1 --ntasks-per-node=128 --constraint=rome --exclusive --pty bash -i'
 
     # load some default modules
     module load slurm
