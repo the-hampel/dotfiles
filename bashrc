@@ -67,7 +67,11 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
     source /usr/share/bash-completion/completions/git
 
     # compiler library config
+    export BLA_VENDOR=Intel10_64_dyn
+    export MKL_INTERFACE_LAYER=GNU,LP64
+    export MKL_THREADING_LAYER=SEQUENTIAL
     export MKL_NUM_THREADS=1
+    export CXXFLAGS="-stdlib=libc++ -Wno-register -march=native"
 
     # old docker command
     alias triqs='docker run -it --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/ahampel:/home/ahampel solid_dmft_ompi bash'
