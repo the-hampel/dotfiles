@@ -27,7 +27,7 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     alias quota='fi-quota'
     alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
     source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
-    alias getnode='srun -N1 --ntasks-per-node=128 --constraint=rome --exclusive --pty bash -i'
+    alias getnode='srun -N1 --ntasks-per-node=128 --constraint=rome --exclusive --mpi=none --pty bash -i'
 
     # load some default modules
     module load slurm
@@ -51,6 +51,21 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
         list=`echo ${seedname}.scf.in\|${seedname}.nscf.in\|${seedname}.mod_scf.in\|${seedname}.win\|${seedname}.bnd.in\|${seedname}.bands.in\|${seedname}.proj.in\|${seedname}.pw2wan.in\|${seedname}.inp\|sjob_dmft_slurm-srun.sh\|dmft_config.ini`
         ls -1 | egrep -v "^(${list})$" | xargs rm
     }
+
+    # >>> juliaup initialize >>>
+
+    # !! Contents within this block are managed by juliaup !!
+
+    case ":$PATH:" in
+        *:/mnt/home/ahampel/.juliaup/bin:*)
+            ;;
+
+        *)
+            export PATH=/mnt/home/ahampel/.juliaup/bin${PATH:+:${PATH}}
+            ;;
+    esac
+
+    # <<< juliaup initialize <<<
 
 elif [ "$HOSTNAME" = thinkxtreme ]; then
     printf '%s\n' "thinkXtreme WSL detected"
@@ -254,4 +269,5 @@ if [ -n "$(which tmux 2>/dev/null)" ]; then
     }
 fi
 }
+
 
