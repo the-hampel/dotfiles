@@ -35,6 +35,7 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
 
     export MODULEPATH=/mnt/home/ahampel/git/ccq-software-build/modules:$MODULEPATH
     export MPLCONFIGDIR=/mnt/home/ahampel/.local/lib/matplotlib-cache
+    export HDF5_USE_FILE_LOCKING=FALSE
 
     export PATH="/mnt/home/ahampel/.local/bin:$PATH"
 
