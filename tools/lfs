@@ -1,0 +1,51 @@
+#!/bin/sh
+# lazy string find
+
+# GNU All-Permissive License
+# Copying and distribution of this file, with or without modification,
+# are permitted in any medium without royalty provided the copyright
+# notice and this notice are preserved.  This file is offered as-is,
+# without any warranty.
+
+## help function
+
+function helpu {
+    echo " "
+    echo "Fuzzy search for string in filename."
+    echo "$0 [--match-file|--path] string"
+    echo "default match-file=ipynb , path=./"
+    echo " "
+    exit
+}
+
+SEARCH="."
+MATCH="ipynb"
+
+## parse options
+
+while [ True ]; do
+if [ "$1" = "--help" -o "$1" = "-h" ]; then
+    helpu
+elif [ "$1" = "--match-file" -o "$1" = "-m" ]; then
+    MATCH="${2}"
+    shift 2
+elif [ "$1" = "--path" -o "$1" = "-p" ]; then
+    SEARCH="${2}"
+    shift 2
+else
+    break
+fi
+done
+
+ARG=( "${@}" )
+set -e
+
+## catch obvious input error
+
+if [ "X$ARG" = "X" ]; then
+    helpu
+fi
+
+echo "searching in all '$MATCH' files in dir '$SEARCH' for '$ARG'"
+
+find "$SEARCH" -name '*.'${MATCH} -exec grep -i "${ARG}" {} \; -print
