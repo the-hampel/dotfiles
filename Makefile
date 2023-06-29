@@ -1,9 +1,7 @@
 # Install ./dotfile in ~/.dotfile by symlink, unless it's already done.
 # Try -r first since it's nicer, but only works on GNU ln.
 $(HOME)/.%: %
-	[[ $@ -ef $< ]] || \
-		ln -snr $< $@ 2>/dev/null || \
-		ln -sn $(PWD)/$< $@
+	ln -sn $(PWD)/$< $@
 
 # Install all files added to git:
 # files:=$(filter-out Makefile bashrc,$(shell git ls-files))
@@ -17,6 +15,8 @@ files+=glob_git_ignore
 files+=tmux.conf
 files+=vimrc
 files+=vim
+files+=jupyter/jupyter_server_config.py
+files+=config/pycodestyle
 
 .PHONY: install
 install: $(addprefix $(HOME)/.,$(files))
