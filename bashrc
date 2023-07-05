@@ -19,6 +19,7 @@ export BUILDKIT_PROGRESS=plain
 
 if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     printf '%s\n' "CCQ workstation detected"
+    export NCORE=12
     # default editor
     export EDITOR="nvim"
     alias vi=nvim
@@ -70,6 +71,7 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
 
 elif [ "$HOSTNAME" = thinkxtreme ]; then
     printf '%s\n' "thinkXtreme detected"
+    export NCORE=20
     # Fedora uses modules
     source /etc/profile.d/modules.sh
     module load mpi/openmpi-x86_64
@@ -84,7 +86,6 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
     # default editor
     export EDITOR="vim"
     alias vi=vim
-    alias mdev='bash $HOME/git/dotfiles/tools/make_dev.sh'
 
     # git autocompletion
     source /usr/share/bash-completion/completions/git
@@ -96,6 +97,7 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
     export MKL_THREADING_LAYER=SEQUENTIAL
     export MKL_NUM_THREADS=1
     export CXXFLAGS="-stdlib=libc++ -Wno-register -march=native"
+    export CFLAGS='-Wno-register -march=native -Wno-error=incompatible-function-pointer-types'
 
 
     # old docker command
@@ -108,6 +110,8 @@ else
     export EDITOR="vim"
     alias vi=vim
 fi
+
+alias mdev='bash $HOME/git/dotfiles/tools/make_dev.sh'
 
 alias df='df -h'                          # human-readable sizes
 alias la='ls --color=auto -lh'
