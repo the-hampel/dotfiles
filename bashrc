@@ -69,7 +69,13 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     # <<< juliaup initialize <<<
 
 elif [ "$HOSTNAME" = thinkxtreme ]; then
-    printf '%s\n' "thinkXtreme WSL detected"
+    printf '%s\n' "thinkXtreme detected"
+    # Fedora uses modules
+    source /etc/profile.d/modules.sh
+    module load mpi/openmpi-x86_64
+    # set display
+    alias mon60='gnome-monitor-config set -Lp -M eDP-1 -s 1.25 -m 2560x1600@60.002'
+    alias mon165='gnome-monitor-config set -Lp -M eDP-1 -s 1.25 -m 2560x1600@165.004'
     # python venv
     alias triqs-dev='source $HOME/triqs-dev/bin/activate'
     alias triqs-rel='source $HOME/triqs-rel/bin/activate'
@@ -78,16 +84,19 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
     # default editor
     export EDITOR="vim"
     alias vi=vim
+    alias mdev='bash $HOME/git/dotfiles/tools/make_dev.sh'
 
     # git autocompletion
     source /usr/share/bash-completion/completions/git
 
     # compiler library config
-    export BLA_VENDOR=Intel10_64_dyn
+    export BLA_VENDOR=OpenBLAS
+    #export BLA_VENDOR=Intel10_64_dyn
     export MKL_INTERFACE_LAYER=GNU,LP64
     export MKL_THREADING_LAYER=SEQUENTIAL
     export MKL_NUM_THREADS=1
     export CXXFLAGS="-stdlib=libc++ -Wno-register -march=native"
+
 
     # old docker command
     alias triqs='docker run -it --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/ahampel:/home/ahampel solid_dmft_ompi bash'
