@@ -72,12 +72,6 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
 elif [ "$HOSTNAME" = thinkxtreme ]; then
     printf '%s\n' "thinkXtreme detected"
     export NCORE=20
-    # Fedora uses modules
-    source /etc/profile.d/modules.sh
-    module load mpi/openmpi-x86_64
-    # set display
-    alias mon60='gnome-monitor-config set -Lp -M eDP-1 -s 1.25 -m 2560x1600@60.002'
-    alias mon165='gnome-monitor-config set -Lp -M eDP-1 -s 1.25 -m 2560x1600@165.004'
     # python venv
     alias triqs-dev='source $HOME/triqs-dev/bin/activate'
     alias triqs-rel='source $HOME/triqs-rel/bin/activate'
@@ -91,20 +85,24 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
     source /usr/share/bash-completion/completions/git
 
     # compiler library config
-    export BLA_VENDOR=OpenBLAS
-    #export BLA_VENDOR=Intel10_64_dyn
+    export BLA_VENDOR=Intel10_64_dyn
     export MKL_INTERFACE_LAYER=GNU,LP64
     export MKL_THREADING_LAYER=SEQUENTIAL
     export MKL_NUM_THREADS=1
     export CXXFLAGS="-stdlib=libc++ -Wno-register -march=native"
     export CFLAGS='-Wno-register -march=native -Wno-error=incompatible-function-pointer-types'
 
-
     # old docker command
     alias triqs='docker run -it --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/ahampel:/home/ahampel solid_dmft_ompi bash'
 
     source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
     set use_color true
+elif [ "$HOSTNAME" = thinkpad ]; then
+    printf '%s\n' "thinkpad detected"
+    export NCORE=4
+    export EDITOR="vim"
+    alias vi=vim
+    source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
 else
     printf '%s\n' "default config"
     export EDITOR="vim"
