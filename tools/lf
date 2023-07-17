@@ -52,9 +52,6 @@ fi
 
 ## perform search
 
-echo "$MATCH"
-echo "$ARG"
-
 for query in ${ARG[*]}; do
     find "${SEARCH}" "${MATCH}" "*${ARG}*"
 done

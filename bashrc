@@ -10,8 +10,6 @@ export PS1="\h>"
 
 export LC_ALL=en_US.utf8
 export LANG=en_US.utf8
-export CC=clang
-export CXX=clang++
 
 
 # output full docker build output
@@ -19,7 +17,7 @@ export BUILDKIT_PROGRESS=plain
 
 if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     printf '%s\n' "CCQ workstation detected"
-    export NCORE=12
+    export NCORE=20
     # default editor
     export EDITOR="nvim"
     alias vi=nvim
@@ -72,6 +70,8 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
 elif [ "$HOSTNAME" = thinkxtreme ]; then
     printf '%s\n' "thinkXtreme detected"
     export NCORE=20
+    export CC=clang
+    export CXX=clang++
     # python venv
     alias triqs-dev='source $HOME/triqs-dev/bin/activate'
     alias triqs-rel='source $HOME/triqs-rel/bin/activate'
@@ -100,6 +100,8 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
 elif [ "$HOSTNAME" = thinkpad ]; then
     printf '%s\n' "thinkpad detected"
     export NCORE=4
+    export CC=clang
+    export CXX=clang++
     export EDITOR="vim"
     alias vi=vim
     source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
