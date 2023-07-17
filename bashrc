@@ -105,6 +105,8 @@ elif [ "$HOSTNAME" = thinkpad ]; then
     export EDITOR="vim"
     alias vi=vim
     source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+
+    alias sys-upgrade='sudo pacman -Syu --verbose'
 else
     printf '%s\n' "default config"
     export EDITOR="vim"
