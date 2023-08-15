@@ -12,14 +12,19 @@ files=
 files+=bashrc
 files+=gitconfig
 files+=glob_git_ignore
-files+=tmux.conf
+#files+=tmux.conf
 files+=vimrc
 files+=vim
 files+=jupyter/jupyter_server_config.py
 files+=config/pycodestyle
 files+=config/kitty/kitty.conf
 files+=config/kitty/gruvbox_dark.conf
-files+=config/nvim/init.vim
+#files+=config/nvim/init.vim
+files+=config/nvim/lua/custom/chadrc.lua
+files+=config/nvim/lua/custom/mappings.lua
+files+=config/nvim/lua/custom/plugins.lua
+files+=config/nvim/lua/custom/configs/lspconfig.lua
+files+=config/nvim/lua/custom/configs/null-ls.lua
 
 .PHONY: install
 install: $(addprefix $(HOME)/.,$(files))
