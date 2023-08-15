@@ -98,6 +98,7 @@ vim.cmd [[autocmd CursorHold * lua vim.diagnostic.open_float(0, {scope="line"})]
 
 EOF
 
+autocmd Syntax c,cpp,python,julia,bash nnoremap <buffer> <Leader>f <cmd> lua vim.lsp.buf.code_action()<CR>
 autocmd Syntax c,cpp,python,julia,bash nnoremap <buffer> gD <cmd>lua vim.lsp.buf.declaration()<CR>
 autocmd Syntax c,cpp,python,julia,bash nnoremap <buffer> gd <cmd>lua vim.lsp.buf.definition()<CR>
 autocmd Syntax c,cpp,python,julia,bash xnoremap <buffer> gd <cmd>lua vim.lsp.buf.definition()<CR>
