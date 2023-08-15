@@ -4,13 +4,13 @@ local capabilities = base.capabilities
 
 local lspconfig = require("lspconfig")
 
-lspconfig.clangd.setup {
-  on_attach = function(client, bufnr)
-    client.server_capabilities.signatureHelpProvider = false
-    on_attach(client, bufnr)
-  end,
-  capabilities = capabilities,
-}
+require'lspconfig'.clangd.setup({
+  cmd       = { 'clangd', '--all-scopes-completion', '--background-index', '--completion-style=bundled', '--header-insertion=iwyu', '--clang-tidy' };
+    filetypes = { 'c', 'h', 'cpp', 'cxx', 'hxx', 'objc', 'objcpp' },
+    capabilities = capabilities
+    })
+require'lspconfig'.jsonls.setup{capabilities = capabilities}
+require'lspconfig'.julials.setup{capabilities = capabilities}
 
 lspconfig.pyright.setup({
   on_attach = on_attach,

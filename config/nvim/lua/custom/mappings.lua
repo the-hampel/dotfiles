@@ -18,6 +18,9 @@ M.dap = {
 M.abc = {
   n = {
     -- ["<leader>c"]
+  ["=="] = {
+      "<cmd>lua vim.lsp.buf.format(range)<CR>",
+      "Format selection"}
   },
 
   i = {

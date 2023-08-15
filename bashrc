@@ -29,8 +29,7 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     alias getnode='srun -N1 --ntasks-per-node=128 --constraint=rome --exclusive --mpi=none --pty bash -i'
 
     # load some default modules
-    module load slurm
-    module load tmux nodejs git fi-utils
+    module load modules/2.1.1-20230405 slurm tmux nodejs git fi-utils
 
     export MODULEPATH=/mnt/home/ahampel/git/ccq-software-build/modules:$MODULEPATH
     export MPLCONFIGDIR=/mnt/home/ahampel/.local/lib/matplotlib-cache
