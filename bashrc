@@ -102,8 +102,8 @@ elif [ "$HOSTNAME" = thinkpad ]; then
     export NCORE=4
     export CC=clang
     export CXX=clang++
-    export EDITOR="vim"
-    alias vi=vim
+    export EDITOR="nvim"
+    alias vi=nvim
     source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
 
     alias sys-update='sudo pacman -Syu --verbose'
