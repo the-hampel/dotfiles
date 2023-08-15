@@ -1,11 +1,11 @@
-VERSION=v0.7.2
-PREFIX=~/opt/neovim
+VERSION=v0.9.1
+PREFIX=~/.local
 
 git clone https://github.com/neovim/neovim --depth 1 --branch $VERSION
 cd neovim
 
 mkdir .deps && cd .deps
-cmake ../third-party # change to ../cmake.deps for v0.8+
+cmake ../cmake.deps
 make
 cd ..
 
