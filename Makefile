@@ -1,7 +1,7 @@
 # Install ./dotfile in ~/.dotfile by symlink, unless it's already done.
 # Try -r first since it's nicer, but only works on GNU ln.
 $(HOME)/.%: %
-	ln -sn $(PWD)/$< $@
+	ln -snf $(PWD)/$< $@
 
 # Install all files added to git:
 # files:=$(filter-out Makefile bashrc,$(shell git ls-files))

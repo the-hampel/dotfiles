@@ -77,8 +77,8 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
     # default venv
     source $HOME/triqs-dev/bin/activate
     # default editor
-    export EDITOR="vim"
-    alias vi=vim
+    export EDITOR="nvim"
+    alias vi=nvim
 
     # git autocompletion
     source /usr/share/bash-completion/completions/git
@@ -89,7 +89,7 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
     export MKL_THREADING_LAYER=SEQUENTIAL
     export MKL_NUM_THREADS=1
     export CXXFLAGS="-stdlib=libc++ -Wno-register -march=native"
-    export CFLAGS='-Wno-register -march=native -Wno-error=incompatible-function-pointer-types'
+    export CFLAGS='-march=native -Wno-error=incompatible-function-pointer-type'
 
     # old docker command
     alias triqs='docker run -it --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/ahampel:/home/ahampel solid_dmft_ompi bash'
