@@ -27,9 +27,13 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
     source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
     alias getnode='srun -N1 --ntasks-per-node=128 --constraint=rome --exclusive --mpi=none --pty bash -i'
-
+    alias triqs-backup="tar --use-compress-program=pigz -cf /mnt/home/ahampel/Dropbox/work/git_backup/$(date '+%Y-%m-%d')-triqs-git-ccqlin.tar.gz --directory=/mnt/home/ahampel/git/triqs ."
     # load some default modules
-    module load modules/2.1.1-20230405 slurm tmux nodejs git fi-utils
+    module load modules/2.2-20230808 slurm tmux git fi-utils python/3.10 nodejs
+    # default venv
+    # source $HOME/py_venv/310/bin/activate
+    # alias 310='source $HOME/py_venv/310/bin/activate'
+
 
     export MODULEPATH=/mnt/home/ahampel/git/ccq-software-build/modules:$MODULEPATH
     export MPLCONFIGDIR=/mnt/home/ahampel/.local/lib/matplotlib-cache
