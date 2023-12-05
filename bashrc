@@ -26,13 +26,14 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     alias quota='fi-quota'
     alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
     source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
-    alias getnode='srun -N1 --ntasks-per-node=128 --constraint=rome --exclusive --mpi=none --pty bash -i'
+    alias getrome='srun -N1 --ntasks-per-node=128 --constraint=rome --exclusive --mpi=none --pty bash -i'
+    alias getice='srun -N1 --ntasks-per-node=64 --constraint=icelake --exclusive --mpi=none --pty bash -i'
     alias triqs-backup="tar --use-compress-program=pigz -cf /mnt/home/ahampel/Dropbox/work/git_backup/$(date '+%Y-%m-%d')-triqs-git-ccqlin.tar.gz --directory=/mnt/home/ahampel/git/triqs ."
     # load some default modules
     module load modules/2.2-20230808 slurm tmux git fi-utils python/3.10 nodejs
     # default venv
-    # source $HOME/py_venv/310/bin/activate
-    # alias 310='source $HOME/py_venv/310/bin/activate'
+    source $HOME/py_venv/310/bin/activate
+    alias 310='source $HOME/py_venv/310/bin/activate'
 
 
     export MODULEPATH=/mnt/home/ahampel/git/ccq-software-build/modules:$MODULEPATH
@@ -44,7 +45,7 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     export JUPYTERLAB_DIR=/mnt/home/ahampel/.jupyter/lab
     [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
 
-    cleancrap (){ 
+    cleancrap (){
         if [[ $# -eq 0 ]] ; then
             echo 'No seedname supplied. Removing nothing.'
             return 1

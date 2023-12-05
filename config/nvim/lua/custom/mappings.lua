@@ -20,11 +20,14 @@ M.abc = {
     -- ["<leader>c"]
   ["=="] = {
       "<cmd>lua vim.lsp.buf.format(range)<CR>",
-      "Format selection"}
+      "Format selection"},
+  ["<leader>cs"] = {"<cmd> nohl <CR>",
+                    "Remove highlights"},
+
   },
 
   i = {
-    -- 
+    --
   }
 }
 return M
