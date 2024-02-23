@@ -32,12 +32,13 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     # load some default modules
     module load modules/2.2-20230808 slurm tmux git fi-utils python/3.10 nodejs
     # default venv
-    source $HOME/py_venv/310/bin/activate
+    # source $HOME/py_venv/310/bin/activate
     alias 310='source $HOME/py_venv/310/bin/activate'
 
 
     export MODULEPATH=/mnt/home/ahampel/git/ccq-software-build/modules:$MODULEPATH
     export MPLCONFIGDIR=/mnt/home/ahampel/.local/lib/matplotlib-cache
+    export MPLBACKEND=qtagg
     export HDF5_USE_FILE_LOCKING=FALSE
 
     export PATH="/mnt/home/ahampel/.local/bin:$PATH"

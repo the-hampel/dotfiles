@@ -17,6 +17,7 @@ files+=vimrc
 # files+=vim
 files+=jupyter/jupyter_server_config.py
 files+=config/pycodestyle
+files+=config/ruff/ruff.toml
 files+=config/libinput-gestures.conf
 files+=config/kitty/kitty.conf
 files+=config/kitty/gruvbox_dark.conf
