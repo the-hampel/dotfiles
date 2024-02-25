@@ -85,6 +85,8 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
     # default editor
     export EDITOR="nvim"
     alias vi=nvim
+    alias vim=nvim
+    alias sys-update='sudo pacman -Syu --verbose'
 
     # git autocompletion
     source /usr/share/bash-completion/completions/git
