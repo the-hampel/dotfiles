@@ -71,6 +71,11 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     esac
 
     # <<< juliaup initialize <<<
+    # zoxide smarter cd command. Install via: curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+    eval "$(zoxide init bash)"
+
+    # fzf fuzzy command line search
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 elif [ "$HOSTNAME" = thinkxtreme ]; then
     printf '%s\n' "thinkXtreme detected"
@@ -292,5 +297,6 @@ if [ -n "$(which tmux 2>/dev/null)" ]; then
     }
 fi
 }
+
 
 
