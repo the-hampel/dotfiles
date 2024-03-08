@@ -72,7 +72,7 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
 
     # <<< juliaup initialize <<<
     # zoxide smarter cd command. Install via: curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
-    eval "$(zoxide init bash)"
+    eval "$(zoxide init --cmd cd bash)"
 
     # fzf fuzzy command line search
     [ -f ~/.fzf.bash ] && source ~/.fzf.bash
@@ -120,7 +120,7 @@ elif [ "$HOSTNAME" = thinkpad ]; then
 
     alias sys-update='sudo pacman -Syu --verbose'
     # zoxide smarter cd command. Install via: curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
-    eval "$(zoxide init bash)"
+    eval "$(zoxide init --cmd cd bash)"
     # fzf fuzzy command line search
     source /usr/share/fzf/completion.bash && source /usr/share/fzf/key-bindings.bash
 
