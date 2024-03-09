@@ -109,6 +109,12 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
 
     source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
     set use_color true
+
+    # zoxide smarter cd command. Install via: curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+    eval "$(zoxide init --cmd cd bash)"
+    # fzf fuzzy command line search
+    source /usr/share/fzf/completion.bash && source /usr/share/fzf/key-bindings.bash
+
 elif [ "$HOSTNAME" = thinkpad ]; then
     printf '%s\n' "thinkpad detected"
     export NCORE=4
