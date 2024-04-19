@@ -1,6 +1,7 @@
 local base = require("plugins.configs.lspconfig")
 local on_attach = base.on_attach
 local capabilities = base.capabilities
+local on_init = base.on_init
 
 local lspconfig = require("lspconfig")
 
@@ -13,4 +14,6 @@ require'lspconfig'.clangd.setup({
 
 require'lspconfig'.jsonls.setup{capabilities = capabilities}
 require'lspconfig'.julials.setup{capabilities = capabilities}
+-- require'lspconfig'.ruff_lsp.setup{capabilities = capabilities, on_init = on_init, on_attach = on_attach}
 require'lspconfig'.ruff_lsp.setup{}
+require'lspconfig'.fortls.setup{}

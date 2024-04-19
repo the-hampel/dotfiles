@@ -159,6 +159,7 @@ alias fgrep='fgrep --colour=auto'
 alias flatiron='ssh flatiron -t ssh ccqlin027'
 
 alias gits='git status'
+alias gitp='git pull'
 alias gitb='git branch -a -vv'
 alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --first-parent"
 
