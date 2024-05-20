@@ -1,0 +1,63 @@
+#!/usr/bin/env python
+
+# This file will parse all the commit messages starting from the last tagged commit
+# and group them according to their [tag]'s
+#
+# Usage: parse_commits > out.md
+
+import sys, re
+from subprocess import Popen, PIPE
+
+mdict = { "General": [] }
+
+import argparse
+parser = argparse.ArgumentParser(description="""
+A script to parse the commit messages up to a given commit / tag and group them by [topic]""")
+parser.add_argument('-tag', nargs=None, default=None, help="The commit / tag up to which to parse. Defaults to latest tag")
+args, additional_args = parser.parse_known_args()
+
+def run(cmd):
+    return [ln.decode("utf-8").strip() for ln in Popen(cmd.split(), stdout=PIPE).stdout]
+
+if __name__ == "__main__":
+
+    # Parse all commits starting from the last tag
+    start_commit = run("git describe --tags --abbrev=0")[0].rstrip() if args.tag is None else args.tag
+
+    # Commit Messages
+    commit_messages = run("git log -i -E --no-merges --pretty=format:%s {}..HEAD".format(start_commit))
+
+    # Author List sorted by last name
+    authors = sorted(set(author for author in run("git log -i -E --no-merges --pretty=format:%an {}..HEAD".format(start_commit))), key=lambda x: x.split()[-1])
+
+    # App4Triqs Commit Messages (exclude these)
+    app4triqs_branches = [branch for branch in run("git branch -a") if "app4triqs" in branch]
+    app4triqs_commit_messages = []
+    for branch in app4triqs_branches:
+        app4triqs_commit_messages.extend(run("git log -i -E --pretty=format:%s {}".format(branch)))
+
+    # Iterate through the git log items and group them
+    for line in commit_messages:
+        if line in app4triqs_commit_messages: continue
+
+        m = re.match('\[(.*?)\] (.*)', line)
+        if(m):
+            if m.group(1) in list(mdict.keys()):
+                mdict[m.group(1)].append(m.group(2))
+            else:
+                mdict[m.group(1)] = [m.group(2)]
+        else:
+            mdict["General"].append(line)
+
+# Filter out copy-right and clang-format authors
+for s in ['clang_format', 'gen_copyright']:
+    if s in authors: authors.remove(s)
+
+sys.stdout.write("\n\nWe thank all contributors: " + ", ".join(authors) + "\n")
+sys.stdout.write("\nFind below an itemized list of changes in this release.\n")
+for group, mlist in mdict.items():
+    sys.stdout.write("\n### " + group + "\n")
+
+    for m in mlist:
+        sys.stdout.write("* " + m.rstrip() + "\n")
+
