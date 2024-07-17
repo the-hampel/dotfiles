@@ -27,6 +27,7 @@ files+=config/nvim/lua/custom/mappings.lua
 files+=config/nvim/lua/custom/plugins.lua
 files+=config/nvim/lua/custom/configs/lspconfig.lua
 files+=config/nvim/lua/custom/configs/null-ls.lua
+files+=config/nvim/after/syntax/fortran.vim
 
 .PHONY: install
 install: $(addprefix $(HOME)/.,$(files))
