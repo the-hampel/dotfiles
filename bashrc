@@ -6,7 +6,7 @@ if [ -z "$PS1" ]; then
         return
 fi
 
-export PS1="\h>"
+export PS1="\w >"
 
 export LC_ALL=en_US.utf8
 export LANG=en_US.utf8
@@ -312,5 +312,25 @@ if [ -n "$(which tmux 2>/dev/null)" ]; then
 fi
 }
 
+hpprint() {
+  if [ "$#" -eq 2 ]; then
+    for f in $(ls $2.hprof.*.heap); do
+      pprof --text --lines $1 $f > ${f%.*}.txt
+      head -n 4 ${f%.*}.txt
+      pprof --svg --lines $1 $f > ${f%.*}.svg
+      #chromium-browser ${f%.*}.svg &
+      #pprof --pdf --lines $1 $f > ${f%.*}.pdf
+      #pprof --web --lines $1 $f
+    done
+  elif [ "$#" -eq 3 ]; then
+    f=$(ls -1 $2.hprof.*$3.heap | head -n 1)
+    pprof --text --lines $1 $f > ${f%.*}.txt
+    head -n 5 ${f%.*}.txt
+    pprof --svg --lines $1 $f > ${f%.*}.svg
+    #chromium-browser ${f%.*}.svg &
+    #pprof --pdf --lines $1 $f > ${f%.*}.pdf
+    #pprof --web --lines $1 $f
+  fi
+}
 
 
