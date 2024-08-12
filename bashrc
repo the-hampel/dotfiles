@@ -6,7 +6,7 @@ if [ -z "$PS1" ]; then
         return
 fi
 
-export PS1="\w >"
+export PS1="\w>"
 
 export LC_ALL=en_US.utf8
 export LANG=en_US.utf8
@@ -28,7 +28,7 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
     alias getrome='srun -N1 --ntasks-per-node=128 --constraint=rome --exclusive --mpi=none --pty bash -i'
     alias getice='srun -N1 --ntasks-per-node=64 --constraint=icelake --exclusive --mpi=none --pty bash -i'
-    alias getgenoa='srun -N1 --ntasks-per-node=64 --constraint=ib-genoa --exclusive --mpi=none --pty bash -i'
+    alias getgenoa='srun -N1 --ntasks-per-node=96 --constraint=ib-genoa --exclusive --mpi=none --pty bash -i'
     alias triqs-backup="tar --use-compress-program=pigz -cf /mnt/home/ahampel/Dropbox/work/git_backup/$(date '+%Y-%m-%d')-triqs-git-ccqlin.tar.gz --directory=/mnt/home/ahampel/git/triqs ."
     # load some default modules
     module load modules/2.3-20240529 slurm tmux git fi-utils python/3.11 nodejs
