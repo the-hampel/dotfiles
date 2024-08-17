@@ -99,7 +99,8 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
     source /usr/share/bash-completion/completions/git
 
     # compiler library config
-    export BLA_VENDOR=Intel10_64_dyn
+    export BLA_VENDOR=OpenBLAS
+    export OMP_NUM_THREADS=1
     export MKL_INTERFACE_LAYER=GNU,LP64
     export MKL_THREADING_LAYER=SEQUENTIAL
     export MKL_NUM_THREADS=1
