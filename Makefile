@@ -1,6 +1,7 @@
 # Install ./dotfile in ~/.dotfile by symlink, unless it's already done.
 # Try -r first since it's nicer, but only works on GNU ln.
 $(HOME)/.%: %
+	mkdir -p $(@D)
 	ln -snf $(PWD)/$< $@
 
 # Install all files added to git:
@@ -14,13 +15,18 @@ files+=gitconfig
 files+=glob_git_ignore
 files+=tmux.conf
 files+=vimrc
-# files+=vim
+
 files+=jupyter/jupyter_server_config.py
+
 files+=config/pycodestyle
-files+=config/ruff/ruff.toml
+files+=config/gruvbox_256palette.sh
 files+=config/libinput-gestures.conf
+
+files+=config/ruff/ruff.toml
+
 files+=config/kitty/kitty.conf
 files+=config/kitty/gruvbox_dark.conf
+
 files+=config/nvim/lua/custom/chadrc.lua
 files+=config/nvim/lua/custom/init.lua
 files+=config/nvim/lua/custom/mappings.lua
@@ -29,5 +35,8 @@ files+=config/nvim/lua/custom/configs/lspconfig.lua
 files+=config/nvim/lua/custom/configs/null-ls.lua
 files+=config/nvim/after/syntax/fortran.vim
 
+all: install
+
 .PHONY: install
 install: $(addprefix $(HOME)/.,$(files))
+

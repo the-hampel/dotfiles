@@ -80,7 +80,7 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
     [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 
 elif [ "$HOSTNAME" = thinkxtreme ]; then
-    printf '%s\n' "thinkXtreme detected"
+    printf '%s\n' "thinkXtreme@Ubuntu detected"
     export NCORE=20
     export CC=clang
     export CXX=clang++
@@ -109,13 +109,13 @@ elif [ "$HOSTNAME" = thinkxtreme ]; then
     # old docker command
     alias triqs='docker run -it --shm-size=4g -e USER_ID=`id -u` -e GROUP_ID=`id -g` -p 8378:8378 -v $PWD:/work -v /home/ahampel:/home/ahampel solid_dmft_ompi bash'
 
-    source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+    source "$HOME/.config/gruvbox_256palette.sh"
     set use_color true
 
     # zoxide smarter cd command. Install via: curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
     eval "$(zoxide init --cmd cd bash)"
     # fzf fuzzy command line search
-    source /usr/share/fzf/completion.bash && source /usr/share/fzf/key-bindings.bash
+    source /usr/share/bash-completion/completions/fzf && source /usr/share/doc/fzf/examples/key-bindings.bash
 
 elif [ "$HOSTNAME" = thinkpad ]; then
     printf '%s\n' "thinkpad detected"
