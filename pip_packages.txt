@@ -1,5 +1,10 @@
 numpy
+seaborn
+scienceplots
+fortls
+ase
 scipy
+jupyterlab
 matplotlib
 pandas
 scikit-image

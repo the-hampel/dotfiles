@@ -81,7 +81,7 @@ if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
 
 elif [ "$HOSTNAME" = thinkxtreme ]; then
     printf '%s\n' "thinkXtreme@Ubuntu detected"
-    export NCORE=20
+    export NCORE=16
     export CC=clang
     export CXX=clang++
     # python venv
@@ -140,6 +140,7 @@ else
 fi
 
 alias mdev='bash $HOME/git/dotfiles/tools/make_dev.sh'
+alias mvasp='bash $HOME/git/dotfiles/tools/make_vasp.sh'
 
 alias df='df -h'                          # human-readable sizes
 alias la='ls --color=auto -lh'
