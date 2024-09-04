@@ -8,9 +8,6 @@ fi
 
 export PS1="\h>"
 
-export LC_ALL=en_US.utf8
-export LANG=en_US.utf8
-
 
 # output full docker build output
 export BUILDKIT_PROGRESS=plain
@@ -133,8 +130,8 @@ elif [ "$HOSTNAME" = thinkpad ]; then
     # fzf fuzzy command line search
     source /usr/share/fzf/completion.bash && source /usr/share/fzf/key-bindings.bash
 
-elif [ "$HOSTNAME" = "fsc.vasp.co" ]; then
-    printf '%s\n' "fsc detected"
+elif [[ "$HOSTNAME" = "fsc.vasp.co" || "$HOSTNAME" = "guppy07.vasp.co" ]]; then
+    printf '%s\n' "vasp detected"
     source "$HOME/.config/gruvbox_256palette.sh"
     set use_color true
 

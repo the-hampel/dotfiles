@@ -27,12 +27,11 @@ files+=config/ruff/ruff.toml
 files+=config/kitty/kitty.conf
 files+=config/kitty/gruvbox_dark.conf
 
-files+=config/nvim/lua/custom/chadrc.lua
-files+=config/nvim/lua/custom/init.lua
-files+=config/nvim/lua/custom/mappings.lua
-files+=config/nvim/lua/custom/plugins.lua
-files+=config/nvim/lua/custom/configs/lspconfig.lua
-files+=config/nvim/lua/custom/configs/null-ls.lua
+files+=config/nvim/lua/chadrc.lua
+files+=config/nvim/lua/mappings.lua
+files+=config/nvim/lua/options.lua
+files+=config/nvim/lua/plugins/init.lua
+files+=config/nvim/lua/configs/lspconfig.lua
 files+=config/nvim/after/syntax/fortran.vim
 
 files+=local/share/fzf/completion.bash

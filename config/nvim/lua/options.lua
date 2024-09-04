@@ -1,3 +1,10 @@
+require "nvchad.options"
+
+-- add yours here!
+
+-- local o = vim.o
+-- o.cursorlineopt ='both' -- to enable cursorline!
+--
 vim.opt.mouse = ""
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
@@ -5,3 +12,4 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   command = [[%s/\s\+$//e]],
 })
 
+--
