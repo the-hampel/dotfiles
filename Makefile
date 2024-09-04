@@ -35,6 +35,12 @@ files+=config/nvim/lua/custom/configs/lspconfig.lua
 files+=config/nvim/lua/custom/configs/null-ls.lua
 files+=config/nvim/after/syntax/fortran.vim
 
+files+=local/share/fzf/completion.bash
+files+=local/share/fzf/key-bindings.bash
+files+=local/share/okular/okularpartrc
+files+=local/share/okular/part.rc
+files+=local/share/okular/shell.rc
+
 all: install
 
 .PHONY: install

@@ -6,7 +6,7 @@ if [ -z "$PS1" ]; then
         return
 fi
 
-export PS1="\w>"
+export PS1="\h>"
 
 export LC_ALL=en_US.utf8
 export LANG=en_US.utf8
@@ -132,6 +132,36 @@ elif [ "$HOSTNAME" = thinkpad ]; then
     eval "$(zoxide init --cmd cd bash)"
     # fzf fuzzy command line search
     source /usr/share/fzf/completion.bash && source /usr/share/fzf/key-bindings.bash
+
+elif [ "$HOSTNAME" = "fsc.vasp.co" ]; then
+    printf '%s\n' "fsc detected"
+    source "$HOME/.config/gruvbox_256palette.sh"
+    set use_color true
+
+    export PATH="/fsc/home/hampel/.local/bin:$PATH"
+
+    eval "$(zoxide init --cmd cd bash)"
+
+    # fzf fuzzy command line search
+    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+    export JUPYTERLAB_DIR=/mnt/home/ahampel/.jupyter/lab
+    [ -r ~/.local/share/fzf/completion.bash ] && . ~/.local/share/fzf/key-bindings.bash
+
+    alias qs='Sinfo'
+
+    alias getguppy='srun --nodes=1 --time 24:00 --partition=guppy07 --ntasks-per-node=1 --cpus-per-task=32 --cpu-bind=cores --pty bash -i'
+
+    ### modules
+    module load vasp-gnu_mkl-dev/12.3_mkl-2023.2.0_ompi-4.1.6
+
+    export HDF5_USE_FILE_LOCKING=FALSE
+
+    export NCORE=16
+    # default editor
+    export EDITOR="nvim"
+    alias vi=nvim
+    alias vimdiff='nvim -d'
 
 else
     printf '%s\n' "default config"
