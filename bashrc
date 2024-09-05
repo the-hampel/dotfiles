@@ -150,7 +150,8 @@ elif [[ "$HOSTNAME" = "fsc.vasp.co" || "$HOSTNAME" = "guppy07.vasp.co" ]]; then
     alias getguppy='srun --nodes=1 --time 24:00 --partition=guppy07 --ntasks-per-node=1 --cpus-per-task=32 --cpu-bind=cores --pty bash -i'
 
     ### modules
-    module load vasp-gnu_mkl-dev/12.3_mkl-2023.2.0_ompi-4.1.6
+    module load slurm
+    alias vaspdev='module load vasp-gnu_mkl-dev/12.3_mkl-2023.2.0_ompi-4.1.6'
 
     export HDF5_USE_FILE_LOCKING=FALSE
 
@@ -159,6 +160,24 @@ elif [[ "$HOSTNAME" = "fsc.vasp.co" || "$HOSTNAME" = "guppy07.vasp.co" ]]; then
     export EDITOR="nvim"
     alias vi=nvim
     alias vimdiff='nvim -d'
+
+    # >>> mamba initialize >>>
+    # !! Contents within this block are managed by 'mamba init' !!
+    export MAMBA_EXE='/fsc/home/hampel/.local/bin/micromamba';
+    export MAMBA_ROOT_PREFIX='/fsc/home/hampel/micromamba';
+    __mamba_setup="$("$MAMBA_EXE" shell hook --shell bash --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__mamba_setup"
+    else
+        alias micromamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+    fi
+    unset __mamba_setup
+    # <<< mamba initialize <<<
+    alias mamba='micromamba'
+    micromamba activate triqs-dev
+
+    export OMP_NUM_THREADS=1
+    export MKL_NUM_THREADS=1
 
 else
     printf '%s\n' "default config"

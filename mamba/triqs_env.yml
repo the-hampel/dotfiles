@@ -1,0 +1,25 @@
+name: triqs-dev
+channels:
+- conda-forge
+dependencies:
+- boost
+- cmake
+- fftw
+- fortls
+- gcc==13.3.0
+- gmp
+- gxx==13.3.0
+- hdf5
+- libclang
+- mako
+- matplotlib
+- meson
+- ninja
+- numpy
+- openblas
+- openmpi==4.1.6
+- pandas
+- ruff-lsp
+- scienceplots
+- scipy
+

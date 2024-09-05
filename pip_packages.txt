@@ -1,4 +1,6 @@
 numpy
+mako
+mpi4py
 seaborn
 scienceplots
 fortls
