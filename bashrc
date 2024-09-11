@@ -8,7 +8,6 @@ fi
 
 export PS1="\h>"
 
-
 # output full docker build output
 export BUILDKIT_PROGRESS=plain
 
@@ -130,7 +129,7 @@ elif [ "$HOSTNAME" = thinkpad ]; then
     # fzf fuzzy command line search
     source /usr/share/fzf/completion.bash && source /usr/share/fzf/key-bindings.bash
 
-elif [[ "$HOSTNAME" = "fsc.vasp.co" || "$HOSTNAME" = "guppy07.vasp.co" ]]; then
+elif [[ "$HOSTNAME" == *.vasp.co ]]; then
     printf '%s\n' "vasp detected"
     source "$HOME/.config/gruvbox_256palette.sh"
     set use_color true
@@ -145,9 +144,10 @@ elif [[ "$HOSTNAME" = "fsc.vasp.co" || "$HOSTNAME" = "guppy07.vasp.co" ]]; then
     export JUPYTERLAB_DIR=/mnt/home/ahampel/.jupyter/lab
     [ -r ~/.local/share/fzf/completion.bash ] && . ~/.local/share/fzf/key-bindings.bash
 
-    alias qs='Sinfo'
+    alias qs='squeue --sort "P,U" -o "%.10i %.10u %40j %.12M %.2t %.6D %.6C %30R"'
+    alias si='Sinfo'
 
-    alias getguppy='srun --nodes=1 --time 24:00 --partition=guppy07 --ntasks-per-node=1 --cpus-per-task=32 --cpu-bind=cores --pty bash -i'
+    alias getnode='srun --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=16 --cpus-per-task=1 --cpu-bind=cores --pty bash -i'
 
     ### modules
     module load slurm
@@ -196,6 +196,7 @@ alias np='nano -w PKGBUILD'
 alias more=less
 alias tmux='tmux -u'
 
+alias rvaspout='mkdir -p vasp_old_out && mv vasp.ctrl vasp.h5 vaspout.h5 vasp.pg1 vasprun.xml vasptriqs.h5 vasp.lock XDATCAR PROJCAR PCDAT OUTCAR OSZICAR LOCPROJ IBZKPT EIGENVAL DOSCAR CONTCAR STOPCAR vasp_old_out/'
 
 alias mount-home-ccq='sshfs flatiron:/mnt/home/ahampel /home/ahampel/ccq-home-fs'
 alias mount-ceph-ccq='sshfs flatiron:/mnt/ceph/users/ahampel /home/ahampel/ccq-ceph-fs'
@@ -205,8 +206,6 @@ alias ls='ls --color=auto -lh'
 alias grep='grep --colour=auto'
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
-
-alias flatiron='ssh flatiron -t ssh ccqlin027'
 
 alias gits='git status'
 alias gitp='git pull'
