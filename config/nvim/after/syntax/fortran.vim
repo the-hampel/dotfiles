@@ -12,3 +12,6 @@ syntax match unitTestKeyword '\(subroutine\s*\)\@<=test_'
 "hightlight unit test keywords in the same way as Fortran keywords
 highlight link unitTestKeyword fortranKeyword
 
+syn region fortranDirective start=/!$ACC.\{-}/ end=/[^\&]$/
+hi def link fortranDirective PreProc
+

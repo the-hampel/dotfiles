@@ -13,4 +13,6 @@ map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", {desc = "Format
 
 map("n", "<leader>cs", "<cmd> nohl <CR>", {desc = "Remove highlights"})
 
+map('n', '<leader>gp', "<cmd> Gitsigns preview_hunk_inline <CR>", { desc = "Preview hunk inline" })
+map('n', '<leader>gr', "<cmd> Gitsigns reset_hunk <CR>", { desc = "Preview hunk inline" })
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")

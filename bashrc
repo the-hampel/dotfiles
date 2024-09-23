@@ -147,7 +147,7 @@ elif [[ "$HOSTNAME" == *.vasp.co ]]; then
     alias qs='squeue --sort "P,U" -o "%.10i %.10u %40j %.12M %.2t %.6D %.6C %30R"'
     alias si='Sinfo'
 
-    alias getnode='srun --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=16 --cpus-per-task=1 --cpu-bind=cores --pty bash -i'
+    alias getnode='srun --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=1 --cpus-per-task=16 --cpu-bind=cores --pty bash -i'
 
     ### modules
     module load slurm
@@ -174,7 +174,7 @@ elif [[ "$HOSTNAME" == *.vasp.co ]]; then
     unset __mamba_setup
     # <<< mamba initialize <<<
     alias mamba='micromamba'
-    micromamba activate triqs-dev
+    alias triqs-dev='micromamba activate triqs-dev'
 
     export OMP_NUM_THREADS=1
     export MKL_NUM_THREADS=1
@@ -196,7 +196,7 @@ alias np='nano -w PKGBUILD'
 alias more=less
 alias tmux='tmux -u'
 
-alias rvaspout='mkdir -p vasp_old_out && mv vasp.ctrl vasp.h5 vaspout.h5 vasp.pg1 vasprun.xml vasptriqs.h5 vasp.lock XDATCAR PROJCAR PCDAT OUTCAR OSZICAR LOCPROJ IBZKPT EIGENVAL DOSCAR CONTCAR STOPCAR vasp_old_out/'
+alias rvaspout='mkdir -p vasp_old_out && mv vasp.ctrl vasp.h5 vaspout.h5 vasp.pg1 vasprun.xml vasptriqs.h5 vasp.lock XDATCAR PROJCAR PCDAT OUTCAR OSZICAR LOCPROJ IBZKPT EIGENVAL DOSCAR CONTCAR STOPCAR REPORT PROCAR vaspwave.h5 WAVECAR CHG CHGCAR conv_imp* observables_imp* H_imp* vasp_old_out/'
 
 alias mount-home-ccq='sshfs flatiron:/mnt/home/ahampel /home/ahampel/ccq-home-fs'
 alias mount-ceph-ccq='sshfs flatiron:/mnt/ceph/users/ahampel /home/ahampel/ccq-ceph-fs'
@@ -207,6 +207,7 @@ alias grep='grep --colour=auto'
 alias egrep='egrep --colour=auto'
 alias fgrep='fgrep --colour=auto'
 
+alias gitw='git worktree'
 alias gits='git status'
 alias gitp='git pull'
 alias gitb='git branch -a -vv'

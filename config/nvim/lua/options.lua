@@ -8,7 +8,7 @@ require "nvchad.options"
 vim.opt.mouse = ""
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  pattern = { "*" },
+  pattern = { "*.py", "*.cpp", "*.txt", "*.md" },
   command = [[%s/\s\+$//e]],
 })
 
