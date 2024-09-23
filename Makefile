@@ -15,6 +15,7 @@ files+=gitconfig
 files+=glob_git_ignore
 files+=tmux.conf
 files+=vimrc
+files+=ripgreprc
 
 files+=jupyter/jupyter_server_config.py
 
