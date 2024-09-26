@@ -10,6 +10,8 @@ map("i", "jk", "<ESC>")
 map("n", "==", "<cmd>lua vim.lsp.buf.format(range)<CR>", {desc = "Format selection"})
 
 map("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", {desc = "Format selection"})
+map("n", "<leader>cr", "<cmd>lua vim.lsp.buf.rename()<CR>", {desc = "rename variable"})
+map("n", "<leader>cd", "<cmd>lua vim.lsp.buf.definition()<CR>", {desc = "go to definition"})
 
 map("n", "<leader>cs", "<cmd> nohl <CR>", {desc = "Remove highlights"})
 

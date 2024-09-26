@@ -187,6 +187,7 @@ fi
 
 alias mdev='bash $HOME/git/dotfiles/tools/make_dev.sh'
 alias mvasp='bash $HOME/git/dotfiles/tools/make_vasp.sh'
+alias envasp='source $HOME/git/dotfiles/tools/env_vasp.sh'
 
 alias df='df -h'                          # human-readable sizes
 alias la='ls --color=auto -lh'
