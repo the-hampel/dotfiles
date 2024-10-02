@@ -15,3 +15,6 @@ highlight link unitTestKeyword fortranKeyword
 syn region fortranDirective start=/!$ACC.\{-}/ end=/[^\&]$/
 hi def link fortranDirective PreProc
 
+syn region fortranDirective start=/!$OMP.\{-}/ end=/[^\&]$/
+hi def link fortranDirective PreProc
+

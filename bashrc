@@ -155,6 +155,7 @@ elif [[ "$HOSTNAME" == *.vasp.co ]]; then
 
     export HDF5_USE_FILE_LOCKING=FALSE
 
+    ulimit -s unlimited
     export NCORE=16
     # default editor
     export EDITOR="nvim"
@@ -202,6 +203,9 @@ alias rvaspout='mkdir -p vasp_old_out && mv vasp.ctrl vasp.h5 vaspout.h5 vasp.pg
 alias mount-home-ccq='sshfs flatiron:/mnt/home/ahampel /home/ahampel/ccq-home-fs'
 alias mount-ceph-ccq='sshfs flatiron:/mnt/ceph/users/ahampel /home/ahampel/ccq-ceph-fs'
 alias umount-ccq='fusermount -u /home/ahampel/ccq-home-fs &> /dev/null && fusermount -u /home/ahampel/ccq-ceph-fs &> /dev/null'
+
+alias mount-vasp-scratch='sshfs hampel@10.23.0.2:/scratch/hampel /home/ahampel/vasp-scratch'
+alias mount-vasp-home='sshfs hampel@10.23.0.2:/fsc/home/hampel /home/ahampel/vasp-home'
 
 alias ls='ls --color=auto -lh'
 alias grep='grep --colour=auto'

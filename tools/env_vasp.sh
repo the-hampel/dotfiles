@@ -58,6 +58,7 @@ elif [ $MODE = intelgpu ]; then
     export MKL_NUM_THREADS=1
     export I_MPI_DEBUG=3
     export I_MPI_OFFLOAD=1
+    export OMP_TARGET_OFFLOAD=DEFAULT
 fi
 
 if [ $TEST ]; then
