@@ -11,6 +11,8 @@ $(HOME)/.%: %
 # Or to an explicit list of files:
 files=
 files+=bashrc
+files+=profile
+files+=zshrc
 files+=gitconfig
 files+=glob_git_ignore
 files+=tmux.conf
