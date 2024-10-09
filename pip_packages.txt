@@ -16,7 +16,6 @@ nbsphinx
 sphinx_rtd_theme
 myst_parser
 linkify-it-py
-sparse-ir[xprec]
 build
 setuptools
 meson

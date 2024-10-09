@@ -38,4 +38,8 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 #########################################################
 
+export PATH=$(brew --prefix)/opt/llvm/bin:$PATH
+export LIBRARY_PATH=$(brew --prefix)/opt/llvm/lib:$LIBRARY_PATH
+export CC=$(brew --prefix)/opt/llvm/bin/clang
+export CXX=$(brew --prefix)/opt/llvm/bin/clang++
 

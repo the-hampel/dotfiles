@@ -175,12 +175,18 @@ elif [[ "$HOSTNAME" == ProBook* ]]; then
 
     # default editor
     export EDITOR="nvim"
+    export NCORE=20
     alias vi=nvim
     alias vimdiff='nvim -d'
-
+    export CXXFLAGS="-stdlib=libc++ -Wno-register -march=native"
+    export CFLAGS='-march=native'
     export OMP_NUM_THREADS=1
     export MKL_NUM_THREADS=1
  
+    alias devpy='source $HOME/pyvenv/devpy/bin/activate'
+
+    # kitten ssh
+    alias ssk='kitten ssh'
 
 else
     printf '%s\n' "default config"
