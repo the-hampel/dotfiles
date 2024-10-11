@@ -7,7 +7,7 @@
 [core]
   editor = nvim
 	filemode = false
-	excludesfile = $HOME/.glob_git_ignore
+	excludesfile = ~/.glob_git_ignore
 [diff]
 	tool = vimdiff
 [merge]
