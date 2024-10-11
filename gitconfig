@@ -5,9 +5,9 @@
     default = current
 	ff = only
 [core]
-    editor = nvim
-    excludesfile = ~/.glob_git_ignore
+  editor = nvim
 	filemode = false
+	excludesfile = $HOME/.glob_git_ignore
 [diff]
 	tool = vimdiff
 [merge]
