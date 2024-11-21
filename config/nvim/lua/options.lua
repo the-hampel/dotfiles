@@ -8,7 +8,7 @@ require "nvchad.options"
 vim.opt.mouse = ""
 
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
-  pattern = { "*.py", "*.cpp", "*.txt", "*.md" },
+  pattern = { "*.py", "*.cpp", "*.txt", "" },
   command = [[%s/\s\+$//e]],
 })
 
@@ -17,5 +17,21 @@ vim.api.nvim_create_autocmd({ "BufRead",  "BufNewFile" }, {
   pattern = { "*.pf" },
   command = "set filetype=fortran",
 })
+
+vim.opt.diffopt =
+  'filler,vertical,internal,algorithm:patience,indent-heuristic,context:3'
+
+vim.opt.fillchars = {
+  fold = ' ',
+  diff = '╱',
+  wbr = '─',
+  msgsep = '─',
+  horiz = ' ',
+  horizup = '│',
+  horizdown = '│',
+  vertright = '│',
+  vertleft = '│',
+  verthoriz = '│',
+}
 
 --

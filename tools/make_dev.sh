@@ -40,6 +40,6 @@ cd ${BLD_DIR}
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$TRIQS_ROOT -DBuild_Documentation=$DOC -DMPIEXEC_MAX_NUMPROCS=$NC_TEST -S ${SRC_DIR} -B ${BLD_DIR} $OTHER_ARGS
 time make -j$NCORE $MODE
 if [ $TEST = true ]; then
-    ctest -j5
+    ctest -j8
 fi
 cd ${ORG_DIR}

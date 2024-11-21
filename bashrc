@@ -2,12 +2,6 @@
 # ~/.bashrc
 #
 
-if [ -z "$PS1" ]; then
-        return
-fi
-
-export PS1="\h>"
-
 ##### most functions from bash are here ###
 source ~/.profile
 ###########################################

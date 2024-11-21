@@ -1,4 +1,11 @@
 # output full docker build output
+
+if [ -z "$PS1" ]; then
+        return
+fi
+
+export PS1="\h>"
+
 export BUILDKIT_PROGRESS=plain
 
 if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
@@ -119,7 +126,7 @@ elif [ "$HOSTNAME" = thinkpad ]; then
     # fzf fuzzy command line search
     source /usr/share/fzf/completion.bash && source /usr/share/fzf/key-bindings.bash
 
-elif [[ "$HOSTNAME" == *.vasp.co ]]; then
+elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     printf '%s\n' "vasp detected"
     source "$HOME/.config/gruvbox_256palette.sh"
     set use_color true
@@ -134,19 +141,22 @@ elif [[ "$HOSTNAME" == *.vasp.co ]]; then
     export JUPYTERLAB_DIR=/mnt/home/ahampel/.jupyter/lab
     [ -r ~/.local/share/fzf/completion.bash ] && . ~/.local/share/fzf/key-bindings.bash
 
+    # git autocompletion
+    source ~/git/dotfiles/tools/git-completion.bash
+
     alias qs='squeue --sort "P,U" -o "%.10i %.10u %40j %.12M %.2t %.6D %.6C %30R"'
     alias si='Sinfo'
 
     alias getnode='srun --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=1 --cpus-per-task=16 --cpu-bind=cores --pty bash -i'
 
     ### modules
-    module load slurm
+    # module load slurm
     alias vaspdev='module load vasp-gnu_mkl-dev/12.3_mkl-2023.2.0_ompi-4.1.6'
 
     export HDF5_USE_FILE_LOCKING=FALSE
 
     ulimit -s unlimited
-    export NCORE=16
+    export NCORE=32
     # default editor
     export EDITOR="nvim"
     alias vi=nvim
@@ -165,10 +175,56 @@ elif [[ "$HOSTNAME" == *.vasp.co ]]; then
     unset __mamba_setup
     # <<< mamba initialize <<<
     alias mamba='micromamba'
-    alias triqs-dev='micromamba activate triqs-dev'
+    alias devpy='micromamba activate triqs-dev'
 
     export OMP_NUM_THREADS=1
     export MKL_NUM_THREADS=1
+
+    # craype compiler for porgy02
+    if [ "`expr substr $(hostname) 1 7`" == "porgy02" ]; then
+    # >>> ccpe singularity >>>
+    function ccpe-18 () {
+
+    # check if palsd for user is running
+    if ( systemctl -q is-active palsd@${USER}.service  ) ; then
+
+        ml purge
+
+        apptainer exec --rocm /fsc/home/mmars/src/cray/ccpe-24.07-rocm-6.0_cce_18.0.1_v2.sif bash
+
+        ml load cce/18.0.1 craype-accel-amd-gfx908 rocm craype-x86-milan
+
+    else
+        echo "palsed@${USER}.service not running "
+    fi
+    }
+
+    function ccpe-15 () {
+
+    # check if palsd for user is running
+    if ( systemctl -q is-active palsd@${USER}.service  ) ; then
+
+        ml purge
+
+        singularity exec --rocm --env-file /opt/share/singularity/ccpe/etc/${USER}/palsd.conf \
+            --env SINGULARITYENV_PREPEND_LD_LIBRARY_PATH="/usr/lib64:/.singularity.d/libs"\
+            --bind /opt/share/singularity/ccpe/log:/var/log \
+            --bind /opt/share/singularity/ccpe/scripts:/opt/scripts \
+            --bind /opt/share/singularity/ccpe/etc/${USER}:/etc/pals \
+            --bind /var/run/munge \
+            --hostname localhost \
+            /opt/share/singularity/ccpe/cce-15.0.1_rocm-5.3.0.sif bash -rcfile /opt/scripts/ccpe_bashrc_cce-15.0.1
+
+    else
+        echo "palsed@${USER}.service not running "
+    fi
+
+    }
+    # <<< ccpe singularity <<<
+    fi
+
+
+
 elif [[ "$HOSTNAME" == ProBook* ]]; then
     printf '%s\n' "ProBook detected"
     ulimit -s unlimited
@@ -196,6 +252,7 @@ fi
 
 alias mdev='bash $HOME/git/dotfiles/tools/make_dev.sh'
 alias mvasp='bash $HOME/git/dotfiles/tools/make_vasp.sh'
+alias vaspgdb='bash $HOME/git/dotfiles/tools/run_vasp_gdb.sh'
 alias envasp='source $HOME/git/dotfiles/tools/env_vasp.sh'
 
 alias df='df -h'                          # human-readable sizes
@@ -206,7 +263,7 @@ alias np='nano -w PKGBUILD'
 alias more=less
 alias tmux='tmux -u'
 
-alias rvaspout='mkdir -p vasp_old_out && mv vasp.ctrl vasp.h5 vaspout.h5 vasp.pg1 vasprun.xml vasptriqs.h5 vasp.lock XDATCAR PROJCAR PCDAT OUTCAR OSZICAR LOCPROJ IBZKPT EIGENVAL DOSCAR CONTCAR STOPCAR REPORT PROCAR vaspwave.h5 WAVECAR CHG CHGCAR conv_imp* observables_imp* H_imp* vasp_old_out/'
+alias rvaspout='mkdir -p vasp_old_out && mv vasp.ctrl vasp.h5 vaspout.h5 vasp.pg1 vasprun.xml vasptriqs.h5 vasp.lock XDATCAR PROJCAR PCDAT OUTCAR OSZICAR LOCPROJ IBZKPT EIGENVAL DOSCAR CONTCAR STOPCAR REPORT PROCAR CHG conv_imp* observables_imp* H_imp* vasp_old_out/'
 
 alias mount-home-ccq='sshfs flatiron:/mnt/home/ahampel /home/ahampel/ccq-home-fs'
 alias mount-ceph-ccq='sshfs flatiron:/mnt/ceph/users/ahampel /home/ahampel/ccq-ceph-fs'

@@ -40,7 +40,8 @@ if [ $MODE = gnu ]; then
     export MKL_NUM_THREADS=1
     export MKL_THREADING_LAYER=GNU,LP64
 elif [ $MODE = nvidia ]; then
-    module load vasp-nvhpc_mkl-dev/23.7_mkl-2023.2.0_ompi-4.1.6 profiling cross_platform openmp_support openacc_support
+    module load vasp-nvhpc_mkl-dev/24.1_mkl-2023.2.0_ompi-4.1.6 gcc_system_8 profiling cross_platform openmp_support openacc_support
+    export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${NVROOT}/math_libs/lib64
     export OMP_NUM_THREADS=8
     export MKL_NUM_THREADS=1
     export MKL_THREADING_LAYER=INTEL

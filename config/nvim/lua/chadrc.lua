@@ -4,7 +4,7 @@
 ---@type ChadrcConfig
 local M = {}
 
-M.base46 = {
+M.ui = {
 	theme = "gruvbox",
 
 	-- hl_override = {

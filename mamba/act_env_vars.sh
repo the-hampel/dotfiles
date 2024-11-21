@@ -19,4 +19,4 @@ export BLA_VENDOR=OpenBLAS
 export MKL_INTERFACE_LAYER=GNU,LP64
 export MKL_THREADING_LAYER=SEQUENTIAL
 export CFLAGS="-march=broadwell"
-export CXXFLAGS="-Wno-register -march=broadwell"
+export CXXFLAGS="-Wno-register -march=broadwell -fpermissive"
