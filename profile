@@ -1,11 +1,4 @@
 # output full docker build output
-
-if [ -z "$PS1" ]; then
-        return
-fi
-
-export PS1="\h>"
-
 export BUILDKIT_PROGRESS=plain
 
 if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then

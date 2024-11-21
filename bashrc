@@ -6,6 +6,12 @@
 source ~/.profile
 ###########################################
 
+if [ -z "$PS1" ]; then
+        return
+fi
+
+export PS1="\h>"
+
 [[ $- != *i* ]] && return
 
 colors() {
