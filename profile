@@ -244,6 +244,9 @@ elif [[ "$HOSTNAME" == ProBook* ]]; then
     # kitten ssh
     alias ssk='kitten ssh'
 
+    # docker bin dir to path
+    export PATH=/Users/ahampel/.docker/bin:$PATH
+
 else
     printf '%s\n' "default config"
     export EDITOR="vim"

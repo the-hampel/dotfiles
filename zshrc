@@ -1,6 +1,9 @@
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# prevents match not found errors when globbing via rsync or scp
+unsetopt nomatch
+
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
@@ -38,7 +41,7 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 #########################################################
 
-export PATH=$(brew --prefix)/opt/llvm/bin:$PATH
+export PATH=$(brew --prefix)/opt/llvm/bin:/Users/ahampel/.local/bin:$PATH
 export LIBRARY_PATH=$(brew --prefix)/opt/llvm/lib:$LIBRARY_PATH
 export CC=$(brew --prefix)/opt/llvm/bin/clang
 export CXX=$(brew --prefix)/opt/llvm/bin/clang++

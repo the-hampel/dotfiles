@@ -1,6 +1,8 @@
 numpy
+threadpoolctl
 mako
 mpi4py
+h5nav
 seaborn
 scienceplots
 fortls
