@@ -2,13 +2,13 @@
 # ~/.bashrc
 #
 
-##### most functions from bash are here ###
-source ~/.profile
-###########################################
-
 if [ -z "$PS1" ]; then
         return
 fi
+
+##### most functions from bash are here ###
+source ~/.profile
+###########################################
 
 export PS1="\h>"
 
