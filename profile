@@ -124,7 +124,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     source "$HOME/.config/gruvbox_256palette.sh"
     set use_color true
 
-    export PATH="/fsc/home/hampel/.local/bin:$PATH"
+    export PATH="/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:$PATH"
 
     eval "$(zoxide init --cmd cd bash)"
 
@@ -275,7 +275,7 @@ alias fgrep='fgrep --colour=auto'
 
 alias gitw='git worktree'
 alias gits='git status'
-alias gitp='git pull'
+alias gitp='git stash && git pull && git stash pop'
 alias gitb='git branch -a -vv'
 alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --first-parent"
 
@@ -291,3 +291,25 @@ bconv() {
 TmeV() {
     python3 -c 'import sys; print(8.61732814974056e-02*float(sys.argv[1]))' "$@"
     }
+
+# extract function
+extract () {
+   if [ -f $1 ] ; then
+       case $1 in
+           *.tar.bz2)   tar xvjf $1    ;;
+           *.tar.gz)    tar xvzf $1    ;;
+           *.bz2)       bunzip2 $1     ;;
+           *.rar)       unrar x $1       ;;
+           *.gz)        gunzip $1      ;;
+           *.tar)       tar xvf $1     ;;
+           *.tbz2)      tar xvjf $1    ;;
+           *.tgz)       tar xvzf $1    ;;
+           *.zip)       unzip $1       ;;
+           *.Z)         uncompress $1  ;;
+           *.7z)        7z x $1        ;;
+           *)           echo "don't know how to extract '$1'..." ;;
+       esac
+   else
+       echo "'$1' is not a valid file!"
+   fi
+ }
