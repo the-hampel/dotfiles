@@ -149,10 +149,11 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     export HDF5_USE_FILE_LOCKING=FALSE
 
     ulimit -s unlimited
+    export OMP_STACKSIZE=2048m
     export NCORE=32
     # default editor
     export EDITOR="nvim"
-    alias vi=nvim
+    alias vi='nvim --listen /tmp/nvim-server-hampel.pipe'
     alias vimdiff='nvim -d'
 
     # >>> mamba initialize >>>
@@ -275,7 +276,7 @@ alias fgrep='fgrep --colour=auto'
 
 alias gitw='git worktree'
 alias gits='git status'
-alias gitp='git stash && git pull && git stash pop'
+alias gitp='git pull --autostash'
 alias gitb='git branch -a -vv'
 alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --first-parent"
 

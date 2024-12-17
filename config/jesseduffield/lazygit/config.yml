@@ -1,0 +1,4 @@
+os:
+  editCommand: 'nvim'
+  editCommandTemplate: '{{editor}} --server /tmp/nvim-server-hampel.pipe --remote-tab "{{filename}}"'
+

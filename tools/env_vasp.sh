@@ -52,8 +52,7 @@ elif [ $MODE = intel ]; then
     export MKL_THREADING_LAYER=INTEL
 elif [ $MODE = intelgpu ]; then
     export LC_ALL=C
-    module use /opt/share/spack-0.21/share/spack/lmod/linux-rocky8-x86_64/Core 
-    module load vasp-intel-dev/2024.2.1_mkl-2024.2.1_impi-2021.13.1
+    module load vasp-intel-dev/2025.0.3_mkl-2025.0.1_impi-2021.14.1 impi-srun profiling cross_platform scalapack
     export MKL_THREADING_LAYER=INTEL
     export OMP_NUM_THREADS=8
     export MKL_NUM_THREADS=1

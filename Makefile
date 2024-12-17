@@ -27,6 +27,8 @@ files+=config/libinput-gestures.conf
 
 files+=config/ruff/ruff.toml
 
+files+=config/jesseduffield/lazygit/config.yml
+
 files+=config/kitty/kitty.conf
 files+=config/kitty/gruvbox_dark.conf
 
