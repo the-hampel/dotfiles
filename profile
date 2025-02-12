@@ -231,7 +231,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
 
 
-elif [[ "$HOSTNAME" == ProBook* ]]; then
+elif [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
     printf '%s\n' "ProBook detected"
     ulimit -s unlimited
 
@@ -246,6 +246,8 @@ elif [[ "$HOSTNAME" == ProBook* ]]; then
     export MKL_NUM_THREADS=1
  
     alias devpy='source $HOME/pyvenv/devpy/bin/activate'
+    alias triqs33x='source $HOME/pyvenv/triqs33x/bin/activate'
+    alias mariadb='/opt/homebrew/opt/mariadb/bin/mariadbd-safe --datadir\=/opt/homebrew/var/mysql & '
 
     # kitten ssh
     alias ssk='kitten ssh'
