@@ -124,7 +124,15 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     source "$HOME/.config/gruvbox_256palette.sh"
     set use_color true
 
-    export PATH="/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:$PATH"
+    export PATH="/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:$PATH"
+
+    # ollama models
+    export OLLAMA_MODELS=/wahoo06.local/hampel/temp/ollama/models
+    alias askdeep='ollama run deepseek-r1:14b'
+    alias askdeep32='ollama run deepseek-r1:32b'
+    alias askqwen='ollama run qwen2.5-coder:14b'
+    alias llm="mamba activate llm"
+    alias llm-serve="ollama serve & open-webui serve &"
 
     eval "$(zoxide init --cmd cd bash)"
 
@@ -148,6 +156,9 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     export HDF5_USE_FILE_LOCKING=FALSE
 
+    export APPTAINER_CACHEDIR=/wahoo06.local/hampel_temp/apptainer/cache
+    export PATH=/wahoo06.local/hampel_temp/apptainer/bin:$PATH
+
     ulimit -s unlimited
     export OMP_STACKSIZE=2048m
     export NCORE=32
@@ -169,7 +180,8 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     unset __mamba_setup
     # <<< mamba initialize <<<
     alias mamba='micromamba'
-    alias devpy='micromamba activate triqs-dev'
+    alias dev-triqs='micromamba activate triqs-dev'
+    alias dev-vasp='micromamba activate vasp-dev'
 
     export OMP_NUM_THREADS=1
     export MKL_NUM_THREADS=1
@@ -260,7 +272,7 @@ alias np='nano -w PKGBUILD'
 alias more=less
 alias tmux='tmux -u'
 
-alias rvaspout='mkdir -p vasp_old_out && mv vasp.ctrl vasp.h5 vaspout.h5 vasp.pg1 vasprun.xml vasptriqs.h5 vasp.lock XDATCAR PROJCAR PCDAT OUTCAR OSZICAR LOCPROJ IBZKPT EIGENVAL DOSCAR CONTCAR STOPCAR REPORT PROCAR CHG conv_imp* observables_imp* H_imp* vasp_old_out/'
+alias rvaspout='mkdir -p vasp_old_out && mv ML_* WAVECAR CHGCAR vasp.ctrl vasp.h5 vaspout.h5 vasp.pg1 vasprun.xml vasptriqs.h5 vasp.lock XDATCAR PROJCAR PCDAT OUTCAR OSZICAR LOCPROJ IBZKPT EIGENVAL DOSCAR CONTCAR STOPCAR REPORT ICONST HILLSPOT PROCAR CHG conv_imp* observables_imp* H_imp* vasp_old_out/'
 
 alias mount-home-ccq='sshfs flatiron:/mnt/home/ahampel /home/ahampel/ccq-home-fs'
 alias mount-ceph-ccq='sshfs flatiron:/mnt/ceph/users/ahampel /home/ahampel/ccq-ceph-fs'

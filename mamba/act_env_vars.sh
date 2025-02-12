@@ -1,3 +1,4 @@
+# place in $PREFIX/envs/name/etc/conda/activate.d/
 export HDF5_ROOT=/fsc/home/hampel/micromamba/envs/triqs-dev
 export FFTW_ROOT=/fsc/home/hampel/micromamba/envs/triqs-dev
 export GMP_ROOT=/fsc/home/hampel/micromamba/envs/triqs-dev
