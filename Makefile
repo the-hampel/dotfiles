@@ -38,6 +38,7 @@ files+=config/nvim/lua/options.lua
 files+=config/nvim/lua/plugins/init.lua
 files+=config/nvim/lua/configs/lspconfig.lua
 files+=config/nvim/after/syntax/fortran.vim
+files+=config/nvim/spell/en.utf-8.add
 
 files+=local/share/fzf/completion.bash
 files+=local/share/fzf/key-bindings.bash

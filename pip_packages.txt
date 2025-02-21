@@ -23,3 +23,6 @@ setuptools
 meson
 ninja
 ruff-lsp
+clang
+cmcrameri
+pandoc
