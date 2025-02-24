@@ -37,7 +37,7 @@ HOSTNAME=$(hostname)
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
-PROMPT=$'%F{214}%n@%m %F{166}[%F{142}%~%F{166}]%f $(git branch 2>/dev/null | grep "*" | sed "s/*/ (%F{108}&%f)/") %F{246}$(date +%H:%M:%S)%f\n%F{166}╰─%F{214}❯%f '
+PROMPT=$'%F{214}%m %F{166}[%F{142}%~%F{166}]%f $(git branch 2>/dev/null | grep "*" | sed "s/* //g" | sed "s/.*/ (%F{108}&%f)/") %F{246}$(date +%H:%M:%S)%f\n%F{166}╰─%F{214}❯%f '
 
 # Add virtual environment check:
 if [[ -n "$VIRTUAL_ENV" ]]; then
