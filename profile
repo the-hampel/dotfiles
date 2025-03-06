@@ -238,7 +238,7 @@ elif [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
 
     # default editor
     export EDITOR="nvim"
-    export NCORE=20
+    export NCORE=16
     alias vi=nvim
     alias vimdiff='nvim -d'
     export CXXFLAGS="-stdlib=libc++ -Wno-register -march=native"

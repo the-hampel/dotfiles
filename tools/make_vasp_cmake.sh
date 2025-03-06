@@ -6,6 +6,7 @@ TEST=false
 BACKEND=Ninja
 CMAKE_ONLY=false
 OTHER_ARGS=()
+MODE=all
 
 # Process command-line options
 while [[ $# -gt 0 ]]; do
@@ -50,7 +51,7 @@ SRC_DIR=$(pwd)/../
 BLD_DIR=$(realpath .)
 NC_TEST=4
 cd ${BLD_DIR}
-cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -G${BACKEND} -DCMAKE_INSTALL_PREFIX=${SRC_DIR} -S ${SRC_DIR} -B ${BLD_DIR} -DVASP_HDF5=ON -DVASP_WANNIER90=ON -DVASP_OPENMP=ON ${OTHER_ARGS}
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -G${BACKEND} -DCMAKE_INSTALL_PREFIX=${SRC_DIR} -S ${SRC_DIR} -B ${BLD_DIR} -DVASP_HDF5=ON -DVASP_OPENMP=ON ${OTHER_ARGS}
 if [ $CMAKE_ONLY = false ]; then
   time cmake --build ${BLD_DIR} -j$NCORE --target $MODE
   if [ $TEST = true ]; then
