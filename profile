@@ -264,6 +264,7 @@ fi
 
 alias mdev='bash $HOME/git/dotfiles/tools/make_dev.sh'
 alias mvasp='bash $HOME/git/dotfiles/tools/make_vasp.sh'
+alias mvaspcmake='bash $HOME/git/dotfiles/tools/make_vasp_cmake.sh'
 alias vaspgdb='bash $HOME/git/dotfiles/tools/run_vasp_gdb.sh'
 alias envasp='source $HOME/git/dotfiles/tools/env_vasp.sh'
 
