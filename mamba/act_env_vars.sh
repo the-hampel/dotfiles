@@ -8,8 +8,8 @@ export OLD_LIBRARY_PATH=$LIBRARY_PATH
 export OLD_LD_LIBRARY_PATH=$LD_LIBRARY_PATH
 export OLD_PYTHONPATH=$PYTHONPATH
 export OLD_PATH=$PATH
-export LIBRARY_PATH=/fsc/home/hampel/micromamba/envs/triqs-dev/lib:$LIBRARY_PATH
-export LD_LIBRARY_PATH=/fsc/home/hampel/micromamba/envs/triqs-dev/lib:$LD_LIBRARY_PATH
+export LIBRARY_PATH=/fsc/home/hampel/micromamba/envs/triqs-dev/lib:/fsc/home/hampel/codes/triqs_3.4.x/lib64:$LIBRARY_PATH
+export LD_LIBRARY_PATH=/fsc/home/hampel/micromamba/envs/triqs-dev/lib:/fsc/home/hampel/codes/triqs_3.4.x/lib64:$LD_LIBRARY_PATH
 export PYTHONPATH=/fsc/home/hampel/codes/triqs_3.4.x/lib/python3.12/site-packages:$PYTHONPATH
 export PATH=/fsc/home/hampel/codes/triqs_3.4.x/bin:$PATH
 

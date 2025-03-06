@@ -121,13 +121,14 @@ elif [ "$HOSTNAME" = thinkpad ]; then
 
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     printf '%s\n' "vasp detected"
+    PS1='\[\e[38;5;214m\]\h \[\e[38;5;166m\][\[\e[38;5;142m\]\w\[\e[38;5;166m\]]\[\e[0m\] \[\e[38;5;246m\]$(date +%H:%M:%S)\[\e[0m\]\n\[\e[38;5;166m\]╰─\[\e[38;5;214m\]❯\[\e[0m\] '
     source "$HOME/.config/gruvbox_256palette.sh"
     set use_color true
 
     export PATH="/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:$PATH"
 
     # ollama models
-    export OLLAMA_MODELS=/wahoo06.local/hampel/temp/ollama/models
+    export OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
     alias askdeep='ollama run deepseek-r1:14b'
     alias askdeep32='ollama run deepseek-r1:32b'
     alias askqwen='ollama run qwen2.5-coder:14b'
