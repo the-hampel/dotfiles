@@ -32,6 +32,10 @@ while [[ $# -gt 0 ]]; do
             MODE=vasp_ncl
             shift # move to next argument
             ;;
+        --cuda)
+            EXTRAS+=" -DVASP_CUDA=ON"
+            shift # move to next argument
+            ;;
         --test)
             TEST=true
             shift # move to next argument
@@ -49,7 +53,7 @@ while [[ $# -gt 0 ]]; do
           shift # move to next argument
           ;;
         --extras)
-          EXTRAS='-DVASP_HDF5=ON -DVASP_OPENMP=ON -DVASP_WANNIER90=ON'
+          EXTRAS="-DVASP_HDF5=ON -DVASP_OPENMP=ON -DVASP_WANNIER90=ON"
           shift # move to next argument
           ;;
         *)
