@@ -133,7 +133,8 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     alias askdeep32='ollama run deepseek-r1:32b'
     alias askqwen='ollama run qwen2.5-coder:14b'
     alias llm="mamba activate llm"
-    alias llm-serve="ollama serve & open-webui serve &"
+    alias lamaserve="ollama serve &"
+    alias lamaweb="open-webui serve &"
 
     eval "$(zoxide init --cmd cd bash)"
 

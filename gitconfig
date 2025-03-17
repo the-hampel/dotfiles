@@ -2,8 +2,10 @@
 	name = the-hampel
 	email = mail@alexander-hampel.de
 [pull]
-    default = current
+  default = current
 	ff = only
+[push]
+	default = upstream
 [core]
   editor = nvim
 	filemode = false
@@ -11,11 +13,9 @@
 [diff]
 	tool = vimdiff
 [merge]
-    tool = vimdiff
+  tool = vimdiff
 
 [difftool]
 	prompt = false
 [alias]
 	d = difftool
-[push]
-	default = simple

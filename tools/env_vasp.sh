@@ -23,6 +23,10 @@ while [[ $# -gt 0 ]]; do
             MODE=intel25
             shift # move to next argument
             ;;
+        nec)
+            MODE=nec
+            shift # move to next argument
+            ;;
         --test)
             TEST=$2
             shift # move to next argument
@@ -93,6 +97,12 @@ elif [ $MODE = intel25 ]; then
     export I_MPI_DEBUG=1
     export I_MPI_OFFLOAD=1
     export OMP_TARGET_OFFLOAD=DEFAULT
+elif [ $MODE = nec ]; then
+    module load vasp-nec-dev/5.0.1_nlc-3.0.0_nmpi-2.25.0
+    export FC=mpinfort
+    export CC=ncc
+    export CXX=nc++
+    export MPI_Fortran_COMPILER=mpinfort
 fi
 
 if [ $TEST ]; then

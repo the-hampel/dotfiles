@@ -3,7 +3,7 @@ set -e
 
 # Initialize the variables
 TEST=false
-BACKEND=Ninja
+BACKEND='Unix Makefiles'
 CMAKE_ONLY=false
 EXTRAS=''
 OTHER_ARGS=()
