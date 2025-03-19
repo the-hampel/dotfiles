@@ -54,3 +54,8 @@ export LIBRARY_PATH=$(brew --prefix)/opt/llvm/lib:$LIBRARY_PATH
 export CC=$(brew --prefix)/opt/llvm/bin/clang
 export CXX=$(brew --prefix)/opt/llvm/bin/clang++
 
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/ahampel/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
