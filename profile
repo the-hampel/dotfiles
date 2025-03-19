@@ -129,8 +129,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     # ollama models
     export OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
-    alias askdeep='ollama run deepseek-r1:14b'
-    alias askdeep32='ollama run deepseek-r1:32b'
+    alias ollama="/wahoo06.local/hampel_temp/ollama/bin/ollama"
     alias askqwen='ollama run qwen2.5-coder:14b'
     alias llm="mamba activate llm"
     alias lamaserve="ollama serve &"
