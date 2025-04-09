@@ -1,71 +1,7 @@
 # output full docker build output
 export BUILDKIT_PROGRESS=plain
 
-if [ "$HOSTNAME" = ccqlin027.flatironinstitute.org ]; then
-    printf '%s\n' "CCQ workstation detected"
-    export NCORE=20
-    # default editor
-    export EDITOR="nvim"
-    alias vi=nvim
-    alias vimdiff='nvim -d'
-
-    alias quota='fi-quota'
-    alias qs='squeue -u $USER -o "%.8i_ %40j %.12M %.2t %.8D %18S %30R %Q"'
-    source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
-    alias getrome='srun -N1 --ntasks-per-node=128 --constraint=rome --exclusive --mpi=none --pty bash -i'
-    alias getice='srun -N1 --ntasks-per-node=64 --constraint=icelake --exclusive --mpi=none --pty bash -i'
-    alias getgenoa='srun -N1 --ntasks-per-node=96 --constraint=ib-genoa --exclusive --mpi=none --pty bash -i'
-    alias triqs-backup="tar --use-compress-program=pigz -cf /mnt/home/ahampel/Dropbox/work/git_backup/$(date '+%Y-%m-%d')-triqs-git-ccqlin.tar.gz --directory=/mnt/home/ahampel/git/triqs ."
-    # load some default modules
-    module load modules/2.3-20240529 slurm tmux git fi-utils python/3.11 nodejs
-    # default venv
-    # source $HOME/py_venv/310/bin/activate
-    alias 310='source $HOME/py_venv/310/bin/activate'
-    alias 311='source $HOME/py_venv/311/bin/activate'
-
-
-    export MODULEPATH=/mnt/home/ahampel/git/ccq-software-build/modules:$MODULEPATH
-    export MPLCONFIGDIR=/mnt/home/ahampel/.local/lib/matplotlib-cache
-    export MPLBACKEND=qtagg
-    export HDF5_USE_FILE_LOCKING=FALSE
-
-    export PATH="/mnt/home/ahampel/.local/bin:$PATH"
-
-    export JUPYTERLAB_DIR=/mnt/home/ahampel/.jupyter/lab
-    [ -r /usr/share/bash-completion/bash_completion ] && . /usr/share/bash-completion/bash_completion
-
-    cleancrap (){
-        if [[ $# -eq 0 ]] ; then
-            echo 'No seedname supplied. Removing nothing.'
-            return 1
-        else
-            seedname=$1;
-        fi
-        list=`echo ${seedname}.scf.in\|${seedname}.nscf.in\|${seedname}.mod_scf.in\|${seedname}.win\|${seedname}.bnd.in\|${seedname}.bands.in\|${seedname}.proj.in\|${seedname}.pw2wan.in\|${seedname}.inp\|sjob_dmft_slurm-srun.sh\|dmft_config.ini`
-        ls -1 | egrep -v "^(${list})$" | xargs rm
-    }
-
-    # >>> juliaup initialize >>>
-
-    # !! Contents within this block are managed by juliaup !!
-
-    case ":$PATH:" in
-        *:/mnt/home/ahampel/.juliaup/bin:*)
-            ;;
-
-        *)
-            export PATH=/mnt/home/ahampel/.juliaup/bin${PATH:+:${PATH}}
-            ;;
-    esac
-
-    # <<< juliaup initialize <<<
-    # zoxide smarter cd command. Install via: curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
-    eval "$(zoxide init --cmd cd bash)"
-
-    # fzf fuzzy command line search
-    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
-elif [ "$HOSTNAME" = thinkxtreme ]; then
+if [ "$HOSTNAME" = thinkxtreme ]; then
     printf '%s\n' "thinkXtreme@Ubuntu detected"
     export NCORE=16
     export CC=clang
@@ -150,6 +86,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     alias si='Sinfo'
 
     alias getnode='srun --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=1 --cpus-per-task=16 --cpu-bind=cores --pty bash -i'
+    alias allocnode='salloc --nodes=1 --time 24:00:00 --partition=guppy07 --ntasks-per-node=2 --cpus-per-task=8'
 
     ### modules
     # module load slurm
@@ -186,6 +123,9 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     export OMP_NUM_THREADS=1
     export MKL_NUM_THREADS=1
+
+    # intel stuff
+    alias ifxgpu='ifx -fiopenmp -fopenmp-targets=spir64 -g'
 
     # craype compiler for porgy02
     if [ "`expr substr $(hostname) 1 7`" == "porgy02" ]; then
