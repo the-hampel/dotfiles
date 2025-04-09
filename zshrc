@@ -35,27 +35,28 @@ source $ZSH/oh-my-zsh.sh
 
 HOSTNAME=$(hostname)
 
-eval "$(/opt/homebrew/bin/brew shellenv)"
+if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 
-PROMPT=$'%F{214}%m %F{166}[%F{142}%~%F{166}]%f $(git branch 2>/dev/null | grep "*" | sed "s/* //g" | sed "s/.*/ (%F{108}&%f)/") %F{246}$(date +%H:%M:%S)%f\n%F{166}╰─%F{214}❯%f '
+  PROMPT=$'%F{214}%m %F{166}[%F{142}%~%F{166}]%f $(git branch 2>/dev/null | grep "*" | sed "s/* //g" | sed "s/.*/ (%F{108}&%f)/") %F{246}$(date +%H:%M:%S)%f\n%F{166}╰─%F{214}❯%f '
 
-# Add virtual environment check:
-if [[ -n "$VIRTUAL_ENV" ]]; then
-  # Display the virtual environment name in brackets, with a color
-  PROMPT="%F{220}($(basename $VIRTUAL_ENV))%f $PROMPT"
+  # Add virtual environment check:
+  if [[ -n "$VIRTUAL_ENV" ]]; then
+    # Display the virtual environment name in brackets, with a color
+    PROMPT="%F{220}($(basename $VIRTUAL_ENV))%f $PROMPT"
+  fi
+
+  ##### load all bash related stuff #######################
+  [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
+  #########################################################
+
+  export PATH=$(brew --prefix)/opt/llvm/bin:/Users/ahampel/.local/bin:$PATH
+  export LIBRARY_PATH=$(brew --prefix)/opt/llvm/lib:$(brew --prefix)/lib:$LIBRARY_PATH
+  export CC=$(brew --prefix)/opt/llvm/bin/clang
+  export CXX=$(brew --prefix)/opt/llvm/bin/clang++
+
+#############################################################
+elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
+  echo "zsh for vasp"
 fi
 
-##### load all bash related stuff #######################
-[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
-#########################################################
-
-export PATH=$(brew --prefix)/opt/llvm/bin:/Users/ahampel/.local/bin:$PATH
-export LIBRARY_PATH=$(brew --prefix)/opt/llvm/lib:$(brew --prefix)/lib:$LIBRARY_PATH
-export CC=$(brew --prefix)/opt/llvm/bin/clang
-export CXX=$(brew --prefix)/opt/llvm/bin/clang++
-
-# The following lines have been added by Docker Desktop to enable Docker CLI completions.
-fpath=(/Users/ahampel/.docker/completions $fpath)
-autoload -Uz compinit
-compinit
-# End of Docker CLI completions
