@@ -33,18 +33,18 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
+PROMPT=$'%F{214}%m %F{166}[%F{142}%~%F{166}]%f $(git branch 2>/dev/null | grep "*" | sed "s/* //g" | sed "s/.*/ (%F{108}&%f)/") %F{246}$(date +%H:%M:%S)%f\n%F{166}╰─%F{214}❯%f '
+
+# Add virtual environment check:
+if [[ -n "$VIRTUAL_ENV" ]]; then
+  # Display the virtual environment name in brackets, with a color
+  PROMPT="%F{220}($(basename $VIRTUAL_ENV))%f $PROMPT"
+fi
 HOSTNAME=$(hostname)
 
 if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 
-  PROMPT=$'%F{214}%m %F{166}[%F{142}%~%F{166}]%f $(git branch 2>/dev/null | grep "*" | sed "s/* //g" | sed "s/.*/ (%F{108}&%f)/") %F{246}$(date +%H:%M:%S)%f\n%F{166}╰─%F{214}❯%f '
-
-  # Add virtual environment check:
-  if [[ -n "$VIRTUAL_ENV" ]]; then
-    # Display the virtual environment name in brackets, with a color
-    PROMPT="%F{220}($(basename $VIRTUAL_ENV))%f $PROMPT"
-  fi
 
   ##### load all bash related stuff #######################
   [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
