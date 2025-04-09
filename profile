@@ -187,6 +187,7 @@ elif [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
     export MKL_NUM_THREADS=1
  
     alias devpy='source $HOME/pyvenv/devpy/bin/activate'
+    alias llm='source $HOME/pyvenv/llm/bin/activate'
     alias triqs33x='source $HOME/pyvenv/triqs33x/bin/activate'
     alias mariadb='/opt/homebrew/opt/mariadb/bin/mariadbd-safe --datadir\=/opt/homebrew/var/mysql & '
 

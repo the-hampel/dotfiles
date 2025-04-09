@@ -50,7 +50,7 @@ fi
 #########################################################
 
 export PATH=$(brew --prefix)/opt/llvm/bin:/Users/ahampel/.local/bin:$PATH
-export LIBRARY_PATH=$(brew --prefix)/opt/llvm/lib:$LIBRARY_PATH
+export LIBRARY_PATH=$(brew --prefix)/opt/llvm/lib:$(brew --prefix)/lib:$LIBRARY_PATH
 export CC=$(brew --prefix)/opt/llvm/bin/clang
 export CXX=$(brew --prefix)/opt/llvm/bin/clang++
 
