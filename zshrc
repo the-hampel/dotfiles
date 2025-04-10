@@ -55,6 +55,11 @@ if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
   export CC=$(brew --prefix)/opt/llvm/bin/clang
   export CXX=$(brew --prefix)/opt/llvm/bin/clang++
 
+  eval "$(zoxide init zsh)"
+
+  # Set up fzf key bindings and fuzzy completion
+  source <(fzf --zsh)
+
 #############################################################
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
   echo "zsh session started on $HOSTNAME"

@@ -100,7 +100,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     export MKL_NUM_THREADS=1
     alias ifxgpu='ifx -fiopenmp -fopenmp-targets=spir64 -g'
 
-elif [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
+elif [[ "$HOST" == ProBook* || "$HOST" == Mac.telekom.ip ]]; then
     printf '%s\n' "ProBook detected"
     ulimit -s unlimited
 
