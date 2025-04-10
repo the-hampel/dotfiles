@@ -57,9 +57,6 @@ elif [ "$HOSTNAME" = thinkpad ]; then
 
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     printf '%s\n' "vasp detected"
-    PS1='\[\e[38;5;214m\]\h \[\e[38;5;166m\][\[\e[38;5;142m\]\w\[\e[38;5;166m\]]\[\e[0m\] \[\e[38;5;246m\]$(date +%H:%M:%S)\[\e[0m\]\n\[\e[38;5;166m\]╰─\[\e[38;5;214m\]❯\[\e[0m\] '
-    source "$HOME/.config/gruvbox_256palette.sh"
-    set use_color true
 
     export PATH="/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:$PATH"
 
@@ -67,110 +64,41 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     export OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
     alias ollama="/wahoo06.local/hampel_temp/ollama/bin/ollama"
     alias askqwen='ollama run qwen2.5-coder:14b'
-    alias llm="mamba activate llm"
+    alias llm="micromamba activate llm"
     alias lamaserve="ollama serve &"
     alias lamaweb="open-webui serve &"
-
-    eval "$(zoxide init --cmd cd bash)"
-
-    # fzf fuzzy command line search
-    [ -f ~/.fzf.bash ] && source ~/.fzf.bash
-
+    
     export JUPYTERLAB_DIR=/mnt/home/ahampel/.jupyter/lab
-    [ -r ~/.local/share/fzf/completion.bash ] && . ~/.local/share/fzf/key-bindings.bash
 
-    # git autocompletion
-    source ~/git/dotfiles/tools/git-completion.bash
-
+    # slurm
     alias qs='squeue --sort "P,U" -o "%.10i %.10u %40j %.12M %.2t %.6D %.6C %30R"'
     alias si='Sinfo'
-
     alias getnode='srun --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=1 --cpus-per-task=16 --cpu-bind=cores --pty bash -i'
     alias allocnode='salloc --nodes=1 --time 24:00:00 --partition=guppy07 --ntasks-per-node=2 --cpus-per-task=8'
-
-    ### modules
-    # module load slurm
-    alias vaspdev='module load vasp-gnu_mkl-dev/12.3_mkl-2023.2.0_ompi-4.1.6'
-
-    export HDF5_USE_FILE_LOCKING=FALSE
-
+  
+    # apptainer
     export APPTAINER_CACHEDIR=/wahoo06.local/hampel_temp/apptainer/cache
     export PATH=/wahoo06.local/hampel_temp/apptainer/bin:$PATH
-
+    
+    # perf stuff
     ulimit -s unlimited
+    export OMP_NUM_THREADS=1
     export OMP_STACKSIZE=2048m
     export NCORE=32
+    export HDF5_USE_FILE_LOCKING=FALSE
+
     # default editor
     export EDITOR="nvim"
     alias vi='nvim --listen /tmp/nvim-server-hampel.pipe'
     alias vimdiff='nvim -d'
-
-    # >>> mamba initialize >>>
-    # !! Contents within this block are managed by 'mamba init' !!
-    export MAMBA_EXE='/fsc/home/hampel/.local/bin/micromamba';
-    export MAMBA_ROOT_PREFIX='/fsc/home/hampel/micromamba';
-    __mamba_setup="$("$MAMBA_EXE" shell hook --shell bash --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
-    if [ $? -eq 0 ]; then
-        eval "$__mamba_setup"
-    else
-        alias micromamba="$MAMBA_EXE"  # Fallback on help from mamba activate
-    fi
-    unset __mamba_setup
-    # <<< mamba initialize <<<
-    alias mamba='micromamba'
+  
+    # conda
     alias dev-triqs='micromamba activate triqs-dev'
     alias dev-vasp='micromamba activate vasp-dev'
 
-    export OMP_NUM_THREADS=1
-    export MKL_NUM_THREADS=1
-
     # intel stuff
+    export MKL_NUM_THREADS=1
     alias ifxgpu='ifx -fiopenmp -fopenmp-targets=spir64 -g'
-
-    # craype compiler for porgy02
-    if [ "`expr substr $(hostname) 1 7`" == "porgy02" ]; then
-    # >>> ccpe singularity >>>
-    function ccpe-18 () {
-
-    # check if palsd for user is running
-    if ( systemctl -q is-active palsd@${USER}.service  ) ; then
-
-        ml purge
-
-        apptainer exec --rocm /fsc/home/mmars/src/cray/ccpe-24.07-rocm-6.0_cce_18.0.1_v2.sif bash
-
-        ml load cce/18.0.1 craype-accel-amd-gfx908 rocm craype-x86-milan
-
-    else
-        echo "palsed@${USER}.service not running "
-    fi
-    }
-
-    function ccpe-15 () {
-
-    # check if palsd for user is running
-    if ( systemctl -q is-active palsd@${USER}.service  ) ; then
-
-        ml purge
-
-        singularity exec --rocm --env-file /opt/share/singularity/ccpe/etc/${USER}/palsd.conf \
-            --env SINGULARITYENV_PREPEND_LD_LIBRARY_PATH="/usr/lib64:/.singularity.d/libs"\
-            --bind /opt/share/singularity/ccpe/log:/var/log \
-            --bind /opt/share/singularity/ccpe/scripts:/opt/scripts \
-            --bind /opt/share/singularity/ccpe/etc/${USER}:/etc/pals \
-            --bind /var/run/munge \
-            --hostname localhost \
-            /opt/share/singularity/ccpe/cce-15.0.1_rocm-5.3.0.sif bash -rcfile /opt/scripts/ccpe_bashrc_cce-15.0.1
-
-    else
-        echo "palsed@${USER}.service not running "
-    fi
-
-    }
-    # <<< ccpe singularity <<<
-    fi
-
-
 
 elif [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
     printf '%s\n' "ProBook detected"

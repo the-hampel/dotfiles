@@ -40,15 +40,15 @@ if [[ -n "$VIRTUAL_ENV" ]]; then
   # Display the virtual environment name in brackets, with a color
   PROMPT="%F{220}($(basename $VIRTUAL_ENV))%f $PROMPT"
 fi
+
+##### load all bash related stuff #######################
+[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
+#########################################################
+#
 HOSTNAME=$(hostname)
 
 if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
-
-
-  ##### load all bash related stuff #######################
-  [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
-  #########################################################
 
   export PATH=$(brew --prefix)/opt/llvm/bin:/Users/ahampel/.local/bin:$PATH
   export LIBRARY_PATH=$(brew --prefix)/opt/llvm/lib:$(brew --prefix)/lib:$LIBRARY_PATH
@@ -57,6 +57,26 @@ if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
 
 #############################################################
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
-  echo "zsh for vasp"
+  echo "zsh session started on $HOSTNAME"
+
+  # >>> mamba initialize >>>
+  # !! Contents within this block are managed by 'micromamba shell init' !!
+  export MAMBA_EXE='/fsc/home/hampel/.local/bin/micromamba';
+  export MAMBA_ROOT_PREFIX='/fsc/home/hampel/micromamba';
+  __mamba_setup="$("$MAMBA_EXE" shell hook --shell zsh --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+  if [ $? -eq 0 ]; then
+      eval "$__mamba_setup"
+  else
+      alias micromamba="$MAMBA_EXE"  # Fallback on help from micromamba activate
+  fi
+  unset __mamba_setup
+  # <<< mamba initialize <<<
+  alias conda="micromamba"
+
+  eval "$(zoxide init zsh)"
+
+  # Set up fzf key bindings and fuzzy completion
+  source <(fzf --zsh)
+
 fi
 
