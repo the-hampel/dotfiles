@@ -58,7 +58,7 @@ elif [ "$HOSTNAME" = thinkpad ]; then
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     printf '%s\n' "vasp detected"
 
-    export PATH="/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:$PATH"
+    export PATH="/opt/share/modulefiles/bin:/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:$PATH"
 
     # ollama models
     export OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
@@ -99,6 +99,13 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     # intel stuff
     export MKL_NUM_THREADS=1
     alias ifxgpu='ifx -fiopenmp -fopenmp-targets=spir64 -g'
+
+    # Run zsh
+    if [ "$SHELL" != "/usr/bin/zsh" ]
+    then
+        export SHELL="/usr/bin/zsh"
+        exec /usr/bin/zsh
+    fi
 
 elif [[ "$HOST" == ProBook* || "$HOST" == Mac.telekom.ip ]]; then
     printf '%s\n' "ProBook detected"
