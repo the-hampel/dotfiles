@@ -61,8 +61,9 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     export PATH="/opt/share/modulefiles/bin:/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:$PATH"
 
     # ollama models
-    export OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
-    alias ollama="/wahoo06.local/hampel_temp/ollama/bin/ollama"
+    export OLLAMA_MODELS=/wahoo03.local/hampel/ollama/models
+    alias ollama="/wahoo03.local/hampel/ollama/bin/ollama"
+    alias ollama-porgy="OLLAMA_MODELS=/home/hampel/ollama/models /home/hampel/ollama/bin/ollama"
     alias askqwen='ollama run qwen2.5-coder:14b'
     alias llm="micromamba activate llm"
     alias lamaserve="ollama serve &"
@@ -74,6 +75,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     alias qs='squeue --sort "P,U" -o "%.10i %.10u %40j %.12M %.2t %.6D %.6C %30R"'
     alias si='Sinfo'
     alias getnode='srun --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=1 --cpus-per-task=16 --cpu-bind=cores --pty bash -i'
+    alias getroc='srun --nodes=1 --time 48:00:00 --partition=porgy05 --ntasks-per-node=8 --cpus-per-task=1 --cpu-bind=cores --gres=gpu:2 --pty bash -i'
     alias allocnode='salloc --nodes=1 --time 24:00:00 --partition=guppy07 --ntasks-per-node=2 --cpus-per-task=8'
   
     # apptainer
@@ -101,10 +103,22 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     alias ifxgpu='ifx -fiopenmp -fopenmp-targets=spir64 -g'
 
     # Run zsh
-    if [ "$SHELL" != "/usr/bin/zsh" ]
-    then
-        export SHELL="/usr/bin/zsh"
-        exec /usr/bin/zsh
+    if [[ -z "$ZSH_VERSION" ]]; then
+        PS1='\[\e[38;5;214m\]\u@\h \[\e[38;5;166m\][\[\e[38;5;142m\]\w\[\e[38;5;166m\]]\[\e[0m\] \[\e[38;5;246m\]$(date +%H:%M:%S)\[\e[0m\]\n\[\e[38;5;166m\]╰─\[\e[38;5;214m\]❯\[\e[0m\] '
+        # >>> mamba initialize >>>
+       # !! Contents within this block are managed by 'mamba init' !!
+       export MAMBA_EXE='/fsc/home/hampel/.local/bin/micromamba';
+       export MAMBA_ROOT_PREFIX='/fsc/home/hampel/micromamba';
+       __mamba_setup="$("$MAMBA_EXE" shell hook --shell bash --root-prefix "$MAMBA_ROOT_PREFIX" 2> /dev/null)"
+       if [ $? -eq 0 ]; then
+           eval "$__mamba_setup"
+       else
+           alias micromamba="$MAMBA_EXE"  # Fallback on help from mamba activate
+       fi
+       unset __mamba_setup
+       # <<< mamba initialize <<<
+        # export SHELL="/usr/bin/zsh"
+        # exec /usr/bin/zsh
     fi
 
 elif [[ "$HOST" == ProBook* || "$HOST" == Mac.telekom.ip ]]; then
