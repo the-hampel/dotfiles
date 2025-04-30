@@ -91,6 +91,9 @@ set novisualbell
 set t_vb=
 set tm=500
 
+" remove first character of every line
+nnoremap <leader>+/ :s/^./<CR>
+vnoremap <leader>+/ :s/^./<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Colors and Fonts
@@ -157,10 +160,6 @@ vnoremap <silent> # :call VisualSelection('b')<CR>
 map j gj
 map k gk
 
-" Map <Space> to / (search) and Ctrl-<Space> to ? (backwards search)
-map <space> /
-map <c-space> ?
-
 " Disable highlight when <leader><cr> is pressed
 map <silent> <leader>cs :noh<cr>
 
@@ -171,12 +170,12 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " move between buffers
-nnoremap <leader>] :bnext<CR>
-nnoremap <leader>[ :bprev<CR>
+nnoremap <Tab> :bnext<CR>
+nnoremap <S-Tab>[ :bprev<CR>
 
 
 " Close the current buffer
-map <leader>bd :Bclose<cr>
+map <leader>x :bd<cr>
 
 " Close all the buffers
 map <leader>ba :1,1000 bd!<cr>
@@ -191,35 +190,34 @@ map <leader>tm :tabmove
 " => Colors and Fonts
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-set background=dark
-
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
 
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-
+" Treat .F files as Fortran
+autocmd BufRead,BufNewFile *.F set filetype=fortran
 " Set options for Fortran files
-autocmd FileType fortran,f,F set textwidth=0
+autocmd FileType fortran set textwidth=0
 
 " Set Fortran-specific options
-autocmd FileType fortran,f,F let fortran_free_source=1
-autocmd FileType fortran,f,F let fortran_have_tabs=1
-autocmd FileType fortran,f,F let fortran_more_precise=1
-autocmd FileType fortran,f,F let fortran_do_enddo=1
-autocmd FileType fortran,f,F let fortran_CUDA=1
+autocmd FileType fortran let fortran_free_source=1
+autocmd FileType fortran let fortran_have_tabs=1
+autocmd FileType fortran let fortran_more_precise=1
+autocmd FileType fortran let fortran_do_enddo=1
+autocmd FileType fortran let fortran_CUDA=1
 
 " Highlight unit test keywords
-autocmd FileType fortran,f,F syntax match unitTestKeyword '\<assert\>'
-autocmd FileType fortran,f,F syntax match unitTestKeyword '\(subroutine\s*\)\@<=test_'
-autocmd FileType fortran,f,F highlight link unitTestKeyword fortranKeyword
+autocmd FileType fortran syntax match unitTestKeyword '\<assert\>'
+autocmd FileType fortran syntax match unitTestKeyword '\(subroutine\s*\)\@<=test_'
+autocmd FileType fortran highlight link unitTestKeyword fortranKeyword
 
 " Highlight Fortran directives
-autocmd FileType fortran,f,F syn region fortranDirective start=/!$ACC.\{-}/ end=/[^\&]$/
-autocmd FileType fortran,f,F hi def link fortranDirective PreProc
-autocmd FileType fortran,f,F syn region fortranDirective start=/!$OMP.\{-}/ end=/[^\&]$/
-autocmd FileType fortran,f,F hi def link fortranDirective PreProc
+autocmd FileType fortran syn region fortranDirective start=/!$ACC.\{-}/ end=/[^\&]$/
+autocmd FileType fortran hi def link fortranDirective PreProc
+autocmd FileType fortran syn region fortranDirective start=/!$OMP.\{-}/ end=/[^\&]$/
+autocmd FileType fortran hi def link fortranDirective PreProc
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
