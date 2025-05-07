@@ -91,6 +91,10 @@ set novisualbell
 set t_vb=
 set tm=500
 
+" ignore whitespaces for diff
+set diffopt+=iwhite
+set diffexpr=""
+
 " remove first character of every line
 nnoremap <leader>+/ :s/^./<CR>
 vnoremap <leader>+/ :s/^./<CR>
