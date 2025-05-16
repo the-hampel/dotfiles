@@ -40,20 +40,37 @@ if [ "$HOSTNAME" = thinkxtreme ]; then
     # fzf fuzzy command line search
     source /usr/share/bash-completion/completions/fzf && source /usr/share/doc/fzf/examples/key-bindings.bash
 
-elif [ "$HOSTNAME" = thinkpad ]; then
-    printf '%s\n' "thinkpad detected"
-    export NCORE=4
-    export CC=clang
-    export CXX=clang++
-    export EDITOR="nvim"
-    alias vi=nvim
-    source "$HOME/.vim/plugged/gruvbox/gruvbox_256palette.sh"
+elif [ "$HOST" = fractal ]; then
+    printf '%s\n' "fractal detected"
+    export NCORE=24
+    export CC=gcc
+    export CXX=g++
+    source "$HOME/.config/gruvbox_256palette.sh"
 
     alias sys-update='sudo pacman -Syu --verbose'
-    # zoxide smarter cd command. Install via: curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
-    eval "$(zoxide init --cmd cd bash)"
-    # fzf fuzzy command line search
-    source /usr/share/fzf/completion.bash && source /usr/share/fzf/key-bindings.bash
+
+    # default editor
+    export EDITOR="nvim"
+    alias vimdiff='nvim -d'
+    alias vi=nvim
+
+    # compiler library config
+    export MKLROOT=/opt/intel/oneapi/mkl/latest
+    export BLA_VENDOR=Intel10_64lp_seq
+    export OMP_NUM_THREADS=1
+    export MKL_INTERFACE_LAYER=GNU,LP64
+    export MKL_THREADING_LAYER=SEQUENTIAL
+    export MKL_NUM_THREADS=1
+    export FFLAGS="-march=native"
+    export CXXFLAGS="-march=native"
+    export CFLAGS='-march=native'
+    export ROCR_VISIBLE_DEVICES=
+
+    # sshfs
+    alias mount-vasp-home='sshfs hampel@fsc.vasp.co:/fsc/home/hampel /home/hampel/vasp_home'
+    alias mount-vasp-scratch='sshfs hampel@fsc.vasp.co:/scratch/hampel /home/hampel/vasp_scratch'
+    alias umount-vasp='fusermount -u /home/hampel/vasp_home &> /dev/null && fusermount -u /home/hampel/vasp_scratch &> /dev/null'
+
 
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     printf '%s\n' "vasp detected"
@@ -176,9 +193,6 @@ alias rvaspout='mkdir -p vasp_old_out && mv ML_* WAVECAR CHGCAR vasp.ctrl vasp.h
 alias mount-home-ccq='sshfs flatiron:/mnt/home/ahampel /home/ahampel/ccq-home-fs'
 alias mount-ceph-ccq='sshfs flatiron:/mnt/ceph/users/ahampel /home/ahampel/ccq-ceph-fs'
 alias umount-ccq='fusermount -u /home/ahampel/ccq-home-fs &> /dev/null && fusermount -u /home/ahampel/ccq-ceph-fs &> /dev/null'
-
-alias mount-vasp-scratch='sshfs hampel@10.23.0.2:/scratch/hampel /home/ahampel/vasp-scratch'
-alias mount-vasp-home='sshfs hampel@10.23.0.2:/fsc/home/hampel /home/ahampel/vasp-home'
 
 alias ls='ls --color=auto -lh'
 alias grep='grep --colour=auto'

@@ -61,6 +61,17 @@ if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
   source <(fzf --zsh)
 
 #############################################################
+elif [[ "$HOSTNAME" == fractal ]]; then
+  echo "zsh session started on $HOSTNAME"
+
+  export LC_ALL=en_US.UTF-8
+
+  eval "$(zoxide init zsh)"
+
+  # Set up fzf key bindings and fuzzy completion
+  source <(fzf --zsh)
+
+#############################################################
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
   echo "zsh session started on $HOSTNAME"
 
