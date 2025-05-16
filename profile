@@ -62,6 +62,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     # ollama models
     export OLLAMA_MODELS=/wahoo03.local/hampel/ollama/models
+    export OLLAMA_KEEP_ALIVE=360m
     alias ollama="/wahoo03.local/hampel/ollama/bin/ollama"
     alias ollama-porgy="OLLAMA_MODELS=/home/hampel/ollama/models /home/hampel/ollama/bin/ollama"
     alias askqwen='ollama run qwen2.5-coder:14b'
@@ -75,12 +76,13 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     alias qs='squeue --sort "P,U" -o "%.10i %.10u %40j %.12M %.2t %.6D %.6C %30R"'
     alias si='Sinfo'
     alias getnode='srun --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=1 --cpus-per-task=16 --cpu-bind=cores --pty bash -i'
-    alias getroc='srun --nodes=1 --time 12:00:00 --partition=porgy05 --ntasks-per-node=8 --cpus-per-task=1 --cpu-bind=cores --gres=gpu:2 --pty bash -i'
-    alias allocnode='salloc --nodes=1 --time 24:00:00 --partition=guppy07 --ntasks-per-node=2 --cpus-per-task=8'
+    alias getroc='srun --nodes=1 --time 12:00:00 --partition=porgy05 --ntasks-per-node=4 --cpus-per-task=8 --cpu-bind=cores --gres=gpu:2 --pty bash -i'
+    alias getintel='srun --nodes=1 --time 12:00:00 --partition=guppy07 --ntasks-per-node=4 --cpus-per-task=8 --cpu-bind=cores --pty bash -i'
   
     # apptainer
     export APPTAINER_CACHEDIR=/wahoo06.local/hampel_temp/apptainer/cache
     export PATH=/wahoo06.local/hampel_temp/apptainer/bin:$PATH
+    source $HOME/git/dotfiles/tools/ccpe_container_env.sh
     
     # perf stuff
     ulimit -s unlimited
@@ -101,6 +103,9 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     # intel stuff
     export MKL_NUM_THREADS=1
     alias ifxgpu='ifx -fiopenmp -fopenmp-targets=spir64 -g'
+
+    # cray stuff
+    alias ftnroc='ftn -fopenmp -homp -hnoacc'
 
     # Run zsh
     if [[ -z "$ZSH_VERSION" ]]; then
@@ -184,7 +189,7 @@ alias gitw='git worktree'
 alias gits='git status'
 alias gitp='git pull --autostash'
 alias gitb='git branch -a -vv'
-alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)' --first-parent"
+alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'"
 
 # simple terminal calculator via python
 calc() {
