@@ -101,15 +101,12 @@ return {
       return mason_opts
     end,
   },
-
   {
     "neovim/nvim-lspconfig",
-    event = "User FilePost",
     config = function()
-      require("nvchad.configs.lspconfig").defaults()
+      require "configs.lspconfig"
     end,
   },
-
   -- load luasnips + cmp related in insert mode only
   {
     "hrsh7th/nvim-cmp",

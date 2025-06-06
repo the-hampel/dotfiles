@@ -33,7 +33,6 @@ files+=config/kitty/kitty.conf
 files+=config/kitty/gruvbox_dark.conf
 
 files+=config/nvim/init.lua
-files+=config/nvim/lua/chadrc.lua
 files+=config/nvim/lua/mappings.lua
 files+=config/nvim/lua/options.lua
 files+=config/nvim/lua/plugins/init.lua
