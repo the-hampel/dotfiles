@@ -32,42 +32,74 @@ return {
     event = "InsertEnter",
     config = function()
       require("supermaven-nvim").setup({
-          keymaps = {
-              accept_suggestion = "<M-l>",
-              clear_suggestion = "<M-]>",
-              accept_word = "<M-k>",
-          },
-        })
+        keymaps = {
+          accept_suggestion = "<M-l>",
+          clear_suggestion = "<M-]>",
+          accept_word = "<M-k>",
+        },
+      })
     end,
   },
-  -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc",
-  --      "html", "css"
-  -- 		},
-  -- 	},
-  -- },
-  --
+  {
+    "olimorris/codecompanion.nvim",
+    lazy = false,
+    opts = {
+      strategies = {
+        -- Change the default chat adapter
+        chat = {
+          adapter = "ollama",
+          model = {
+            default = "devstral",
+          },
+          temperature = { default = 0.3 },
+        },
+      },
+    },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+    },
+  },
+  {
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+    opts = {
+      preview = {
+        filetypes = { "markdown", "codecompanion" },
+        ignore_buftypes = {},
+      },
+    },
+  },
+  {
+    "nvim-treesitter/nvim-treesitter",
+    opts = {
+      ensure_installed = {
+        "vim", "lua", "vimdoc",
+        "html", "css", "markdown", "markdown_inline"
+      },
+      highlight = {
+        enable = true,
+      },
+    },
+  },
   {
     "kdheepak/lazygit.nvim",
     lazy = true,
     cmd = {
-        "LazyGit",
-        "LazyGitConfig",
-        "LazyGitCurrentFile",
-        "LazyGitFilter",
-        "LazyGitFilterCurrentFile",
+      "LazyGit",
+      "LazyGitConfig",
+      "LazyGitCurrentFile",
+      "LazyGitFilter",
+      "LazyGitFilterCurrentFile",
     },
     -- optional for floating window border decoration
     dependencies = {
-        "nvim-lua/plenary.nvim",
+      "nvim-lua/plenary.nvim",
     },
     -- setting the keybinding for LazyGit with 'keys' is recommended in
     -- order to load the plugin when the command is run for the first time
     keys = {
-        { "<leader>gl", "<cmd>LazyGit<cr>", desc = "LazyGit" }
+      { "<leader>gl", "<cmd>LazyGit<cr>", desc = "LazyGit" }
     }
   },
 }

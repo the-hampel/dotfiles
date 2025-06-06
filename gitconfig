@@ -19,3 +19,5 @@
 	prompt = false
 [alias]
 	d = difftool
+[safe]
+	directory = /fsc/home/wolloch/vasp/94x_cce19-test_alex

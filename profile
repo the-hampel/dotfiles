@@ -78,11 +78,10 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     export PATH="/opt/share/modulefiles/bin:/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:$PATH"
 
     # ollama models
-    export OLLAMA_MODELS=/wahoo03.local/hampel/ollama/models
+    export OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
     export OLLAMA_KEEP_ALIVE=360m
-    alias ollama="/wahoo03.local/hampel/ollama/bin/ollama"
+    alias ollama="/wahoo06.local/hampel_temp/ollama/bin/ollama"
     alias ollama-porgy="OLLAMA_MODELS=/home/hampel/ollama/models /home/hampel/ollama/bin/ollama"
-    alias askqwen='ollama run qwen2.5-coder:14b'
     alias llm="micromamba activate llm"
     alias lamaserve="ollama serve &"
     alias lamaweb="open-webui serve &"
@@ -97,7 +96,11 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     alias getintel='srun --nodes=1 --time 12:00:00 --partition=guppy07 --ntasks-per-node=4 --cpus-per-task=8 --cpu-bind=cores --pty bash -i'
   
     # apptainer
-    export APPTAINER_CACHEDIR=/wahoo06.local/hampel_temp/apptainer/cache
+    if [ "$HOSTNAME" = *porgy05 ]; then
+        export APPTAINER_CACHEDIR=/home/hampel/apptainer_cache
+    else
+      export APPTAINER_CACHEDIR=/wahoo06.local/hampel_temp/apptainer/cache
+    fi
     export PATH=/wahoo06.local/hampel_temp/apptainer/bin:$PATH
     source $HOME/git/dotfiles/tools/ccpe_container_env.sh
     
@@ -124,6 +127,9 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     # cray stuff
     alias ftnroc='ftn -fopenmp -homp -hnoacc'
 
+    # gfortran command to compile for gpu
+    alias gfortran-gpu='gfortran-15 -fopenmp -foffload=amdgcn-amdhsa -foffload-options=amdgcn-amdhsa=-march=gfx90a'
+
     # Run zsh
     if [[ -z "$ZSH_VERSION" ]]; then
         PS1='\[\e[38;5;214m\]\u@\h \[\e[38;5;166m\][\[\e[38;5;142m\]\w\[\e[38;5;166m\]]\[\e[0m\] \[\e[38;5;246m\]$(date +%H:%M:%S)\[\e[0m\]\n\[\e[38;5;166m\]╰─\[\e[38;5;214m\]❯\[\e[0m\] '
@@ -146,6 +152,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 elif [[ "$HOST" == ProBook* || "$HOST" == Mac.telekom.ip ]]; then
     printf '%s\n' "ProBook detected"
     ulimit -s unlimited
+    ulimit -c unlimited
 
     # default editor
     export EDITOR="nvim"
