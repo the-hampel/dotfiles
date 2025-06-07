@@ -47,7 +47,7 @@ elif [ "$HOST" = fractal ]; then
     export CXX=g++
     source "$HOME/.config/gruvbox_256palette.sh"
 
-    alias sys-update='sudo pacman -Syu --verbose'
+    alias sys-update='pamac upgrade --aur'
 
     # default editor
     export EDITOR="nvim"
