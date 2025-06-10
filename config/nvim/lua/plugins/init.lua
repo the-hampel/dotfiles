@@ -173,10 +173,9 @@ return {
         "vim", "lua", "vimdoc",
         "html", "css", "markdown", "markdown_inline"
       })
-      treesitter_opts.highlight = vim.tbl_extend("force", treesitter_opts.highlight or {}, { enable = true})
+      treesitter_opts.highlight = vim.tbl_extend("force", treesitter_opts.highlight or {}, { enable = true })
 
       return treesitter_opts
-
     end,
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
@@ -184,37 +183,57 @@ return {
   },
   -- my stuff
   {
-    "supermaven-inc/supermaven-nvim",
-    event = "InsertEnter",
-    config = function()
-      require("supermaven-nvim").setup({
-        keymaps = {
-          accept_suggestion = "<M-l>",
-          clear_suggestion = "<M-]>",
-          accept_word = "<M-k>",
-        },
-      })
-    end,
-  },
-  {
     "olimorris/codecompanion.nvim",
     lazy = false,
     opts = {
       strategies = {
-        -- Change the default chat adapter
         chat = {
-          adapter = "ollama",
-          model = {
-            default = "devstral",
+          adapter = "copilot",
+        },
+        inline = {
+          adapter = "copilot",
+          keymaps = {
+            accept_change = {
+              modes = { n = "<M-l>" },
+              description = "Accept the suggested change",
+            },
+            reject_change = {
+              modes = { n = "<M-]>" },
+              description = "Reject the suggested change",
+            },
           },
-          temperature = { default = 0.6 },
+        },
+        cmd = {
+          adapter = "copilot",
         },
       },
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-treesitter/nvim-treesitter",
+      },
     },
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-    },
+  },
+  {
+    "zbirenbaum/copilot.lua",
+    lazy = true,
+    cmd = "Copilot suggestion",
+    event = "InsertEnter",
+    config = function()
+      require("copilot").setup({
+        auto_refresh = true,
+        suggestion = { enabled = true, auto_trigger = true }
+      })
+  -- Example: Accept Copilot suggestion with <C-l>
+  vim.keymap.set("i", "<M-l>", function()
+    require("copilot.suggestion").accept()
+  end, { desc = "Accept Copilot suggestion" })
+  vim.keymap.set("i", "<M-k>", function()
+    require("copilot.suggestion").accept_word()
+  end, { desc = "Accept Copilot suggested word" })
+  vim.keymap.set("i", "<M-]>", function()
+    require("copilot.suggestion").next()
+  end, { desc = "next suggestion" })
+    end,
   },
   {
     "OXY2DEV/markview.nvim",

@@ -20,7 +20,8 @@ map('n', '<leader>gr', "<cmd> Gitsigns reset_hunk <CR>", { desc = "Preview hunk 
 
 map("n", "<leader>fs", "<cmd> set spell!<CR>", {desc = "Toggle spell checking", noremap = true, silent = true})
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")
---
+
+-- code companion
 map("n", "<leader>ci", "<cmd> CodeCompanionChat Toggle<CR>", {desc = "Toggle CodeCompanion"})
 map("v", "<leader>ci", "<cmd> CodeCompanion /explain<CR>", {desc = "explain current selected code"})
 map({ "n", "v" }, "<leader>ca", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true, desc = "CodeCompanion Actions" })
