@@ -215,6 +215,7 @@ return {
   },
   {
     "zbirenbaum/copilot.lua",
+    cond = function() return vim.fn.executable("node") == 1 end,
     lazy = true,
     cmd = "Copilot suggestion",
     event = "InsertEnter",
@@ -223,16 +224,16 @@ return {
         auto_refresh = true,
         suggestion = { enabled = true, auto_trigger = true }
       })
-  -- Example: Accept Copilot suggestion with <C-l>
-  vim.keymap.set("i", "<M-l>", function()
-    require("copilot.suggestion").accept()
-  end, { desc = "Accept Copilot suggestion" })
-  vim.keymap.set("i", "<M-k>", function()
-    require("copilot.suggestion").accept_word()
-  end, { desc = "Accept Copilot suggested word" })
-  vim.keymap.set("i", "<M-]>", function()
-    require("copilot.suggestion").next()
-  end, { desc = "next suggestion" })
+      -- Example: Accept Copilot suggestion with <C-l>
+      vim.keymap.set("i", "<M-l>", function()
+        require("copilot.suggestion").accept()
+      end, { desc = "Accept Copilot suggestion" })
+      vim.keymap.set("i", "<M-k>", function()
+        require("copilot.suggestion").accept_word()
+      end, { desc = "Accept Copilot suggested word" })
+      vim.keymap.set("i", "<M-]>", function()
+        require("copilot.suggestion").next()
+      end, { desc = "next suggestion" })
     end,
   },
   {
