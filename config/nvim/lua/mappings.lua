@@ -23,5 +23,16 @@ map("n", "<leader>fs", "<cmd> set spell!<CR>", {desc = "Toggle spell checking", 
 
 -- code companion
 map("n", "<leader>ci", "<cmd> CodeCompanionChat Toggle<CR>", {desc = "Toggle CodeCompanion"})
-map("v", "<leader>ci", "<cmd> CodeCompanion /explain<CR>", {desc = "explain current selected code"})
-map({ "n", "v" }, "<leader>ca", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true, desc = "CodeCompanion Actions" })
+map("v", "<leader>ci", "<cmd> CodeCompanion Chat<CR>", {desc = "chat about selection"})
+map("v", "<leader>ca", function()
+  local start_pos = vim.fn.getpos("'<")[2]
+  local end_pos = vim.fn.getpos("'>")[2]
+  vim.ui.input({prompt = "CodeCompanion prompt: "}, function(input)
+    if input and input ~= "" then
+      -- Build the range command
+      vim.cmd(string.format("%d,%dCodeCompanion %s", start_pos, end_pos, input))
+      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Esc>", true, false, true), "n", false)
+    end
+  end)
+end, {desc = "CodeCompanion prompt"})
+map({ "n", "v" }, "<leader>cA", "<cmd>CodeCompanionActions<cr>", { noremap = true, silent = true, desc = "CodeCompanion Actions" })

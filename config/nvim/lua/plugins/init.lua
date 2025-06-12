@@ -194,17 +194,26 @@ return {
           adapter = "copilot",
           keymaps = {
             accept_change = {
-              modes = { n = "<M-l>" },
+              modes = { n = "ga" },
               description = "Accept the suggested change",
             },
             reject_change = {
-              modes = { n = "<M-]>" },
+              modes = { n = "gr" },
               description = "Reject the suggested change",
             },
           },
         },
         cmd = {
           adapter = "copilot",
+        },
+      },
+      display = {
+        diff = {
+          enabled = true,
+          close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
+          layout = "vertical", -- vertical|horizontal split for default provider
+          opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
+          provider = "mini_diff", -- default|mini_diff
         },
       },
       dependencies = {
@@ -234,6 +243,19 @@ return {
       vim.keymap.set("i", "<M-]>", function()
         require("copilot.suggestion").next()
       end, { desc = "next suggestion" })
+    end,
+  },
+  -- mini diff
+  {
+    "echasnovski/mini.diff",
+    event = "User FilePost",
+    opts = {
+      symbols = { added = "+", modified = "~", removed = "-" },
+      highlight = { groups = { added = "DiffAdd", modified = "DiffChange", removed = "DiffDelete" } },
+      diff_algorithm = "patience",
+    },
+    config = function(_, opts)
+      require("mini.diff").setup(opts)
     end,
   },
   {
