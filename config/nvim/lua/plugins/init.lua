@@ -188,6 +188,10 @@ return {
     opts = {
       strategies = {
         chat = {
+          -- adapter = {
+          --   name = "ollama",
+          --   model = "devstral",
+          -- },
           adapter = {
             name = "copilot",
             -- model = "claude-sonnet-4",
@@ -196,6 +200,10 @@ return {
         },
         inline = {
           adapter = "copilot",
+          -- adapter = {
+          --   name = "ollama",
+          --   model = "devstral",
+          -- },
           keymaps = {
             accept_change = {
               modes = { n = "ga" },
@@ -209,13 +217,17 @@ return {
         },
         cmd = {
           adapter = "copilot",
+          -- adapter = {
+          --   name = "ollama",
+          --   model = "devstral",
+          -- },
         },
       },
       display = {
         diff = {
           enabled = true,
-          close_chat_at = 240, -- Close an open chat buffer if the total columns of your display are less than...
-          layout = "vertical", -- vertical|horizontal split for default provider
+          close_chat_at = 240,    -- Close an open chat buffer if the total columns of your display are less than...
+          layout = "vertical",    -- vertical|horizontal split for default provider
           opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
           provider = "mini_diff", -- default|mini_diff
         },
