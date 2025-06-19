@@ -71,6 +71,9 @@ elif [[ "$HOSTNAME" == fractal ]]; then
   # Set up fzf key bindings and fuzzy completion
   source <(fzf --zsh)
 
+  # load default python venv
+  source $HOME/pyvenv/devpy/bin/activate
+
 #############################################################
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
   echo "zsh session started on $HOSTNAME"

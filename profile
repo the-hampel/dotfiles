@@ -71,6 +71,8 @@ elif [ "$HOST" = fractal ]; then
     alias mount-vasp-scratch='sshfs hampel@fsc.vasp.co:/scratch/hampel /home/hampel/vasp_scratch'
     alias umount-vasp='fusermount -u /home/hampel/vasp_home &> /dev/null && fusermount -u /home/hampel/vasp_scratch &> /dev/null'
 
+    alias devpy='source $HOME/pyvenv/devpy/bin/activate'
+
 
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     printf '%s\n' "vasp detected"
@@ -196,10 +198,6 @@ alias more=less
 alias tmux='tmux -u'
 
 alias rvaspout='mkdir -p vasp_old_out && mv ML_* WAVECAR CHGCAR vasp.ctrl vasp.h5 vaspout.h5 vasp.pg1 vasprun.xml vasptriqs.h5 vasp.lock XDATCAR PROJCAR PCDAT OUTCAR OSZICAR LOCPROJ IBZKPT EIGENVAL DOSCAR CONTCAR STOPCAR REPORT ICONST HILLSPOT PROCAR CHG conv_imp* observables_imp* H_imp* vasp_old_out/'
-
-alias mount-home-ccq='sshfs flatiron:/mnt/home/ahampel /home/ahampel/ccq-home-fs'
-alias mount-ceph-ccq='sshfs flatiron:/mnt/ceph/users/ahampel /home/ahampel/ccq-ceph-fs'
-alias umount-ccq='fusermount -u /home/ahampel/ccq-home-fs &> /dev/null && fusermount -u /home/ahampel/ccq-ceph-fs &> /dev/null'
 
 alias ls='ls --color=auto -lh'
 alias grep='grep --colour=auto'
