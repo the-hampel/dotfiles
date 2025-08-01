@@ -60,6 +60,9 @@ if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
   # Set up fzf key bindings and fuzzy completion
   source <(fzf --zsh)
 
+  source $HOME/pyvenv/devpy/bin/activate
+  export WANNIER90_ROOT=/Users/ahampel/git/wannier90/install
+
 #############################################################
 elif [[ "$HOSTNAME" == fractal ]]; then
   echo "zsh session started on $HOSTNAME"
