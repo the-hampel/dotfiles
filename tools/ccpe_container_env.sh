@@ -46,7 +46,7 @@ function ccpe-19 () {
        --bind /opt/share/singularity/ccpe/etc/${USER}:/etc/pals \
        --bind /opt/rocm:/opt/rocm \
        --bind /var/run/munge \
-       --bind /scratch/${USER} \
+       --bind /scratch/${USER}:/scratch/${USER} \
        /scratch/hampel/container-images/cpe_2503/cpe_2503_lumi_extend.sif 
  else
      echo "palsed@${USER}.service not running "

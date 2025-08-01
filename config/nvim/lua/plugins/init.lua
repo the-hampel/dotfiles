@@ -95,7 +95,6 @@ return {
         "black",
         "pyright",
         "ruff",
-        "fortls",
       })
 
       return mason_opts
@@ -161,7 +160,17 @@ return {
       return require "nvchad.configs.telescope"
     end,
   },
-
+  {
+    "OXY2DEV/markview.nvim",
+    lazy = false,
+    opts = {
+      experimental = {check_rtp = false},
+      preview = {
+        filetypes = { "markdown", "codecompanion" },
+        ignore_buftypes = {},
+      },
+    },
+  },
   {
     "nvim-treesitter/nvim-treesitter",
     event = { "BufReadPost", "BufNewFile" },
@@ -180,6 +189,9 @@ return {
     config = function(_, opts)
       require("nvim-treesitter.configs").setup(opts)
     end,
+    dependencies = {
+       "OXY2DEV/markview.nvim",
+    }
   },
   -- my stuff
   {
@@ -273,16 +285,6 @@ return {
     config = function(_, opts)
       require("mini.diff").setup(opts)
     end,
-  },
-  {
-    "OXY2DEV/markview.nvim",
-    lazy = false,
-    opts = {
-      preview = {
-        filetypes = { "markdown", "codecompanion" },
-        ignore_buftypes = {},
-      },
-    },
   },
   {
     "kdheepak/lazygit.nvim",

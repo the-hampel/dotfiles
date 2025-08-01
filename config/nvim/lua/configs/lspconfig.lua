@@ -22,7 +22,6 @@ require'lspconfig'.jsonls.setup{capabilities = capabilities}
 require'lspconfig'.julials.setup{capabilities = capabilities}
 -- require'lspconfig'.ruff_lsp.setup{capabilities = capabilities, on_init = on_init, on_attach = on_attach}
 require'lspconfig'.ruff.setup{}
-require'lspconfig'.fortls.setup{}
 -- lsps with default config
 -- for _, lsp in ipairs(servers) do
 --   lspconfig[lsp].setup {

@@ -83,7 +83,8 @@ elif [ $MODE = intel24 ]; then
     export CXXFLAGS="-xHOST"
 elif [ $MODE = intel25 ]; then
     export LC_ALL=C
-    module load vasp-intel-dev/2025.0.3_mkl-2025.0.1_impi-2021.14.1 impi-srun profiling cross_platform cmake
+    # module load vasp-intel-dev/2025.0.3_mkl-2025.0.1_impi-2021.14.1 impi-srun profiling cross_platform cmake
+    module load oneapi/2025.2.0 intel-oneapi-mkl/2025.2.0-omp intel-oneapi-mpi/2021.16.0 hdf5 wannier90 libxc cmake
     export FC=ifx
     export CC=icx
     export CXX=icpx
@@ -91,7 +92,8 @@ elif [ $MODE = intel25 ]; then
     export CFLAGS="-xHOST"
     export CXXFLAGS="-xHOST"
     export MKL_THREADING_LAYER=INTEL
-    export BLA_VENDOR=Intel10_64lp_seq
+    export MKL_INTERFACE_LAYER=LP64
+    export BLA_VENDOR=Intel10_64lp
     export OMP_NUM_THREADS=1
     export MKL_NUM_THREADS=1
     export I_MPI_DEBUG=1

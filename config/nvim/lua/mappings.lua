@@ -16,7 +16,8 @@ map("n", "<leader>cd", "<cmd>lua vim.lsp.buf.definition()<CR>", {desc = "go to d
 map("n", "<leader>cs", "<cmd> nohl <CR>", {desc = "Remove highlights"})
 
 map('n', '<leader>gp', "<cmd> Gitsigns preview_hunk_inline <CR>", { desc = "Preview hunk inline" })
-map('n', '<leader>gr', "<cmd> Gitsigns reset_hunk <CR>", { desc = "Preview hunk inline" })
+map('n', '<leader>gr', "<cmd> Gitsigns reset_hunk <CR>", { desc = "reset hunk" })
+map('n', '<leader>gb', "<cmd> Gitsigns blame_line <CR>", { desc = "blame line" })
 
 map("n", "<leader>fs", "<cmd> set spell!<CR>", {desc = "Toggle spell checking", noremap = true, silent = true})
 -- map({ "n", "i", "v" }, "<C-s>", "<cmd> w <cr>")

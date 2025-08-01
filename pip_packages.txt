@@ -5,7 +5,6 @@ mpi4py
 h5nav
 seaborn
 scienceplots
-fortls
 ase
 scipy
 jupyterlab
