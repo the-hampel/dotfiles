@@ -77,6 +77,9 @@ elif [[ "$HOSTNAME" == fractal ]]; then
   # load default python venv
   source $HOME/pyvenv/devpy/bin/activate
 
+  # alias for teams electron app
+  alias teams=/opt/teams-for-linux/teams-for-linux
+
 #############################################################
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
   echo "zsh session started on $HOSTNAME"
