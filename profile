@@ -115,7 +115,17 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     # default editor
     export EDITOR="nvim"
-    alias vi='nvim --listen /tmp/nvim-server-hampel.pipe'
+
+    function vi() {
+        local SOCKET=$(mktemp -u /tmp/nvim-server-hampel.XXXXXX.pipe)
+        # Define cleanup function
+        cleanup() {
+          [ -e "$SOCKET" ] && rm -f "$SOCKET"
+        }
+        trap cleanup EXIT
+        nvim --listen "$SOCKET" "$@"
+        }
+
     alias vimdiff='nvim -d'
   
     # conda
@@ -149,6 +159,10 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
        # <<< mamba initialize <<<
         # export SHELL="/usr/bin/zsh"
         # exec /usr/bin/zsh
+    fi
+
+    if [[ "$HOST" == guppy07 ]]; then
+      export SHELL=/bin/bash
     fi
 
 elif [[ "$HOST" == ProBook* || "$HOST" == Mac.telekom.ip ]]; then
