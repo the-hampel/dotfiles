@@ -127,6 +127,8 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
         }
 
     alias vimdiff='nvim -d'
+
+    alias vtune='/fsc/home/hampel/intel/oneapi/vtune/latest/bin64/vtune-backend --allow-remote-access --web-port 7602 --data-directory'
   
     # conda
     alias dev-triqs='micromamba activate triqs-dev'
@@ -161,8 +163,20 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
         # exec /usr/bin/zsh
     fi
 
-    if [[ "$HOST" == guppy07 ]]; then
+    if [[ "$HOSTNAME" == *guppy07* ]]; then
       export SHELL=/bin/bash
+    fi
+
+    if [[ "$HOSTNAME" == *spark-18fb* ]]; then
+      printf '%s\n' "Spark detected"
+      source /usr/share/modules/init/bash
+      export MODULEPATH=/opt/nvidia/hpc_sdk/modulefiles:$MODULEPATH
+
+      export OLLAMA_MODELS=/fsc/home/hampel/temp/ollama/models
+      export OLLAMA_KEEP_ALIVE=360m
+      alias ollama="/fsc/home/hampel/temp/ollama/bin/ollama"
+
+      alias vi=vim
     fi
 
 elif [[ "$HOST" == ProBook* || "$HOST" == Mac.telekom.ip ]]; then

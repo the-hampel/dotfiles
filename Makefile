@@ -50,6 +50,8 @@ files+=local/share/okular/okularpartrc
 files+=local/share/okular/part.rc
 files+=local/share/okular/shell.rc
 
+files+=vim/colors/gruvbox.vim
+
 all: install
 
 .PHONY: install
