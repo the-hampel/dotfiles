@@ -129,9 +129,6 @@ endif
 " Use spaces instead of tabs
 set expandtab
 
-set list 
-set listchars=tab:>-
-
 " Be smart when using tabs ;)
 " set smarttab
 
@@ -228,9 +225,6 @@ autocmd FileType fortran hi def link fortranDirective PreProc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Use spaces instead of tabs
 set expandtab
-
-set list 
-set listchars=tab:>-
 
 " Be smart when using tabs ;)
 " set smarttab
