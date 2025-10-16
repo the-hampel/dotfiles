@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+# Usage: greplast PATTERN FILE...
+
+pattern=$1
+shift
+
+for f in "$@"; do
+    last=$(grep -- "$pattern" "$f" | tail -n1)
+    [ -n "$last" ] && echo "$f:$last"
+done

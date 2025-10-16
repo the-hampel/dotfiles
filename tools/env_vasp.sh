@@ -48,6 +48,7 @@ if [ $MODE = gnu ]; then
     export CXXFLAGS="-Wno-register -march=broadwell"
     export OMP_NUM_THREADS=1 
     export MKL_NUM_THREADS=1
+    export BLA_VENDOR=Intel10_64lp_seq
     export MKL_INTERFACE_LAYER=GNU,LP64
     export MKL_THREADING_LAYER=SEQUENTIAL
 elif [ $MODE = nvidia ]; then
@@ -74,7 +75,7 @@ elif [ $MODE = intel24 ]; then
     module load vasp-intel-dev/2024.0.2_mkl-2023.2.0_impi-2021.10.0 impi-srun profiling cross_platform cmake
     export OMP_NUM_THREADS=1 
     export MKL_NUM_THREADS=1
-    export BLA_VENDOR=Intel10_64lp_seq
+    export BLA_VENDOR=Intel10_64lp
     export MKL_THREADING_LAYER=INTEL
     export FC=ifx
     export CC=icx
