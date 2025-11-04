@@ -31,23 +31,32 @@ function ccpe-19 () {
 
     # get env variables to pass to apptainer
     SING_ENV_LIST=""
-    for var in `env | grep -e ^SLURM -e ^PALS -e ^SRUN -e ^PMI -e ^HOST -e ^USER -e ^SLINGSHOT`; do
-        SING_ENV_LIST+=" --env $var"
-    done
+    while IFS='=' read -r key val; do
+        # Reconstruct the variable safely (preserve = and spaces)
+        var="${key}=${val}"
+        echo "$var"
+
+        # Escape any single quotes for safe shell eval
+        safe_var=$(printf "%s" "$var" | sed "s/'/'\\\\''/g")
+
+        # Append safely quoted env var
+        SING_ENV_LIST+=" --env '${safe_var}'"
+    done < <(env | grep -E '^(SLURM|PALS|SRUN|PMI|HOST|USER|SLINGSHOT|ROCR_VISIBLE_DEVICES)=')
 
     export APPTAINERENV_PS1='cpe::\[\e[00m\] \h > '
     export APPTAINERENV_PREPEND_PATH="/opt/rocm/bin"
     export APPTAINERENV_ROCM_PATH="/opt/rocm"
     export APPTAINERENV_FFTW_ROOT="/opt/cray/pe/fftw/default/x86_milan"
-    apptainer run --rocm --cleanenv ${SING_ENV_LIST} \
-       --env-file /opt/share/singularity/ccpe/etc/${USER}/palsd.conf \
-       --bind /opt/share/singularity/ccpe/log:/var/log \
-       --bind /opt/share/singularity/ccpe/scripts:/opt/scripts \
-       --bind /opt/share/singularity/ccpe/etc/${USER}:/etc/pals \
-       --bind /opt/rocm:/opt/rocm \
-       --bind /var/run/munge \
-       --bind /scratch/${USER}:/scratch/${USER} \
-       /scratch/hampel/container-images/cpe_2503/cpe_2503_lumi_extend.sif 
+    # --- Run the container ---
+    eval "apptainer run --rocm --cleanenv ${SING_ENV_LIST} \
+        --env-file /opt/share/singularity/ccpe/etc/${USER}/palsd.conf \
+        --bind /opt/share/singularity/ccpe/log:/var/log \
+        --bind /opt/share/singularity/ccpe/scripts:/opt/scripts \
+        --bind /opt/share/singularity/ccpe/etc/${USER}:/etc/pals \
+        --bind /opt/rocm:/opt/rocm \
+        --bind /var/run/munge \
+        --bind /scratch/${USER}:/scratch/${USER} \
+        /scratch/hampel/container-images/cpe_2503/cpe_2503_lumi_extend.sif"
  else
      echo "palsed@${USER}.service not running "
  fi

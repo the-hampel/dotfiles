@@ -196,6 +196,7 @@ return {
   -- my stuff
   {
     "olimorris/codecompanion.nvim",
+    -- to see avail models open chat and in normal mode press ga then choose an adapter and it will display all models
     lazy = false,
     opts = {
       strategies = {
@@ -206,8 +207,8 @@ return {
           -- },
           adapter = {
             name = "copilot",
-            model = "claude-sonnet-4",
-            -- model = "gpt-4.1",
+            -- model = "claude-sonnet-4",
+            model = "gpt-5",
           },
         },
         inline = {

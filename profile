@@ -95,9 +95,9 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     # slurm
     alias qs='squeue --sort "P,U" -o "%.10i %.10u %40j %.12M %.2t %.6D %.6C %30R"'
     alias si='Sinfo'
-    alias getnode='salloc --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=1 --cpus-per-task=16'
-    alias getroc='salloc --nodes=1 --time 12:00:00 --partition=porgy05 --ntasks-per-node=2 --cpus-per-task=8 --gres=gpu:2'
-    alias getintel='salloc --nodes=1 --time 12:00:00 --partition=guppy07 --ntasks-per-node=1 --cpus-per-task=20'
+    alias getnode='srun --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=1 --cpus-per-task=16 --cpu-bind=cores --pty bash -i'
+    alias getroc='srun --nodes=1 --time 12:00:00 --partition=porgy05 --ntasks-per-node=2 --cpus-per-task=10 --cpu-bind=cores --gres=gpu:2 --pty bash -i'
+    alias getintel='srun --nodes=1 --time 12:00:00 --partition=guppy07 --ntasks-per-node=2 --cpus-per-task=10 --cpu-bind=cores --pty bash -i'
   
     # apptainer
     if [ "$HOSTNAME" = *porgy05 ]; then
