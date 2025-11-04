@@ -23,3 +23,8 @@
 	directory = /fsc/home/wolloch/vasp/94x_cce19-test_alex
 [alias]
 	sync = "!f() { \n  CURRENT_BRANCH=$(git branch --show-current)\n  UPSTREAM=$(git rev-parse --abbrev-ref @{u} 2>/dev/null || echo \"origin/$CURRENT_BRANCH\")\n  echo \"Fetching latest from $UPSTREAM...\"\n  git fetch --quiet\n\n  echo\n  echo \"🧭 Local branch:   $CURRENT_BRANCH\"\n  echo \"🛰️  Upstream:       $UPSTREAM\"\n  echo\n\n  echo \"🔍 Commits to be dropped (local only):\"\n  git --no-pager log --oneline $UPSTREAM..HEAD || echo \"  none\"\n  echo\n  echo \"🔍 Commits to be pulled (upstream only):\"\n  git --no-pager log --oneline HEAD..$UPSTREAM || echo \"  none\"\n  echo\n\n  if [ \"$1\" = \"--force\" ]; then\n    git reset --hard $UPSTREAM\n  else\n    echo \"⚠️  This will reset  to match .\"\n    read -p \"Continue? [y/N] \" ans\n    case \"$ans\" in \n      [Yy]*) git reset --hard $UPSTREAM ;;\n      *) echo \"Aborted.\"; exit 1 ;;\n    esac\n  fi\n}; f"
+[filter "lfs"]
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
