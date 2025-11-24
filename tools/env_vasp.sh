@@ -86,7 +86,7 @@ elif [ $MODE = intel24 ]; then
 elif [ $MODE = intel25 ]; then
     export LC_ALL=C
     # module load vasp-intel-dev/2025.0.3_mkl-2025.0.1_impi-2021.14.1 impi-srun profiling cross_platform cmake
-    module load oneapi/2025.2.0 intel-oneapi-mkl/2025.2.0-omp intel-oneapi-mpi/2021.16.0 hdf5 wannier90 libxc cmake
+    module load oneapi/2025.3.1 intel-oneapi-mkl/2025.3.0-omp intel-oneapi-mpi/2021.17.0 hdf5 wannier90 libxc cmake
     export FC=ifx
     export CC=icx
     export CXX=icpx

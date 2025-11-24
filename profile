@@ -226,6 +226,8 @@ alias free='free -m'                      # show sizes in MB
 alias np='nano -w PKGBUILD'
 alias more=less
 alias tmux='tmux -u'
+alias tmux3wide='tmux select-layout "c700,382x88,0,0{160x88,0,0,12,125x88,161,0,86,95x88,287,0,85}"'
+alias tmux3split='tmux select-layout "60c6,256x72,0,0{132x72,0,0,16,123x72,133,0[123x35,133,0,58,123x36,133,36,17]}"'
 
 alias rvaspout='mkdir -p vasp_old_out && mv ML_* WAVECAR CHGCAR vasp.ctrl vasp.h5 vaspout.h5 vasp.pg1 vasprun.xml vasptriqs.h5 vasp.lock XDATCAR PROJCAR PCDAT OUTCAR OSZICAR LOCPROJ IBZKPT EIGENVAL DOSCAR CONTCAR STOPCAR REPORT ICONST HILLSPOT PROCAR CHG conv_imp* observables_imp* H_imp* vasp_old_out/'
 
