@@ -191,8 +191,6 @@ elif [[ "$HOST" == ProBook* || "$HOST" == Mac.telekom.ip ]]; then
     export NCORE=16
     alias vi=nvim
     alias vimdiff='nvim -d'
-    export CXXFLAGS="-stdlib=libc++ -Wno-register -march=native"
-    export CFLAGS='-march=native'
     export OMP_NUM_THREADS=1
     export MKL_NUM_THREADS=1
  

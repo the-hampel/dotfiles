@@ -25,3 +25,6 @@ ruff-lsp
 clang
 cmcrameri
 pandoc
+plotly
+kaleido
+ipywidgets

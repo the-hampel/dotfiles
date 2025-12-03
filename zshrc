@@ -54,13 +54,15 @@ if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
   export LIBRARY_PATH=$(brew --prefix)/opt/llvm/lib:$(brew --prefix)/lib:$LIBRARY_PATH
   export CC=$(brew --prefix)/opt/llvm/bin/clang
   export CXX=$(brew --prefix)/opt/llvm/bin/clang++
+  export LDFLAGS="-L$HOMEBREW_PREFIX/opt/llvm/lib/c++ -L$HOMEBREW_PREFIX/opt/llvm/lib/unwind -lunwind"
+  export CXXFLAGS="-stdlib=libc++ -I$(brew --prefix)/opt/llvm/include/c++/v1 -march=native -Wno-register"
+  export CFLAGS="-I$(brew --prefix)/opt/llvm/include -march=native "
 
   eval "$(zoxide init zsh)"
 
   # Set up fzf key bindings and fuzzy completion
   source <(fzf --zsh)
 
-  source $HOME/pyvenv/devpy/bin/activate
   export WANNIER90_ROOT=/Users/ahampel/git/wannier90/install
 
 #############################################################
