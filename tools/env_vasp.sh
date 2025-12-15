@@ -32,8 +32,8 @@ while [[ $# -gt 0 ]]; do
             shift # move to next argument
             ;;
         *)
-           OTHER_ARGS+=("$1")
-           shift
+           echo "Error: Unknown argument '$1'" >&2
+           exit 1
            ;;
     esac
 done
@@ -43,14 +43,15 @@ if [ $MODE = gnu ]; then
     export FC=gfortran
     export CC=gcc
     export CXX=g++
-    export FFLAGS="-march=broadwell"
-    export CFLAGS="-march=broadwell"
-    export CXXFLAGS="-Wno-register -march=broadwell"
+    export FFLAGS=""
+    export CFLAGS=""
+    export CXXFLAGS="-Wno-register"
     export OMP_NUM_THREADS=1 
     export MKL_NUM_THREADS=1
     export BLA_VENDOR=Intel10_64lp_seq
     export MKL_INTERFACE_LAYER=GNU,LP64
     export MKL_THREADING_LAYER=SEQUENTIAL
+    export VASP_TARGET_CPU="-march=native"
 elif [ $MODE = nvidia ]; then
     module load vasp-nvhpc_mkl-dev/25.1_mkl-2025.0.1_ompi-4.1.7 gcc_system_8 profiling cross_platform openmp_support openacc_support cmake
     export LD_LIBRARY_PATH=$NVROOT/cuda/lib64:$LD_LIBRARY_PATH
@@ -59,15 +60,16 @@ elif [ $MODE = nvidia ]; then
     export CC=nvc
     export CXX=nvc++
     alias nvfortran="nvfortran --gcc-toolchain=${GCC_TOOLCHAIN}"
-    export FFLAGS="-tp host --gcc-toolchain=${GCC_TOOLCHAIN}"
-    export CFLAGS="-tp host --gcc-toolchain=${GCC_TOOLCHAIN}"
-    export CXXFLAGS="-tp host --gcc-toolchain=${GCC_TOOLCHAIN}"
+    export FFLAGS="--gcc-toolchain=${GCC_TOOLCHAIN}"
+    export CFLAGS="--gcc-toolchain=${GCC_TOOLCHAIN}"
+    export CXXFLAGS="--gcc-toolchain=${GCC_TOOLCHAIN}"
     export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${NVROOT}/cuda/lib64
     export OMP_NUM_THREADS=8
     export MKL_NUM_THREADS=1
     export MKL_INTERFACE_LAYER=PGI,LP64
-    export MKL_THREADING_LAYER=SEQUENTIAL
+    export MKL_THREADING_LAYER=INTEL
     export BLA_VENDOR=Intel10_64lp_seq
+    export VASP_TARGET_CPU="-tp=host"
     # for RTX 4000 series
     # export CMAKE_CUDA_ARCHITECTURES=89
     # export VASP_CUDA_VERSION=11.8
@@ -80,9 +82,10 @@ elif [ $MODE = intel24 ]; then
     export FC=ifx
     export CC=icx
     export CXX=icpx
-    export FFLAGS="-xHOST"
-    export CFLAGS="-xHOST"
-    export CXXFLAGS="-xHOST"
+    export FFLAGS=""
+    export CFLAGS=""
+    export CXXFLAGS=""
+    export VASP_TARGET_CPU="-march=native"
 elif [ $MODE = intel25 ]; then
     export LC_ALL=C
     # module load vasp-intel-dev/2025.0.3_mkl-2025.0.1_impi-2021.14.1 impi-srun profiling cross_platform cmake
@@ -90,9 +93,9 @@ elif [ $MODE = intel25 ]; then
     export FC=ifx
     export CC=icx
     export CXX=icpx
-    export FFLAGS="-xHOST"
-    export CFLAGS="-xHOST"
-    export CXXFLAGS="-xHOST"
+    export FFLAGS=""
+    export CFLAGS=""
+    export CXXFLAGS=""
     export MKL_THREADING_LAYER=INTEL
     export MKL_INTERFACE_LAYER=LP64
     export BLA_VENDOR=Intel10_64lp
@@ -101,6 +104,7 @@ elif [ $MODE = intel25 ]; then
     export I_MPI_DEBUG=1
     export I_MPI_OFFLOAD=1
     export OMP_TARGET_OFFLOAD=DEFAULT
+    export VASP_TARGET_CPU="-march=native"
 elif [ $MODE = nec ]; then
     module load vasp-nec-dev/5.0.1_nlc-3.0.0_nmpi-2.25.0
     export FC=mpinfort
