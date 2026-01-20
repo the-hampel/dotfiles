@@ -25,7 +25,7 @@ files+=config/pycodestyle
 files+=config/gruvbox_256palette.sh
 files+=config/libinput-gestures.conf
 
-files+=config/ruff/ruff.toml
+files+=config/htop/htoprc
 
 files+=config/jesseduffield/lazygit/config.yml
 
@@ -43,6 +43,8 @@ files+=config/nvim/lua/plugins/init.lua
 files+=config/nvim/lua/configs/lspconfig.lua
 files+=config/nvim/after/syntax/fortran.vim
 files+=config/nvim/spell/en.utf-8.add
+
+files+=config/ruff/ruff.toml
 
 files+=local/share/fzf/completion.bash
 files+=local/share/fzf/key-bindings.bash

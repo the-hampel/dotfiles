@@ -48,12 +48,12 @@ if [ $MODE = gnu ]; then
     export CXXFLAGS="-Wno-register"
     export OMP_NUM_THREADS=1 
     export MKL_NUM_THREADS=1
-    export BLA_VENDOR=Intel10_64lp_seq
+    export BLA_VENDOR=Intel10_64lp
     export MKL_INTERFACE_LAYER=GNU,LP64
-    export MKL_THREADING_LAYER=SEQUENTIAL
+    export MKL_THREADING_LAYER=GNU
     export VASP_TARGET_CPU="-march=native"
 elif [ $MODE = nvidia ]; then
-    module load vasp-nvhpc_mkl-dev/25.1_mkl-2025.0.1_ompi-4.1.7 gcc_system_8 profiling cross_platform openmp_support openacc_support cmake
+    module load vasp-nvhpc_mkl-dev/25.1_mkl-2025.0.1_ompi-4.1.7 gcc_system_8 profiling cross_platform openmp_support openacc_support cmake libxc
     export LD_LIBRARY_PATH=$NVROOT/cuda/lib64:$LD_LIBRARY_PATH
     export LIBRARY_PATH=$NVROOT/cuda/lib64:$LIBRARY_PATH
     export FC=nvfortran
@@ -68,7 +68,7 @@ elif [ $MODE = nvidia ]; then
     export MKL_NUM_THREADS=1
     export MKL_INTERFACE_LAYER=PGI,LP64
     export MKL_THREADING_LAYER=INTEL
-    export BLA_VENDOR=Intel10_64lp_seq
+    export BLA_VENDOR=Intel10_64lp
     export VASP_TARGET_CPU="-tp=host"
     # for RTX 4000 series
     # export CMAKE_CUDA_ARCHITECTURES=89
@@ -88,7 +88,6 @@ elif [ $MODE = intel24 ]; then
     export VASP_TARGET_CPU="-march=native"
 elif [ $MODE = intel25 ]; then
     export LC_ALL=C
-    # module load vasp-intel-dev/2025.0.3_mkl-2025.0.1_impi-2021.14.1 impi-srun profiling cross_platform cmake
     module load oneapi/2025.3.1 intel-oneapi-mkl/2025.3.0-omp intel-oneapi-mpi/2021.17.0 hdf5 wannier90 libxc cmake
     export FC=ifx
     export CC=icx
