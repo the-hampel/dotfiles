@@ -28,3 +28,4 @@ pandoc
 plotly
 kaleido
 ipywidgets
+pymatgen

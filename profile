@@ -185,6 +185,7 @@ elif [[ "$HOST" == ProBook* || "$HOST" == Mac.telekom.ip ]]; then
     printf '%s\n' "ProBook detected"
     ulimit -s unlimited
     ulimit -c unlimited
+    export OLLAMA_KEEP_ALIVE=360m
 
     # default editor
     export EDITOR="nvim"

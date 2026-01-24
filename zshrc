@@ -50,7 +50,7 @@ HOSTNAME=$(hostname)
 if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 
-  export PATH=$(brew --prefix)/opt/llvm/bin:/Users/ahampel/.local/bin:$PATH
+  export PATH=$(brew --prefix)/opt/llvm/bin:/Users/ahampel/.local/bin:/Users/ahampel/.docker/bin:$PATH
   export LIBRARY_PATH=$(brew --prefix)/opt/llvm/lib:$(brew --prefix)/lib:$LIBRARY_PATH
   export CC=$(brew --prefix)/opt/llvm/bin/clang
   export CXX=$(brew --prefix)/opt/llvm/bin/clang++
