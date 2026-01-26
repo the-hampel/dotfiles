@@ -217,6 +217,7 @@ alias mvaspcmake='bash $HOME/git/dotfiles/tools/make_vasp_cmake.sh'
 alias vaspgdb='bash $HOME/git/dotfiles/tools/run_vasp_gdb.sh'
 alias envasp='source $HOME/git/dotfiles/tools/env_vasp.sh'
 
+alias oc='opencode'
 alias df='df -h'                          # human-readable sizes
 alias la='ls --color=auto -lh'
 alias cp="cp -i"                          # confirm before overwriting something
