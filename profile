@@ -171,12 +171,11 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     if [[ "$HOSTNAME" == *spark-18fb* ]]; then
       printf '%s\n' "Spark detected"
-      source /usr/share/modules/init/bash
       export MODULEPATH=/opt/nvidia/hpc_sdk/modulefiles:$MODULEPATH
 
-      export OLLAMA_MODELS=/fsc/home/hampel/temp/ollama/models
+      export OLLAMA_MODELS=/opt/ollama
       export OLLAMA_KEEP_ALIVE=360m
-      alias ollama="/fsc/home/hampel/temp/ollama/bin/ollama"
+      alias ollama=/usr/local/bin/ollama
 
       alias vi=vim
     fi

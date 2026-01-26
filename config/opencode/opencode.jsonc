@@ -29,5 +29,31 @@
         }
       }
     }
+  },
+  "provider": {
+    "ollama": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (Spark)",
+      "options": {
+        "baseURL": "http://10.23.0.111:11434/v1"
+      },
+      "models": {
+        "qwen3-next:latest": {
+          "name": "qwen3-next:latest",
+          "reasoning": true,
+          "tools": true
+        },
+        "qwen3-coder:30b": {
+          "name": "qwen3-coder:latest",
+          "reasoning": true,
+          "tools": true
+        },
+        "gpt-oss:120b": {
+          "name": "GPT-OSS",
+          "reasoning": true,
+          "tools": true
+        }
+      }
+    }
   }
 }
