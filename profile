@@ -178,6 +178,8 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
       alias ollama=/usr/local/bin/ollama
 
       alias vi=vim
+
+      module purge
     fi
 
 elif [[ "$HOST" == ProBook* || "$HOST" == Mac.telekom.ip ]]; then

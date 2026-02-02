@@ -1,16 +1,35 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "theme": "gruvbox",
-  "model": "copilot/gemini-3-pro",
+  "model": "copilot/gpt-5.2",
   "autoupdate": true,
   "keybinds": {
     "app_exit": "ctrl+q"
   },
   "permission": {
+    "edit": "ask",
     "bash": {
-      "git *": "allow",
-      "rm *": "ask",
-      "grep *": "allow"
+      "*": "ask",
+
+      // Safe / read-only commands
+      "ls*": "allow",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git show*": "allow",
+      "git rev-parse*": "allow",
+      "git branch --show-current": "allow",
+      "git branch -vv": "allow",
+      "git remote -v": "allow",
+      "grep *": "allow",
+      "rg *": "allow",
+
+      // Copy is safe when it won't overwrite
+      "cp -n*": "allow",
+      "cp --no-clobber*": "allow",
+
+      // Explicitly keep destructive commands gated
+      "rm *": "ask"
     }
   },
   "provider": {
@@ -36,7 +55,7 @@
       },
       "models": {
         "qwen3-next:latest": {
-          "name": "qwen3-next:latest",
+          "name": "qwen3-next:opt",
           "reasoning": true,
           "reasoningEffort": "low",
           "tools": true
@@ -46,7 +65,7 @@
           "reasoning": true,
           "tools": true
         },
-        "gpt-oss:120b": {
+        "gpt-oss:120b-opt": {
           "name": "GPT-OSS",
           "reasoning": true,
           "reasoningEffort": "low",
