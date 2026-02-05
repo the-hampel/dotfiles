@@ -36,4 +36,6 @@ vim.opt.fillchars = {
   verthoriz = '│',
 }
 
+vim.opt.list = true
+vim.opt.listchars:append { trail = "·", tab = "▸ " }
 --
