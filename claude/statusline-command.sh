@@ -25,4 +25,4 @@ else
 fi
 
 printf "${c214}%s ${c166}[${c142}%s${c166}]${reset}%s ${c246}%s${reset}" \
-  "$host" "$display_dir" "$branch_str" "$time_str"
+  "claude" "$display_dir" "$branch_str" "$time_str"
