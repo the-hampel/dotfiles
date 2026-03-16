@@ -46,6 +46,9 @@ files+=config/nvim/spell/en.utf-8.add
 
 files+=config/opencode/opencode.jsonc
 
+files+=claude/settings.json
+files+=claude/statusline-command.sh
+
 files+=config/ruff/ruff.toml
 
 files+=local/share/fzf/completion.bash
