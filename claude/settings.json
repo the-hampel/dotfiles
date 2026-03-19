@@ -1,8 +1,4 @@
 {
-  "statusLine": {
-    "type": "command",
-    "command": "bash $HOME/.claude/statusline-command.sh"
-  },
   "attribution": {
     "commit": "",
     "pr": ""
@@ -30,5 +26,10 @@
       "Bash(wc *)",
       "Bash(echo *)"
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash $HOME/.claude/statusline-command.sh"
+  },
+  "model": "opus[1m]"
 }

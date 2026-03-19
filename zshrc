@@ -45,9 +45,9 @@ fi
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 #########################################################
 #
-HOSTNAME=$(hostname)
+HOSTNAME=${HOST:-$(hostname)}
 
-if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
+if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac* ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 
   export PATH=$(brew --prefix)/opt/llvm/bin:/Users/ahampel/.local/bin:/Users/ahampel/.docker/bin:$PATH

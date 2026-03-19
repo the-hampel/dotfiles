@@ -1,6 +1,8 @@
 # output full docker build output
 export BUILDKIT_PROGRESS=plain
 
+HOSTNAME=${HOSTNAME:-${HOST:-$(hostname)}}
+
 if [ "$HOSTNAME" = thinkxtreme ]; then
     printf '%s\n' "thinkXtreme@Ubuntu detected"
     export NCORE=16
@@ -40,7 +42,7 @@ if [ "$HOSTNAME" = thinkxtreme ]; then
     # fzf fuzzy command line search
     source /usr/share/bash-completion/completions/fzf && source /usr/share/doc/fzf/examples/key-bindings.bash
 
-elif [ "$HOST" = fractal ]; then
+elif [ "$HOSTNAME" = fractal ]; then
     printf '%s\n' "fractal detected"
     export NCORE=24
     export CC=gcc
@@ -100,7 +102,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     alias getintel='srun --nodes=1 --time 12:00:00 --partition=guppy07 --ntasks-per-node=2 --cpus-per-task=10 --cpu-bind=cores --pty zsh -i'
   
     # apptainer
-    if [ "$HOSTNAME" = *porgy05 ]; then
+    if [[ "$HOSTNAME" == *porgy05 ]]; then
         export APPTAINER_CACHEDIR=/home/hampel/apptainer_cache
     else
       export APPTAINER_CACHEDIR=/wahoo06.local/hampel_temp/apptainer/cache
@@ -186,7 +188,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
       module purge
     fi
 
-elif [[ "$HOST" == ProBook* || "$HOST" == Mac.telekom.ip ]]; then
+elif [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac* ]]; then
     printf '%s\n' "ProBook detected"
     ulimit -s unlimited
     ulimit -c unlimited
@@ -223,7 +225,7 @@ alias mvaspcmake='bash $HOME/git/dotfiles/tools/make_vasp_cmake.sh'
 alias vaspgdb='bash $HOME/git/dotfiles/tools/run_vasp_gdb.sh'
 alias envasp='source $HOME/git/dotfiles/tools/env_vasp.sh'
 
-alias mpireport='mpirun bash -c 'echo "rank=$OMPI_COMM_WORLD_RANK $PMI_RANK host=$(hostname) cpu=$(taskset -pc $$ | awk -F: "{print \$2}")"''
+alias mpireport='mpirun bash -c '\''echo "rank=$OMPI_COMM_WORLD_RANK $PMI_RANK host=$(hostname) cpu=$(taskset -pc $$ | awk -F: "{print \$2}")"'\'''
 
 alias oc='opencode'
 alias df='df -h'                          # human-readable sizes
