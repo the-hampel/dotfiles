@@ -64,6 +64,7 @@ if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac.telekom.ip ]]; then
   source <(fzf --zsh)
 
   export WANNIER90_ROOT=/Users/ahampel/git/wannier90/install
+  export SCALAPACK_ROOT=/opt/homebrew/lib
 
 #############################################################
 elif [[ "$HOSTNAME" == fractal ]]; then
