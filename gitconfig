@@ -28,3 +28,7 @@
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
+[safe]
+	directory = /fsc/home/mmars/src/vasp/develop/639-spin-torque-mgga-only
+[http "https://gitlab.vasp.co"]
+	sslVerify = false

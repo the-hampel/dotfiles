@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Initialize the variables
-TEST=false
+TEST=""
 OTHER_ARGS=()
 
 # Process command-line options
@@ -27,9 +27,13 @@ while [[ $# -gt 0 ]]; do
             MODE=nec
             shift # move to next argument
             ;;
+        aocc)
+            MODE=aocc
+            shift # move to next argument
+            ;;
         --test)
             TEST=$2
-            shift # move to next argument
+            shift 2
             ;;
         *)
            echo "Error: Unknown argument '$1'" >&2
@@ -38,8 +42,8 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-if [ $MODE = gnu ]; then
-    module load vasp-gnu_mkl-dev/12.3_mkl-2023.2.0_ompi-4.1.6 profiling cross_platform openmp_support cmake
+if [ "${MODE:-}" = gnu ]; then
+    module load vasp-gnu_mkl-dev/15.2_mkl-2025.3.1_ompi-4.1.8 profiling cross_platform openmp_support cmake
     export FC=gfortran
     export CC=gcc
     export CXX=g++
@@ -52,7 +56,7 @@ if [ $MODE = gnu ]; then
     export MKL_INTERFACE_LAYER=GNU,LP64
     export MKL_THREADING_LAYER=GNU
     export VASP_TARGET_CPU="-march=native"
-elif [ $MODE = nvidia ]; then
+elif [ "${MODE:-}" = nvidia ]; then
     module load vasp-nvhpc_mkl-dev/25.1_mkl-2025.0.1_ompi-4.1.7 gcc_system_8 profiling cross_platform openmp_support openacc_support cmake libxc
     export LD_LIBRARY_PATH=$NVROOT/cuda/lib64:$LD_LIBRARY_PATH
     export LIBRARY_PATH=$NVROOT/cuda/lib64:$LIBRARY_PATH
@@ -73,7 +77,7 @@ elif [ $MODE = nvidia ]; then
     # for RTX 4000 series
     # export CMAKE_CUDA_ARCHITECTURES=89
     # export VASP_CUDA_VERSION=11.8
-elif [ $MODE = intel24 ]; then
+elif [ "${MODE:-}" = intel24 ]; then
     module load vasp-intel-dev/2024.0.2_mkl-2023.2.0_impi-2021.10.0 impi-srun profiling cross_platform cmake
     export OMP_NUM_THREADS=1 
     export MKL_NUM_THREADS=1
@@ -86,9 +90,10 @@ elif [ $MODE = intel24 ]; then
     export CFLAGS=""
     export CXXFLAGS=""
     export VASP_TARGET_CPU="-march=native"
-elif [ $MODE = intel25 ]; then
+    unset SCALAPACK_ROOT
+elif [ "${MODE:-}" = intel25 ]; then
     export LC_ALL=C
-    module load oneapi/2025.3.1 intel-oneapi-mkl/2025.3.0-omp intel-oneapi-mpi/2021.17.0 hdf5 wannier90 libxc cmake
+    module load vasp-intel-dev/2025.3.2_mkl-2025.3.1_impi-2021.17.2 cmake
     export FC=ifx
     export CC=icx
     export CXX=icpx
@@ -104,14 +109,19 @@ elif [ $MODE = intel25 ]; then
     export I_MPI_OFFLOAD=1
     export OMP_TARGET_OFFLOAD=DEFAULT
     export VASP_TARGET_CPU="-march=native"
-elif [ $MODE = nec ]; then
+    unset SCALAPACK_ROOT
+elif [ "${MODE:-}" = nec ]; then
     module load vasp-nec-dev/5.0.1_nlc-3.0.0_nmpi-2.25.0
     export FC=mpinfort
     export CC=ncc
     export CXX=nc++
     export MPI_Fortran_COMPILER=mpinfort
+elif [ "${MODE:-}" = aocc ]; then
+    module load vasp-aocc-dev/5.0.0_aocl-5.0_ompi-5.0.6 cmake
+    unset BLA_VENDOR
+    export SCALAPACK_ROOT=$AMDSCALAPACK_ROOT
 fi
 
-if [ $TEST ]; then
+if [ -n "$TEST" ]; then
   export VASP_TESTSUITE_TESTS="${TEST}" 
 fi

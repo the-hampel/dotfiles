@@ -77,7 +77,7 @@ elif [ "$HOST" = fractal ]; then
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     printf '%s\n' "vasp detected"
 
-    export PATH="/opt/share/modulefiles/bin:/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:/fsc/home/hampel/git/dotfiles/tools:$PATH"
+    export PATH="/opt/share/modulefiles/bin:/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:/fsc/home/hampel/git/dotfiles/tools:/fsc/home/hampel/.opencode/bin:$PATH"
 
     module load htop
 
@@ -90,7 +90,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     alias lamaserve="ollama serve &"
     alias lamaweb="open-webui serve &"
     
-    export JUPYTERLAB_DIR=/mnt/home/ahampel/.jupyter/lab
+    # export JUPYTERLAB_DIR=/mnt/home/ahampel/.jupyter/lab
 
     # slurm
     alias qs='squeue --sort "P,U" -o "%.10i %.10u %40j %.12M %.2t %.6D %.6C %30R"'
@@ -107,7 +107,10 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     fi
     export PATH=/wahoo06.local/hampel_temp/apptainer/bin:$PATH
     source $HOME/git/dotfiles/tools/ccpe_container_env.sh
-    
+
+    export OLLAMA_MODELS=/home/hampel/ollama/models
+    alias ollama="/home/hampel/ollama/bin/ollama"
+
     # perf stuff
     ulimit -s unlimited
     export OMP_NUM_THREADS=1
@@ -133,8 +136,9 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     alias vtune='/fsc/home/hampel/intel/oneapi/vtune/latest/bin64/vtune-backend --allow-remote-access --web-port 7602 --data-directory'
   
     # conda
-    alias dev-triqs='micromamba activate triqs-dev'
-    alias dev-vasp='micromamba activate vasp-dev'
+    alias conda-triqs-dev='micromamba activate triqs-dev'
+    alias conda-triqs-rel='micromamba activate triqs-rel'
+    alias conda-vasp='micromamba activate vasp-dev'
 
     # intel stuff
     export MKL_NUM_THREADS=1
@@ -219,6 +223,8 @@ alias mvaspcmake='bash $HOME/git/dotfiles/tools/make_vasp_cmake.sh'
 alias vaspgdb='bash $HOME/git/dotfiles/tools/run_vasp_gdb.sh'
 alias envasp='source $HOME/git/dotfiles/tools/env_vasp.sh'
 
+alias mpireport='mpirun bash -c 'echo "rank=$OMPI_COMM_WORLD_RANK $PMI_RANK host=$(hostname) cpu=$(taskset -pc $$ | awk -F: "{print \$2}")"''
+
 alias oc='opencode'
 alias df='df -h'                          # human-readable sizes
 alias la='ls --color=auto -lh'
@@ -230,7 +236,7 @@ alias tmux='tmux -u'
 alias tmux3wide='tmux select-layout "c700,382x88,0,0{160x88,0,0,12,125x88,161,0,86,95x88,287,0,85}"'
 alias tmux3split='tmux select-layout "60c6,256x72,0,0{132x72,0,0,16,123x72,133,0[123x35,133,0,58,123x36,133,36,17]}"'
 
-alias rvaspout='mkdir -p vasp_old_out && mv ML_* WAVECAR CHGCAR vasp.ctrl vasp.h5 vaspout.h5 vasp.pg1 vasprun.xml vasptriqs.h5 vasp.lock XDATCAR PROJCAR PCDAT OUTCAR OSZICAR LOCPROJ IBZKPT EIGENVAL DOSCAR CONTCAR STOPCAR REPORT ICONST HILLSPOT PROCAR CHG conv_imp* observables_imp* H_imp* vasp_old_out/'
+alias rvaspout='mkdir -p vasp_old_out && mv ML_* WAVECAR CHGCAR vasp.ctrl vasp.h5 vaspout.h5 vasp.pg1 vasprun.xml vasp.lock XDATCAR PROJCAR PCDAT OUTCAR OSZICAR LOCPROJ IBZKPT EIGENVAL DOSCAR CONTCAR STOPCAR REPORT ICONST HILLSPOT PROCAR CHG conv_imp* observables_imp* H_imp* vaspwave.h5 TAUCAR vasp_old_out/'
 
 alias ls='ls --color=auto -lh'
 alias grep='grep --colour=auto'
@@ -262,6 +268,7 @@ extract () {
        case $1 in
            *.tar.bz2)   tar xvjf $1    ;;
            *.tar.gz)    tar xvzf $1    ;;
+           *.tar.zstd)  tar --zstd xvzf $1    ;;
            *.bz2)       bunzip2 $1     ;;
            *.rar)       unrar x $1       ;;
            *.gz)        gunzip $1      ;;
