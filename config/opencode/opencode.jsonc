@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "copilot/gpt-5.2",
+  "model": "copilot/gpt-5.4",
   "autoupdate": true,
   "permission": {
     "edit": "ask",
