@@ -194,63 +194,63 @@ return {
     }
   },
   -- my stuff
-  {
-    "olimorris/codecompanion.nvim",
-    -- to see avail models open chat and in normal mode press ga then choose an adapter and it will display all models
-    lazy = false,
-    opts = {
-      strategies = {
-        chat = {
-          -- adapter = {
-          --   name = "ollama",
-          --   model = "devstral",
-          -- },
-          adapter = {
-            name = "copilot",
-            -- model = "claude-sonnet-4",
-            model = "gpt-5",
-          },
-        },
-        inline = {
-          adapter = "copilot",
-          -- adapter = {
-          --   name = "ollama",
-          --   model = "devstral",
-          -- },
-          keymaps = {
-            accept_change = {
-              modes = { n = "ga" },
-              description = "Accept the suggested change",
-            },
-            reject_change = {
-              modes = { n = "gr" },
-              description = "Reject the suggested change",
-            },
-          },
-        },
-        cmd = {
-          adapter = "copilot",
-          -- adapter = {
-          --   name = "ollama",
-          --   model = "devstral",
-          -- },
-        },
-      },
-      display = {
-        diff = {
-          enabled = true,
-          close_chat_at = 240,    -- Close an open chat buffer if the total columns of your display are less than...
-          layout = "vertical",    -- vertical|horizontal split for default provider
-          opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
-          provider = "mini_diff", -- default|mini_diff
-        },
-      },
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "nvim-treesitter/nvim-treesitter",
-      },
-    },
-  },
+  -- {
+  --   "olimorris/codecompanion.nvim",
+  --   -- to see avail models open chat and in normal mode press ga then choose an adapter and it will display all models
+  --   lazy = false,
+  --   opts = {
+  --     strategies = {
+  --       chat = {
+  --         -- adapter = {
+  --         --   name = "ollama",
+  --         --   model = "devstral",
+  --         -- },
+  --         adapter = {
+  --           name = "copilot",
+  --           -- model = "claude-sonnet-4",
+  --           model = "gpt-5",
+  --         },
+  --       },
+  --       inline = {
+  --         adapter = "copilot",
+  --         -- adapter = {
+  --         --   name = "ollama",
+  --         --   model = "devstral",
+  --         -- },
+  --         keymaps = {
+  --           accept_change = {
+  --             modes = { n = "ga" },
+  --             description = "Accept the suggested change",
+  --           },
+  --           reject_change = {
+  --             modes = { n = "gr" },
+  --             description = "Reject the suggested change",
+  --           },
+  --         },
+  --       },
+  --       cmd = {
+  --         adapter = "copilot",
+  --         -- adapter = {
+  --         --   name = "ollama",
+  --         --   model = "devstral",
+  --         -- },
+  --       },
+  --     },
+  --     display = {
+  --       diff = {
+  --         enabled = true,
+  --         close_chat_at = 240,    -- Close an open chat buffer if the total columns of your display are less than...
+  --         layout = "vertical",    -- vertical|horizontal split for default provider
+  --         opts = { "internal", "filler", "closeoff", "algorithm:patience", "followwrap", "linematch:120" },
+  --         provider = "mini_diff", -- default|mini_diff
+  --       },
+  --     },
+  --     dependencies = {
+  --       "nvim-lua/plenary.nvim",
+  --       "nvim-treesitter/nvim-treesitter",
+  --     },
+  --   },
+  -- },
   {
     "zbirenbaum/copilot.lua",
     cond = function() return vim.fn.executable("node") == 1 end,
