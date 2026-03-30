@@ -9,15 +9,21 @@ vim.opt.mouse = ""
 
 vim.opt.spell = true
 
+vim.g.fortran_free_source = 1
+vim.g.fortran_have_tabs = 1
+vim.g.fortran_more_precise = 1
+vim.g.fortran_do_enddo = 1
+vim.g.fortran_CUDA = 1
+
+vim.filetype.add {
+  extension = {
+    pf = "fortran",
+  },
+}
+
 vim.api.nvim_create_autocmd({ "BufWritePre" }, {
   pattern = { "*.py", "*.cpp", "*.txt", "" },
   command = [[%s/\s\+$//e]],
-})
-
-
-vim.api.nvim_create_autocmd({ "BufRead",  "BufNewFile" }, {
-  pattern = { "*.pf" },
-  command = "set filetype=fortran",
 })
 
 vim.opt.diffopt =

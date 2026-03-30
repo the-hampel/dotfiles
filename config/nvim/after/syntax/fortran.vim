@@ -1,9 +1,4 @@
-set textwidth=0
-let fortran_free_source=1
-let fortran_have_tabs=1
-let fortran_more_precise=1
-let fortran_do_enddo=1
-let fortran_CUDA=1
+setlocal textwidth=0
 
 "match every whole word *assert*
 syntax match unitTestKeyword '\<assert\>'
@@ -17,4 +12,3 @@ hi def link fortranDirective PreProc
 
 syn region fortranDirective start=/!$OMP.\{-}/ end=/[^\&]$/
 hi def link fortranDirective PreProc
-
