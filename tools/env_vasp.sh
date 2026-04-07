@@ -43,7 +43,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [ "${MODE:-}" = gnu ]; then
-    module load vasp-gnu_mkl-dev/15.2_mkl-2025.3.1_ompi-4.1.8 profiling cross_platform openmp_support cmake
+    module load vasp-gnu_mkl-dev/15.2_mkl-2025.3.1_ompi-4.1.8 profiling cross_platform openmp_support cmake universal-ctags
     export FC=gfortran
     export CC=gcc
     export CXX=g++
@@ -57,7 +57,7 @@ if [ "${MODE:-}" = gnu ]; then
     export MKL_THREADING_LAYER=GNU
     export VASP_TARGET_CPU="-march=native"
 elif [ "${MODE:-}" = nvidia ]; then
-    module load vasp-nvhpc_mkl-dev/25.1_mkl-2025.0.1_ompi-4.1.7 gcc_system_8 profiling cross_platform openmp_support openacc_support cmake libxc
+    module load vasp-nvhpc_mkl-dev/25.1_mkl-2025.0.1_ompi-4.1.7 gcc_system_8 profiling cross_platform openmp_support openacc_support cmake libxc universal-ctags
     export LD_LIBRARY_PATH=$NVROOT/cuda/lib64:$LD_LIBRARY_PATH
     export LIBRARY_PATH=$NVROOT/cuda/lib64:$LIBRARY_PATH
     export FC=nvfortran
@@ -78,7 +78,7 @@ elif [ "${MODE:-}" = nvidia ]; then
     # export CMAKE_CUDA_ARCHITECTURES=89
     # export VASP_CUDA_VERSION=11.8
 elif [ "${MODE:-}" = intel24 ]; then
-    module load vasp-intel-dev/2024.0.2_mkl-2023.2.0_impi-2021.10.0 impi-srun profiling cross_platform cmake
+    module load vasp-intel-dev/2024.0.2_mkl-2023.2.0_impi-2021.10.0 impi-srun profiling cross_platform cmake universal-ctags
     export OMP_NUM_THREADS=1 
     export MKL_NUM_THREADS=1
     export BLA_VENDOR=Intel10_64lp
@@ -93,7 +93,7 @@ elif [ "${MODE:-}" = intel24 ]; then
     unset SCALAPACK_ROOT
 elif [ "${MODE:-}" = intel25 ]; then
     export LC_ALL=C
-    module load vasp-intel-dev/2025.3.2_mkl-2025.3.1_impi-2021.17.2 cmake
+    module load vasp-intel-dev/2025.3.2_mkl-2025.3.1_impi-2021.17.2 cmake universal-ctags
     export FC=ifx
     export CC=icx
     export CXX=icpx
@@ -117,7 +117,7 @@ elif [ "${MODE:-}" = nec ]; then
     export CXX=nc++
     export MPI_Fortran_COMPILER=mpinfort
 elif [ "${MODE:-}" = aocc ]; then
-    module load vasp-aocc-dev/5.0.0_aocl-5.0_ompi-5.0.6 cmake
+    module load vasp-aocc-dev/5.0.0_aocl-5.0_ompi-5.0.6 cmake universal-ctags
     unset BLA_VENDOR
     export SCALAPACK_ROOT=$AMDSCALAPACK_ROOT
 fi

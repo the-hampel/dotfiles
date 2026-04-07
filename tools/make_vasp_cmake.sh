@@ -53,8 +53,12 @@ while [[ $# -gt 0 ]]; do
           shift # move to next argument
           ;;
         --extras)
-          EXTRAS+="-DVASP_HDF5=ON -DVASP_OPENMP=ON -DVASP_WANNIER90=ON -DVASP_LIBXC=ON"
+          EXTRAS+="-DVASP_HDF5=ON -DVASP_OPENMP=ON -DVASP_WANNIER90=ON -DVASP_LIBXC=ON "
           shift # move to next argument
+          ;;
+        --ompoff)
+          EXTRAS+="-DVASP_OMP_OFFLOAD=ON -DVASP_HDF5=ON"
+          shift
           ;;
         --prof)
           EXTRAS+="-DVASP_PROFILING=ON"

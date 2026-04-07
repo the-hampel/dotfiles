@@ -1,0 +1,44 @@
+USERS="hampel|wolloch|mmars|marsadmin1"
+
+glab mr list --per-page 100 --output json \
+| jq --arg re "$USERS" '
+  map(select(.author.username | test($re)))
+  | sort_by(.updated_at) | reverse
+  | .[]
+  | {
+      iid,
+      author: .author.username,
+      title,
+      draft: .draft,
+      state,
+      pipeline: (.head_pipeline.status // "none")
+    }
+' | jq -r '
+  def color_status:
+    if .state == "merged" then "\u001b[35mMERGED\u001b[0m"
+    elif .state == "closed" then "\u001b[31mCLOSED\u001b[0m"
+    elif .draft then "\u001b[33mDRAFT\u001b[0m"
+    else "\u001b[32mOPEN\u001b[0m"
+    end;
+
+  def color_pipeline:
+    if .pipeline == "success" then "\u001b[32m✔\u001b[0m"
+    elif .pipeline == "failed" then "\u001b[31m✘\u001b[0m"
+    elif .pipeline == "running" then "\u001b[33m●\u001b[0m"
+    else " "
+    end;
+
+  "\(.iid)\t\(color_status)\t\(color_pipeline)\t\(.author)\t\(.title)"
+' | fzf \
+  --ansi \
+  --delimiter='\t' \
+  --with-nth=1,2,3,4,5 \
+  --preview 'glab mr view {1}' \
+  --preview-window=right:50% \
+  --bind 'enter:execute(
+    printf "Checkout MR {1}? [y/N] "; read ans;
+    if [[ $ans == y || $ans == Y ]]; then
+      glab mr checkout {1};
+    fi
+  )+abort' \
+  --bind 'ctrl-o:execute(glab mr view {1} --web)'
