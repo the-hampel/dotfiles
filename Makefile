@@ -48,6 +48,7 @@ files+=config/opencode/opencode.jsonc
 
 files+=claude/settings.json
 files+=claude/statusline-command.sh
+files+=claude/skills/journal/SKILL.md
 
 files+=config/ruff/ruff.toml
 
