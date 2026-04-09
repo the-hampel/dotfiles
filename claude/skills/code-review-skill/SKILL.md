@@ -10,8 +10,8 @@ allowed-tools:
   - Read
   - Grep
   - Glob
-  - Bash      # 运行 lint/test/build 命令验证代码质量
-  - WebFetch  # 查阅最新文档和最佳实践
+  - Bash      # Run lint/test/build commands to verify code quality
+  - WebFetch  # Look up latest documentation and best practices
 ---
 
 # Code Review Excellence
@@ -187,29 +187,29 @@ Use labels to indicate priority:
 
 ## Language-Specific Guides
 
-根据审查的代码语言，查阅对应的详细指南：
+Based on the language of the code being reviewed, consult the corresponding detailed guide:
 
 | Language/Framework | Reference File | Key Topics |
 |-------------------|----------------|------------|
 | **React** | [React Guide](reference/react.md) | Hooks, useEffect, React 19 Actions, RSC, Suspense, TanStack Query v5 |
-| **Vue 3** | [Vue Guide](reference/vue.md) | Composition API, 响应性系统, Props/Emits, Watchers, Composables |
-| **Rust** | [Rust Guide](reference/rust.md) | 所有权/借用, Unsafe 审查, 异步代码, 错误处理 |
-| **TypeScript** | [TypeScript Guide](reference/typescript.md) | 类型安全, async/await, 不可变性 |
-| **Python** | [Python Guide](reference/python.md) | 可变默认参数, 异常处理, 类属性 |
-| **Java** | [Java Guide](reference/java.md) | Java 17/21 新特性, Spring Boot 3, 虚拟线程, Stream/Optional |
-| **Go** | [Go Guide](reference/go.md) | 错误处理, goroutine/channel, context, 接口设计 |
-| **C** | [C Guide](reference/c.md) | 指针/缓冲区, 内存安全, UB, 错误处理 |
-| **C++** | [C++ Guide](reference/cpp.md) | RAII, 生命周期, Rule of 0/3/5, 异常安全 |
-| **CSS/Less/Sass** | [CSS Guide](reference/css-less-sass.md) | 变量规范, !important, 性能优化, 响应式, 兼容性 |
-| **Qt** | [Qt Guide](reference/qt.md) | 对象模型, 信号/槽, 内存管理, 线程安全, 性能 |
+| **Vue 3** | [Vue Guide](reference/vue.md) | Composition API, Reactivity system, Props/Emits, Watchers, Composables |
+| **Rust** | [Rust Guide](reference/rust.md) | Ownership/Borrowing, Unsafe review, Async code, Error handling |
+| **TypeScript** | [TypeScript Guide](reference/typescript.md) | Type safety, async/await, Immutability |
+| **Python** | [Python Guide](reference/python.md) | Mutable default arguments, Exception handling, Class attributes |
+| **Java** | [Java Guide](reference/java.md) | Java 17/21 new features, Spring Boot 3, Virtual threads, Stream/Optional |
+| **Go** | [Go Guide](reference/go.md) | Error handling, goroutine/channel, context, Interface design |
+| **C** | [C Guide](reference/c.md) | Pointers/Buffers, Memory safety, UB, Error handling |
+| **C++** | [C++ Guide](reference/cpp.md) | RAII, Lifetimes, Rule of 0/3/5, Exception safety |
+| **CSS/Less/Sass** | [CSS Guide](reference/css-less-sass.md) | Variable conventions, !important, Performance optimization, Responsive design, Compatibility |
+| **Qt** | [Qt Guide](reference/qt.md) | Object model, Signals/Slots, Memory management, Thread safety, Performance |
 | **Fortran** | [Fortran Guide](reference/fortran.md) | implicit none, kinds/precision, array handling, intent, modules, OpenMP |
 
 ## Additional Resources
 
-- [Architecture Review Guide](reference/architecture-review-guide.md) - 架构设计审查指南（SOLID、反模式、耦合度）
-- [Performance Review Guide](reference/performance-review-guide.md) - 性能审查指南（Web Vitals、N+1、复杂度）
-- [Common Bugs Checklist](reference/common-bugs-checklist.md) - 按语言分类的常见错误清单
-- [Security Review Guide](reference/security-review-guide.md) - 安全审查指南
-- [Code Review Best Practices](reference/code-review-best-practices.md) - 代码审查最佳实践
-- [PR Review Template](assets/pr-review-template.md) - PR 审查评论模板
-- [Review Checklist](assets/review-checklist.md) - 快速参考清单
+- [Architecture Review Guide](reference/architecture-review-guide.md) - Architecture design review guide (SOLID, anti-patterns, coupling)
+- [Performance Review Guide](reference/performance-review-guide.md) - Performance review guide (Web Vitals, N+1, complexity)
+- [Common Bugs Checklist](reference/common-bugs-checklist.md) - Common bugs checklist organized by language
+- [Security Review Guide](reference/security-review-guide.md) - Security review guide
+- [Code Review Best Practices](reference/code-review-best-practices.md) - Code review best practices
+- [PR Review Template](assets/pr-review-template.md) - PR review comment template
+- [Review Checklist](assets/review-checklist.md) - Quick reference checklist
