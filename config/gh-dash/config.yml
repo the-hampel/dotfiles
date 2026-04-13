@@ -8,7 +8,7 @@ prSections:
 
 issuesSections:
   - title: "My Issues"
-    filters: "is:open author:@me"
+    filters: "is:open"
   - title: "Assigned"
     filters: "is:open assignee:@me"
   - title: "Involved"

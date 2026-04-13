@@ -31,16 +31,6 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
-source $ZSH/oh-my-zsh.sh
-
-PROMPT=$'%F{214}%m %F{166}[%F{142}%~%F{166}]%f $(git branch 2>/dev/null | grep "*" | sed "s/* //g" | sed "s/.*/ (%F{108}&%f)/") %F{246}$(date +%H:%M:%S)%f\n%F{166}╰─%F{214}❯%f '
-
-# Add virtual environment check:
-if [[ -n "$VIRTUAL_ENV" ]]; then
-  # Display the virtual environment name in brackets, with a color
-  PROMPT="%F{220}($(basename $VIRTUAL_ENV))%f $PROMPT"
-fi
-
 ##### load all bash related stuff #######################
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 #########################################################
@@ -106,10 +96,23 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
   # Set up fzf key bindings and fuzzy completion
   source <(fzf --zsh)
 
+  # allow to use autocompletion from dirs that are not mine
+  ZSH_DISABLE_COMPFIX=true
+  module load htop glab universal-ctags
+
   export NVM_DIR="$HOME/.nvm"
   [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
   [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 fi
 
+source $ZSH/oh-my-zsh.sh
+
+PROMPT=$'%F{214}%m %F{166}[%F{142}%~%F{166}]%f $(git branch 2>/dev/null | grep "*" | sed "s/* //g" | sed "s/.*/ (%F{108}&%f)/") %F{246}$(date +%H:%M:%S)%f\n%F{166}╰─%F{214}❯%f '
+
+# Add virtual environment check:
+if [[ -n "$VIRTUAL_ENV" ]]; then
+  # Display the virtual environment name in brackets, with a color
+  PROMPT="%F{220}($(basename $VIRTUAL_ENV))%f $PROMPT"
+fi
 

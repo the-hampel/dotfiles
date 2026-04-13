@@ -81,7 +81,6 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     export PATH="/opt/share/modulefiles/bin:/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:/fsc/home/hampel/git/dotfiles/tools:/fsc/home/hampel/.opencode/bin:$PATH"
 
-    module load htop
 
     # ollama models
     export OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
