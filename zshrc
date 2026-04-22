@@ -31,9 +31,6 @@ COMPLETION_WAITING_DOTS="true"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git)
 
-##### load all bash related stuff #######################
-[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
-#########################################################
 #
 HOSTNAME=${HOST:-$(hostname)}
 
@@ -107,6 +104,10 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
 fi
 
 source $ZSH/oh-my-zsh.sh
+
+##### load all bash related stuff #######################
+[[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
+#########################################################
 
 PROMPT=$'%F{214}%m %F{166}[%F{142}%~%F{166}]%f $(git branch 2>/dev/null | grep "*" | sed "s/* //g" | sed "s/.*/ (%F{108}&%f)/") %F{246}$(date +%H:%M:%S)%f\n%F{166}╰─%F{214}❯%f '
 

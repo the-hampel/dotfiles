@@ -45,6 +45,7 @@ files+=config/nvim/after/syntax/fortran.vim
 files+=config/nvim/spell/en.utf-8.add
 
 files+=config/opencode/opencode.jsonc
+files+=config/opencode/AGENTS.md
 
 files+=config/gh-dash/config.yml
 

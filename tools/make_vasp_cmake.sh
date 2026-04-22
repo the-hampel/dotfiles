@@ -71,10 +71,11 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-ORG_DIR=$(pwd)
-SRC_DIR=$(pwd)/../
+ORG_DIR=${PWD}
+SRC_DIR=$(dirname "${PWD}")
 BLD_DIR=$(realpath .)
 NC_TEST=4
+echo ${SRC_DIR}
 cd ${BLD_DIR}
 cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -G "$BACKEND" -DCMAKE_INSTALL_PREFIX=${SRC_DIR} -S ${SRC_DIR} -B ${BLD_DIR} ${EXTRAS} "${OTHER_ARGS[@]}"
 if [ $CMAKE_ONLY = false ]; then

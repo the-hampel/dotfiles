@@ -1,6 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "model": "copilot/gpt-5.4",
+  "model": "copilot/claude-sonnet-4.6",
   "autoupdate": true,
   "permission": {
     "edit": "ask",
@@ -19,6 +19,11 @@
       "git remote -v": "allow",
       "grep *": "allow",
       "rg *": "allow",
+      "find *": "allow",
+      "cat *": "allow",
+      "wc *": "allow",
+      "head *": "allow",
+      "tail *": "allow",
       "mpirun *": "allow",
 
       // Copy is safe when it won't overwrite
