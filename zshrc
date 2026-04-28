@@ -47,9 +47,6 @@ if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac* ]]; then
 
   eval "$(zoxide init zsh)"
 
-  # Set up fzf key bindings and fuzzy completion
-  source <(fzf --zsh)
-
   export WANNIER90_ROOT=/Users/ahampel/git/wannier90/install
   export SCALAPACK_ROOT=/opt/homebrew/lib
 
@@ -60,9 +57,6 @@ elif [[ "$HOSTNAME" == fractal ]]; then
   export LC_ALL=en_US.UTF-8
 
   eval "$(zoxide init zsh)"
-
-  # Set up fzf key bindings and fuzzy completion
-  source <(fzf --zsh)
 
   # load default python venv
   source $HOME/pyvenv/devpy/bin/activate
@@ -90,9 +84,6 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
 
   eval "$(zoxide init zsh)"
 
-  # Set up fzf key bindings and fuzzy completion
-  source <(fzf --zsh)
-
   # allow to use autocompletion from dirs that are not mine
   ZSH_DISABLE_COMPFIX=true
   module load htop glab universal-ctags
@@ -105,6 +96,11 @@ fi
 
 source $ZSH/oh-my-zsh.sh
 
+# Set up fzf key bindings and fuzzy completion after OMZ.
+if command -v fzf >/dev/null 2>&1; then
+  source <(fzf --zsh)
+fi
+
 ##### load all bash related stuff #######################
 [[ -e ~/.profile ]] && emulate sh -c 'source ~/.profile'
 #########################################################
@@ -116,4 +112,3 @@ if [[ -n "$VIRTUAL_ENV" ]]; then
   # Display the virtual environment name in brackets, with a color
   PROMPT="%F{220}($(basename $VIRTUAL_ENV))%f $PROMPT"
 fi
-

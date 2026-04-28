@@ -27,11 +27,11 @@
       "Bash(echo *)"
     ]
   },
-  "model": "opus[1m]",
   "statusLine": {
     "type": "command",
     "command": "bash $HOME/.claude/statusline-command.sh"
   },
   "effortLevel": "high",
-  "autoDreamEnabled": true
+  "autoDreamEnabled": true,
+  "theme": "dark-ansi"
 }
