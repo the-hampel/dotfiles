@@ -117,7 +117,7 @@ elif [ "${MODE:-}" = nec ]; then
     export CXX=nc++
     export MPI_Fortran_COMPILER=mpinfort
 elif [ "${MODE:-}" = aocc ]; then
-    module load vasp-aocc-dev/5.0.0_aocl-5.0_ompi-5.0.6 cmake universal-ctags
+    module load vasp-aocc-dev/5.0.0_aocl-5.0_ompi-5.0.6 cmake universal-ctags amdblis/5.0-omp
     unset BLA_VENDOR
     export SCALAPACK_ROOT=$AMDSCALAPACK_ROOT
 fi

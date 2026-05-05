@@ -67,6 +67,8 @@ elif [[ "$HOSTNAME" == fractal ]]; then
 #############################################################
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
   echo "zsh session started on $HOSTNAME"
+  # allow to use autocompletion from dirs that are not mine
+  ZSH_DISABLE_COMPFIX=true
 
   # >>> mamba initialize >>>
   # !! Contents within this block are managed by 'micromamba shell init' !!
@@ -84,8 +86,6 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
 
   eval "$(zoxide init zsh)"
 
-  # allow to use autocompletion from dirs that are not mine
-  ZSH_DISABLE_COMPFIX=true
   module load htop glab universal-ctags
 
   export NVM_DIR="$HOME/.nvm"

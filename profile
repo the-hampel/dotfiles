@@ -94,11 +94,12 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     # export JUPYTERLAB_DIR=/mnt/home/ahampel/.jupyter/lab
 
     # slurm
-    alias qs='squeue --sort "P,U" -o "%.10i %.10u %40j %.12M %.2t %.6D %.6C %30R"'
+    alias qs='squeue --sort "P,U" -o "%.10i %.10u %30j %.12M %.2t %.4D %.6C %.14b %30R"'
     alias si='Sinfo'
     alias getnode='srun --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=1 --cpus-per-task=16 --cpu-bind=cores --pty zsh -i'
     alias getroc='srun --nodes=1 --time 12:00:00 --partition=porgy05 --ntasks-per-node=2 --cpus-per-task=10 --cpu-bind=cores --gres=gpu:2 --pty zsh -i'
     alias getintel='srun --nodes=1 --time 12:00:00 --partition=guppy07 --ntasks-per-node=2 --cpus-per-task=10 --cpu-bind=cores --pty zsh -i'
+    alias geta100='srun --nodes=1 --time 12:00:00 --partition=guppy06 --ntasks-per-node=2 --cpus-per-task=8 --cpu-bind=cores --gres=gpu:2 --pty zsh -i'
   
     # apptainer
     if [[ "$HOSTNAME" == *porgy05 ]]; then
@@ -249,6 +250,7 @@ alias gits='git status'
 alias gitp='git pull --autostash'
 alias gitb='git branch -a -vv'
 alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'"
+alias gitlm='git log --merges --graph --oneline --decorate --date=short --pretty=format:"%h %ad %d %s"'
 
 # simple terminal calculator via python
 calc() {
