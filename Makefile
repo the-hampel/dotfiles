@@ -52,8 +52,10 @@ files+=config/gh-dash/config.yml
 files+=claude/settings.json
 files+=claude/statusline-command.sh
 files+=claude/skills/journal/SKILL.md
-files+=claude/skills/code-review-skill
-files+=claude/commands/code-review.md
+
+# global skills
+files+=agents/skills/code-review-skill
+files+=agents/commands/code-review.md
 
 files+=config/ruff/ruff.toml
 
