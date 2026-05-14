@@ -142,6 +142,8 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     alias conda-triqs-rel='micromamba activate triqs-rel'
     alias conda-vasp='micromamba activate vasp-dev'
 
+    alias devpy='source $HOME/pyvenv/devpy/bin/activate'
+
     # intel stuff
     export MKL_NUM_THREADS=1
     alias ifxgpu='ifx -fiopenmp -fopenmp-targets=spir64 -g'

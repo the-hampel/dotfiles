@@ -37,12 +37,13 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-ORG_DIR=$(pwd)
-SRC_DIR=$(pwd)/../
+ORG_DIR=${PWD}
+SRC_DIR=$(dirname "${PWD}")
 BLD_DIR=$(realpath .)
 NC_TEST=4
 cd ${BLD_DIR}
-cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$TRIQS_ROOT -DBuild_Documentation=$DOC -DMPIEXEC_MAX_NUMPROCS=$NC_TEST -S ${SRC_DIR} -B ${BLD_DIR} $OTHER_ARGS
+unset PYTHON_ROOT
+cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 -DCMAKE_INSTALL_PREFIX=$TRIQS_ROOT -DBuild_Documentation=$DOC -DUpdate_Python_Bindings=OFF -DMPIEXEC_MAX_NUMPROCS=$NC_TEST -S ${SRC_DIR} -B ${BLD_DIR} $OTHER_ARGS
 if [ $CMAKE_ONLY = false ]; then
   time make -j$NCORE $MODE
   if [ $TEST = true ]; then

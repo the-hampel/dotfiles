@@ -23,6 +23,10 @@ while [[ $# -gt 0 ]]; do
             MODE=intel25
             shift # move to next argument
             ;;
+        intel26)
+            MODE=intel26
+            shift # move to next argument
+            ;;
         nec)
             MODE=nec
             shift # move to next argument
@@ -43,7 +47,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [ "${MODE:-}" = gnu ]; then
-    module load vasp-gnu_mkl-dev/15.2_mkl-2025.3.1_ompi-4.1.8 profiling cross_platform openmp_support cmake universal-ctags
+    module load vasp-gnu_mkl-dev/15.2_mkl-2026.0.0_ompi-5.0.9_py-3.14 profiling cross_platform openmp_support cmake universal-ctags
     export FC=gfortran
     export CC=gcc
     export CXX=g++
@@ -94,6 +98,25 @@ elif [ "${MODE:-}" = intel24 ]; then
 elif [ "${MODE:-}" = intel25 ]; then
     export LC_ALL=C
     module load vasp-intel-dev/2025.3.2_mkl-2025.3.1_impi-2021.17.2 cmake universal-ctags
+    export FC=ifx
+    export CC=icx
+    export CXX=icpx
+    export FFLAGS=""
+    export CFLAGS=""
+    export CXXFLAGS=""
+    export MKL_THREADING_LAYER=INTEL
+    export MKL_INTERFACE_LAYER=LP64
+    export BLA_VENDOR=Intel10_64lp
+    export OMP_NUM_THREADS=1
+    export MKL_NUM_THREADS=1
+    export I_MPI_DEBUG=1
+    export I_MPI_OFFLOAD=1
+    export OMP_TARGET_OFFLOAD=DEFAULT
+    export VASP_TARGET_CPU="-march=native"
+    unset SCALAPACK_ROOT
+elif [ "${MODE:-}" = intel26 ]; then
+    export LC_ALL=C
+    module load vasp-intel-dev/2026.0.0_mkl-2026.0.0_impi-2021.18.0 universal-ctags
     export FC=ifx
     export CC=icx
     export CXX=icpx

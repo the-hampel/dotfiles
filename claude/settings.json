@@ -33,5 +33,6 @@
   },
   "effortLevel": "high",
   "autoDreamEnabled": true,
-  "theme": "dark-ansi"
+  "theme": "dark-ansi",
+  "skipAutoPermissionPrompt": true
 }
