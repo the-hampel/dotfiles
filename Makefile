@@ -56,6 +56,7 @@ files+=claude/skills/journal/SKILL.md
 # global skills
 files+=agents/skills/code-review-skill
 files+=agents/commands/code-review.md
+files+=agents/skills/handoff/SKILL.md
 
 files+=config/ruff/ruff.toml
 

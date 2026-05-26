@@ -35,6 +35,19 @@
     }
   },
   "provider": {
+    "omlx_local": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "oMLX (local)",
+      "options": {
+        "baseURL": "http://localhost:8234/v1",
+        "apiKey": "gimli2006"
+      },
+      "models": {
+        "Qwen3.6-35B-A3B-UD-MLX-4bit": {
+          "name": "Qwen3.6-35B"
+        }
+      }
+    },
     "ollama_local": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Ollama (local)",
