@@ -75,8 +75,8 @@
           "reasoningEffort": "low",
           "tools": true
         },
-        "qwen3-coder:30b": {
-          "name": "qwen3-coder:latest",
+        "qwen3.6:35b": {
+          "name": "Qwen3.6",
           "reasoning": true,
           "tools": true
         },
