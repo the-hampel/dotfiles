@@ -34,5 +34,6 @@
   "effortLevel": "high",
   "autoDreamEnabled": true,
   "theme": "dark-ansi",
+  "editorMode": "vim",
   "skipAutoPermissionPrompt": true
 }
