@@ -62,6 +62,20 @@
         }
       }
     },
+    "ollama_rtx6000": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "Ollama (RTX6000)",
+      "options": {
+        "baseURL": "http://wahoo04.vasp.co:11434/v1"
+      },
+      "models": {
+        "qwen3.6:agent": {
+          "name": "Qwen3.6@RTX6000",
+          "reasoning": true,
+          "tools": true
+        }
+      }
+    },
     "ollama_spark": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Ollama (Spark)",
@@ -75,7 +89,7 @@
           "reasoningEffort": "low",
           "tools": true
         },
-        "qwen3.6:35b": {
+        "qwen3.6-agent:35b": {
           "name": "Qwen3.6",
           "reasoning": true,
           "tools": true

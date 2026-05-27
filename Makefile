@@ -57,6 +57,8 @@ files+=claude/skills/journal/SKILL.md
 files+=agents/skills/code-review-skill
 files+=agents/commands/code-review.md
 files+=agents/skills/handoff/SKILL.md
+files+=agents/skills/vasp-compare-perf/SKILL.md
+files+=agents/skills/vasp-compare-perf/vasp-compare-perf.py
 
 files+=config/ruff/ruff.toml
 
