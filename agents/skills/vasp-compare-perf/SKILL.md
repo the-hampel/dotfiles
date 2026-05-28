@@ -12,7 +12,7 @@ Compare the "Flat profile" sections of two VASP OUTCAR files and output a format
 Invoke from chat by telling me to compare two OUTCAR files. I will:
 
 1. Locate or resolve the two OUTCAR file paths the user mentions.
-2. Run `python3 <skill_dir>/vasp-compare-perf.py <OUTCAR1> <OUTCAR2>`.
+2. Run `python3 vasp-compare-perf.py <OUTCAR1> <OUTCAR2>` from the skill directory.
 3. Summarize the key findings: which routines dominate the time difference, and the overall relative difference.
 
 ## What it does

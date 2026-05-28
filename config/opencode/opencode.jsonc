@@ -76,6 +76,20 @@
         }
       }
     },
+    "vllm_spark": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "vLLM (Spark)",
+      "options": {
+        "baseURL": "http://10.23.0.111:8000/v1"
+      },
+      "models": {
+        "Qwen3.6-35B-A3B-NVFP4": {
+          "name": "Qwen3.6-35B-NVFP4",
+          "reasoning": true,
+          "tools": true
+         }
+       }
+     },
     "ollama_spark": {
       "npm": "@ai-sdk/openai-compatible",
       "name": "Ollama (Spark)",
