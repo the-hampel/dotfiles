@@ -43,8 +43,8 @@
         "apiKey": "gimli2006"
       },
       "models": {
-        "Qwen3.6-35B-A3B-UD-MLX-4bit": {
-          "name": "Qwen3.6-35B"
+        "Qwopus3.6-27B-v2-MLX-4bit": {
+          "name": "Qwen3.6-27B"
         }
       }
     },
