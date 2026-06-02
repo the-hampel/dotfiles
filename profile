@@ -251,7 +251,21 @@ alias gitw='git worktree'
 alias gits='git status'
 alias gitp='git pull --autostash'
 alias gitb='git branch -a -vv'
-alias gitl="git log --graph --abbrev-commit --decorate --format=format:'%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'"
+function gitl {
+    local fmt_full='%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+    local fmt_fzf='%C(blue)%h%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
+    if [[ $# -gt 0 ]]; then
+        git log --graph --abbrev-commit --decorate --format="format:$fmt_full" "$@"
+    elif command -v fzf > /dev/null 2>&1; then
+        git log --abbrev-commit --decorate --format="format:$fmt_fzf" \
+            | fzf --ansi --no-sort --reverse --tiebreak=index \
+                  --preview 'git show --stat --color=always $(echo {} | grep -oE "[a-f0-9]{7,}" | head -1)' \
+                  --preview-window=right:55%:wrap \
+                  --bind 'enter:execute(git show --color=always $(echo {} | grep -oE "[a-f0-9]{7,}" | head -1) | less -R)+abort'
+    else
+        git log --graph --abbrev-commit --decorate --format="format:$fmt_full"
+    fi
+}
 alias gitlm='git log --merges --graph --oneline --decorate --date=short --pretty=format:"%h %ad %d %s"'
 
 # simple terminal calculator via python

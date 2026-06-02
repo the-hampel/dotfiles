@@ -191,14 +191,14 @@ def main():
 
     if iter1 != iter2:
         print(f"\nWARNING: The two OUTCAR files have different iteration counts:")
-        print(f"  {path1.name}: {iter1} iterations")
-        print(f"  {path2.name}: {iter2} iterations")
+        print(f"  {path1}: {iter1} iterations")
+        print(f"  {path2}: {iter2} iterations")
         print(f"  The comparison below may be misleading.\n")
 
     if energy_diff > 10.0:
         print(f"\nWARNING: The final energies differ by more than 10 meV:")
-        print(f"  {path1.name}: {energy1:.8f} eV")
-        print(f"  {path2.name}: {energy2:.8f} eV")
+        print(f"  {path1}: {energy1:.8f} eV")
+        print(f"  {path2}: {energy2:.8f} eV")
         print(f"  Difference: {energy_diff:.3f} meV")
         print(f"  The comparison below may be misleading.\n")
 
