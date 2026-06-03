@@ -60,6 +60,12 @@ files+=agents/skills/handoff/SKILL.md
 files+=agents/skills/vasp-compare-perf/SKILL.md
 files+=agents/skills/vasp-compare-perf/vasp-compare-perf.py
 
+# commit skill: single source under agents/, mirrored to BOTH ~/.agents/skills
+# (OpenCode et al.) and ~/.claude/skills (Claude Code only scans the latter).
+# claude/skills/commit is an in-repo symlink -> ../../agents/skills/commit.
+files+=agents/skills/commit
+files+=claude/skills/commit
+
 files+=config/ruff/ruff.toml
 
 files+=local/share/fzf/completion.bash

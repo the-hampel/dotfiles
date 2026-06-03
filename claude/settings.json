@@ -27,15 +27,6 @@
       "Bash(echo *)"
     ]
   },
-  "statusLine": {
-    "type": "command",
-    "command": "bash $HOME/.claude/statusline-command.sh"
-  },
-  "effortLevel": "high",
-  "autoDreamEnabled": true,
-  "theme": "dark-ansi",
-  "editorMode": "vim",
-  "skipAutoPermissionPrompt": true,
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -77,5 +68,15 @@
         ]
       }
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash $HOME/.claude/statusline-command.sh"
+  },
+  "effortLevel": "high",
+  "autoDreamEnabled": true,
+  "theme": "dark-ansi",
+  "editorMode": "vim",
+  "skipAutoPermissionPrompt": true,
+  "model": "opus[1m]"
 }
