@@ -81,6 +81,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     export PATH="/opt/share/modulefiles/bin:/fsc/home/hampel/.local/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:/fsc/home/hampel/git/dotfiles/tools:/fsc/home/hampel/.opencode/bin:$PATH"
 
+    module load htop universal-ctags
 
     # ollama models
     export OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
@@ -112,6 +113,9 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     export OLLAMA_MODELS=/home/hampel/ollama/models
     alias ollama="/home/hampel/ollama/bin/ollama"
+
+    # seafile
+    alias sfs='seaf-cli status'
 
     # perf stuff
     ulimit -s unlimited

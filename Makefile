@@ -55,6 +55,7 @@ files+=claude/skills/journal/SKILL.md
 
 # global skills
 files+=agents/skills/code-review-skill
+files+=claude/skills/code-review-skill
 files+=agents/commands/code-review.md
 files+=agents/skills/handoff/SKILL.md
 files+=agents/skills/vasp-compare-perf/SKILL.md
@@ -65,6 +66,15 @@ files+=agents/skills/vasp-compare-perf/vasp-compare-perf.py
 # claude/skills/commit is an in-repo symlink -> ../../agents/skills/commit.
 files+=agents/skills/commit
 files+=claude/skills/commit
+
+# vasp-build skill: same dual-mirror pattern as commit.
+# claude/skills/vasp-build is an in-repo symlink -> ../../agents/skills/vasp-build.
+files+=agents/skills/vasp-build
+files+=claude/skills/vasp-build
+
+# vasp-test skill: same dual-mirror pattern.
+files+=agents/skills/vasp-test
+files+=claude/skills/vasp-test
 
 files+=config/ruff/ruff.toml
 

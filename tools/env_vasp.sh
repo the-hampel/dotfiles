@@ -11,8 +11,12 @@ while [[ $# -gt 0 ]]; do
             MODE=gnu
             shift # move to next argument
             ;;
-        nvidia)
-            MODE=nvidia
+        nvidia25)
+            MODE=nvidia25
+            shift # move to next argument
+            ;;
+        nvidia26)
+            MODE=nvidia26
             shift # move to next argument
             ;;
         intel24)
@@ -41,7 +45,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         *)
            echo "Error: Unknown argument '$1'" >&2
-           exit 1
+           return 1
            ;;
     esac
 done
@@ -60,8 +64,8 @@ if [ "${MODE:-}" = gnu ]; then
     export MKL_INTERFACE_LAYER=GNU,LP64
     export MKL_THREADING_LAYER=GNU
     export VASP_TARGET_CPU="-march=native"
-elif [ "${MODE:-}" = nvidia ]; then
-    module load vasp-nvhpc_mkl-dev/25.1_mkl-2025.0.1_ompi-4.1.7 gcc_system_8 profiling cross_platform openmp_support openacc_support cmake libxc universal-ctags
+elif [ "${MODE:-}" = nvidia25 ]; then
+    module load vasp-nvhpc_mkl-dev/25.1_mkl-2025.0.1_ompi-4.1.7 gcc_system_8 profiling cross_platform openmp_support openacc_support cublasmp_support cmake libxc universal-ctags
     export LD_LIBRARY_PATH=$NVROOT/cuda/lib64:$LD_LIBRARY_PATH
     export LIBRARY_PATH=$NVROOT/cuda/lib64:$LIBRARY_PATH
     export FC=nvfortran
@@ -81,6 +85,17 @@ elif [ "${MODE:-}" = nvidia ]; then
     # for RTX 4000 series
     # export CMAKE_CUDA_ARCHITECTURES=89
     # export VASP_CUDA_VERSION=11.8
+elif [ "${MODE:-}" = nvidia26 ]; then
+    module load vasp-nvhpc_mkl-dev/26.3_mkl-2026.0.0_ompi-5.0.9 profiling cross_platform openmp_support openacc_support cmake libxc cublasmp_support universal-ctags
+    export FC=nvfortran
+    export CC=nvc
+    export CXX=nvc++
+    export OMP_NUM_THREADS=8
+    export MKL_NUM_THREADS=1
+    export MKL_INTERFACE_LAYER=PGI,LP64
+    export MKL_THREADING_LAYER=INTEL
+    export BLA_VENDOR=Intel10_64lp
+    export VASP_TARGET_CPU="-tp=host"
 elif [ "${MODE:-}" = intel24 ]; then
     module load vasp-intel-dev/2024.0.2_mkl-2023.2.0_impi-2021.10.0 impi-srun profiling cross_platform cmake universal-ctags
     export OMP_NUM_THREADS=1 
