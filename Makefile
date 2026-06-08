@@ -66,6 +66,7 @@ files+=agents/skills/vasp-compare-perf/vasp-compare-perf.py
 # claude/skills/commit is an in-repo symlink -> ../../agents/skills/commit.
 files+=agents/skills/commit
 files+=claude/skills/commit
+files+=claude/skills/vasp-compare-perf
 
 # vasp-build skill: same dual-mirror pattern as commit.
 # claude/skills/vasp-build is an in-repo symlink -> ../../agents/skills/vasp-build.

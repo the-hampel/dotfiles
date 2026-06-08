@@ -255,6 +255,7 @@ alias gitw='git worktree'
 alias gits='git status'
 alias gitp='git pull --autostash'
 alias gitb='git branch -a -vv'
+alias gitd='git diff'
 function gitl {
     local fmt_full='%C(blue)%h%C(reset) - %C(cyan)%aD%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset)%n          %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
     local fmt_fzf='%C(blue)%h%C(reset) %C(green)(%ar)%C(reset)%C(yellow)%d%C(reset) %C(white)%s%C(reset) %C(dim white)- %an%C(reset)'
