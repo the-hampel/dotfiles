@@ -82,6 +82,10 @@ source root for the classic build).
   export OMP_NUM_THREADS=$nthrds MKL_NUM_THREADS=$nthrds OMP_STACKSIZE=2048m \
          OMP_PLACES=cores OMP_PROC_BIND=close OMP_WAIT_POLICY=PASSIVE
   ```
+  **Do not replace `--map-by numa:PE=$nthrds --bind-to core` with `--map-by slot --bind-to none
+  --oversubscribe`** even if `nproc` reports 1 (e.g. in a restricted shell). The oversubscribe
+  fallback causes all ranks to run on a single core, degrading performance and possibly skewing
+  results. The numa binding works correctly at the hardware level regardless of what `nproc` shows.
 - **GPU:** **one MPI rank is bound to one GPU, always.** So set **`nranks` = number of GPUs**
   (`nvidia-smi -L | wc -l`). On a single-GPU box that means `nranks=1`. Do not over/under-subscribe.
   ```bash
@@ -142,6 +146,7 @@ skill). It only touches test output, not the compiled binaries. The top-level ma
 - **CMake: `runtest` is only in the build dir after the `test` target has run once** (it's rsynced by
   `copy_tests`). Check before calling it directly; otherwise run from the source `testsuite/`.
 - **Rank count discipline:** 4 (default) / 8 / 16 on CPU; `#GPUs` on GPU. Never 6 or odd mappings.
+- **OpenMPI binding — never use `--oversubscribe`:** even if `nproc` reports 1, keep `--map-by numa:PE=$nthrds --bind-to core`. The oversubscribe fallback pins all ranks to one core.
 - **`VASP_PATH` must point at the dir containing `bin/`** — for a CMake build that's `build_<tc>/`,
   not the source root.
 - Don't commit edits to the shared `~/git/vasp/*.conf` templates unless asked; copy them per-run.
