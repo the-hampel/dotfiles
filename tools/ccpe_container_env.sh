@@ -44,6 +44,12 @@ function ccpe-19 () {
     done < <(env | grep -E '^(SLURM|PALS|SRUN|PMI|HOST|USER|SLINGSHOT|ROCR_VISIBLE_DEVICES)=')
 
     export APPTAINERENV_PS1='cpe::\[\e[00m\] \h > '
+    # --cleanenv strips TERM; without it readline (Ctrl+R) and less/more misbehave.
+    # Use xterm-256color since the container may lack a tmux-256color terminfo entry.
+    case "$TERM" in
+        ""|tmux*|screen*) export APPTAINERENV_TERM="xterm-256color" ;;
+        *)                export APPTAINERENV_TERM="$TERM" ;;
+    esac
     export APPTAINERENV_PREPEND_PATH="/opt/rocm/bin"
     export APPTAINERENV_ROCM_PATH="/opt/rocm"
     export APPTAINERENV_FFTW_ROOT="/opt/cray/pe/fftw/default/x86_milan"

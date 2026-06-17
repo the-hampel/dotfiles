@@ -74,6 +74,7 @@ elif [ "$HOSTNAME" = fractal ]; then
     alias umount-vasp='fusermount -u /home/hampel/vasp_home &> /dev/null && fusermount -u /home/hampel/vasp_scratch &> /dev/null'
 
     alias devpy='source $HOME/pyvenv/devpy/bin/activate'
+    alias wiki='source $HOME/pyvenv/wiki-agent/bin/activate'
 
 
 elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
@@ -81,7 +82,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     export PATH="/fsc/home/hampel/.local/bin:/opt/share/modulefiles/bin:/fsc/home/hampel/.local/go/bin:/fsc/home/hampel/go/bin:/wahoo06.local/hampel_temp/ollama/bin:/fsc/home/hampel/git/dotfiles/tools:/fsc/home/hampel/.opencode/bin:$PATH"
 
-    module load htop universal-ctags
+    module load universal-ctags
 
     # ollama models
     export OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
