@@ -38,7 +38,8 @@ if [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac* ]]; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 
   export PATH=$(brew --prefix)/opt/llvm/bin:/Users/ahampel/.local/bin:/Users/ahampel/.docker/bin:$PATH
-  export LIBRARY_PATH=$(brew --prefix)/opt/llvm/lib:$(brew --prefix)/lib:$LIBRARY_PATH
+  # libomp formula dir first so clang links the same libomp as openblas (avoids OMP Error #15 / duplicate runtime)
+  export LIBRARY_PATH=$(brew --prefix)/opt/libomp/lib:$(brew --prefix)/opt/llvm/lib:$(brew --prefix)/lib:$LIBRARY_PATH
   export CC=$(brew --prefix)/opt/llvm/bin/clang
   export CXX=$(brew --prefix)/opt/llvm/bin/clang++
   export LDFLAGS="-L$HOMEBREW_PREFIX/opt/llvm/lib/c++ -L$HOMEBREW_PREFIX/opt/llvm/lib/unwind -lunwind"
