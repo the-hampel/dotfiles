@@ -154,44 +154,41 @@ return {
 
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
     cmd = "Telescope",
     opts = function()
       return require "nvchad.configs.telescope"
     end,
   },
   {
-    "OXY2DEV/markview.nvim",
-    lazy = false,
-    opts = {
-      experimental = {check_rtp = false},
-      preview = {
-        filetypes = { "markdown", "codecompanion" },
-        ignore_buftypes = {},
-      },
-    },
-  },
-  {
     "nvim-treesitter/nvim-treesitter",
+    branch = "main",
+    main = "nvim-treesitter",
     event = { "BufReadPost", "BufNewFile" },
     cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
     build = ":TSUpdate",
-    opts = function()
-      local treesitter_opts = require("nvchad.configs.treesitter")
-      treesitter_opts.ensure_installed = vim.tbl_extend("force", treesitter_opts.ensure_installed or {}, {
-        "vim", "lua", "vimdoc",
-        "html", "css", "markdown", "markdown_inline"
+    init = function()
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          pcall(vim.treesitter.start)
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
       })
-      treesitter_opts.highlight = vim.tbl_extend("force", treesitter_opts.highlight or {}, { enable = true })
 
-      return treesitter_opts
+      local ensureInstalled = {
+        "vim", "lua", "vimdoc",
+        "html", "css", "markdown", "markdown_inline",
+        "python", "typescript", "javascript", "rust", "c", "cpp",
+      }
+      local alreadyInstalled = require("nvim-treesitter.config").get_installed()
+      local toInstall = vim.iter(ensureInstalled)
+        :filter(function(lang)
+          return not vim.tbl_contains(alreadyInstalled, lang)
+        end)
+        :totable()
+      if #toInstall > 0 then
+        require("nvim-treesitter").install(toInstall)
+      end
     end,
-    config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
-    end,
-    dependencies = {
-       "OXY2DEV/markview.nvim",
-    }
   },
   -- my stuff
   -- {
