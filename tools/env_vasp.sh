@@ -51,7 +51,7 @@ while [[ $# -gt 0 ]]; do
 done
 
 if [ "${MODE:-}" = gnu ]; then
-    module load vasp-gnu_mkl-dev/15.2_mkl-2026.0.0_ompi-5.0.9_py-3.14 profiling cross_platform openmp_support cmake universal-ctags
+    module load vasp-gnu_mkl-dev/15.2_mkl-2026.0.0_ompi-5.0.10_py-3.14 profiling cross_platform openmp_support cmake universal-ctags
     export FC=gfortran
     export CC=gcc
     export CXX=g++

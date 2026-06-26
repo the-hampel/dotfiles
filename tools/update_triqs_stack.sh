@@ -41,7 +41,11 @@ set -uo pipefail
 ROOT="$HOME/git/triqs"
 
 # repos in build / dependency order
-REPOS=(triqs modest cthyb ctseg hubbardI hartree_fock maxent dft_tools dftkit solid_dmft)
+# NB: dftkit must come before the packages that depend on it (dft_tools,
+# solid_dmft). It used to be bundled via CPM, but modest (0d82894) and dft_tools
+# (09876517) now consume it as a separately-installed package, so it has to be
+# built+installed before them.
+REPOS=(triqs dftkit modest cthyb ctseg hubbardI hartree_fock maxent dft_tools solid_dmft)
 
 NC_TEST=4                      # MPIEXEC_MAX_NUMPROCS, matches make_dev.sh
 NCORE="${NCORE:-8}"            # parallel make jobs (8 = safe default if unset)
@@ -75,7 +79,7 @@ fail() { echo "ERROR: $*" >&2; exit 1; }
 
 # ---- log setup -------------------------------------------------------------
 STAMP="$(date +%Y%m%d_%H%M%S)"
-LOGDIR="$HOME/triqs_stack_logs/$STAMP"
+LOGDIR="$ROOT/triqs_stack_logs/$STAMP"
 mkdir -p "$LOGDIR"
 SUMMARY="$LOGDIR/summary.txt"
 
