@@ -32,8 +32,13 @@
     "type": "command",
     "command": "bash $HOME/.claude/statusline-command.sh"
   },
+  "enabledPlugins": {
+    "clangd-lsp@claude-plugins-official": true
+  },
   "effortLevel": "high",
+  "tui": "fullscreen",
   "autoDreamEnabled": true,
   "theme": "dark-ansi",
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "awaySummaryEnabled": false
 }
