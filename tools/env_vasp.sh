@@ -82,6 +82,9 @@ elif [ "${MODE:-}" = nvidia25 ]; then
     export MKL_THREADING_LAYER=INTEL
     export BLA_VENDOR=Intel10_64lp
     export VASP_TARGET_CPU="-tp=host"
+    export FFLAGS=""
+    export CFLAGS=""
+    export CXXFLAGS=""
     # for RTX 4000 series
     # export CMAKE_CUDA_ARCHITECTURES=89
     # export VASP_CUDA_VERSION=11.8
@@ -96,6 +99,9 @@ elif [ "${MODE:-}" = nvidia26 ]; then
     export MKL_THREADING_LAYER=INTEL
     export BLA_VENDOR=Intel10_64lp
     export VASP_TARGET_CPU="-tp=host"
+    export FFLAGS=""
+    export CFLAGS=""
+    export CXXFLAGS=""
 elif [ "${MODE:-}" = intel24 ]; then
     module load vasp-intel-dev/2024.0.2_mkl-2023.2.0_impi-2021.10.0 impi-srun profiling cross_platform cmake universal-ctags
     export OMP_NUM_THREADS=1 
