@@ -40,5 +40,6 @@
   "autoDreamEnabled": true,
   "theme": "dark-ansi",
   "skipAutoPermissionPrompt": true,
-  "awaySummaryEnabled": false
+  "awaySummaryEnabled": false,
+  "disableClaudeAiConnectors": true
 }
