@@ -51,6 +51,18 @@ NC_TEST=4                      # MPIEXEC_MAX_NUMPROCS, matches make_dev.sh
 NCORE="${NCORE:-8}"            # parallel make jobs (8 = safe default if unset)
 CTEST_JOBS=8
 
+# ctest runs CTEST_JOBS test binaries concurrently, each spawning its own
+# mpirun (up to NC_TEST ranks). By default OpenMPI binds ranks starting from
+# core 0, so every concurrent mpirun lands on the same core(s) -> the whole
+# suite contends on those cores. Disable binding so the Linux scheduler spreads
+# the many small MPI jobs across cores; OVERSUBSCRIBE avoids launch failures
+# when CTEST_JOBS*NC_TEST exceeds the physical core count.
+# NB: OpenMPI 5.x delegates mapping/binding to PRRTE, so these are PRTE_MCA_*
+# (the old OMPI_MCA_hwloc_base_binding_policy / rmaps_base_oversubscribe names
+# are silently ignored on v5 -- verified with prte 3.0.11 / ompi 5.0.10).
+export PRTE_MCA_hwloc_default_binding_policy=none
+export PRTE_MCA_rmaps_default_mapping_policy=":OVERSUBSCRIBE"
+
 # ---- options ---------------------------------------------------------------
 FORCE=false
 DO_TEST=true
@@ -90,6 +102,7 @@ log "  source root : $ROOT"
 log "  install pfx : $TRIQS_ROOT"
 log "  venv        : $VIRTUAL_ENV"
 log "  make -j     : $NCORE     ctest -j: $CTEST_JOBS     mpi procs: $NC_TEST"
+log "  mpi binding : none (PRTE_MCA_hwloc_default_binding_policy=none, mapping=:OVERSUBSCRIBE)"
 log "  options     : force=$FORCE test=$DO_TEST pull=$DO_PULL"
 log "  logs        : $LOGDIR"
 log ""

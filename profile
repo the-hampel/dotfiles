@@ -24,10 +24,10 @@ if [ "$HOSTNAME" = thinkxtreme ]; then
 
     # compiler library config
     export BLA_VENDOR=OpenBLAS
-    export OMP_NUM_THREADS=1
+    export OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}
     export MKL_INTERFACE_LAYER=GNU,LP64
     export MKL_THREADING_LAYER=SEQUENTIAL
-    export MKL_NUM_THREADS=1
+    export MKL_NUM_THREADS=${MKL_NUM_THREADS:-1}
     export CXXFLAGS="-stdlib=libc++ -Wno-register -march=native"
     export CFLAGS='-march=native -Wno-error=incompatible-function-pointer-type'
 
@@ -59,10 +59,10 @@ elif [ "$HOSTNAME" = fractal ]; then
     # compiler library config
     export MKLROOT=/opt/intel/oneapi/mkl/latest
     export BLA_VENDOR=Intel10_64lp_seq
-    export OMP_NUM_THREADS=1
+    export OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}
     export MKL_INTERFACE_LAYER=GNU,LP64
     export MKL_THREADING_LAYER=SEQUENTIAL
-    export MKL_NUM_THREADS=1
+    export MKL_NUM_THREADS=${MKL_NUM_THREADS:-1}
     export FFLAGS="-march=native"
     export CXXFLAGS="-march=native"
     export CFLAGS='-march=native'
@@ -96,12 +96,14 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     # export JUPYTERLAB_DIR=/mnt/home/ahampel/.jupyter/lab
 
     # slurm
-    alias qs='squeue --sort "P,U" -o "%.10i %.10u %30j %.12M %.2t %.4D %.6C %.14b %30R"'
-    alias si='Sinfo'
-    alias getnode='srun --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=1 --cpus-per-task=16 --cpu-bind=cores --pty zsh -i'
-    alias getroc='srun --nodes=1 --time 12:00:00 --partition=porgy05 --ntasks-per-node=2 --cpus-per-task=10 --cpu-bind=cores --gres=gpu:2 --pty zsh -i'
-    alias getintel='srun --nodes=1 --time 12:00:00 --partition=guppy07 --ntasks-per-node=2 --cpus-per-task=10 --cpu-bind=cores --pty zsh -i'
-    alias geta100='srun --nodes=1 --time 12:00:00 --partition=guppy06 --ntasks-per-node=2 --cpus-per-task=8 --cpu-bind=cores --gres=gpu:2 --pty zsh -i'
+    # -a: include partitions we cannot submit to (hidden / AllowGroups-restricted)
+    alias qs='squeue -a --sort "P,U" -o "%.10i %.10u %30j %.12M %.2t %.4D %.6C %.14b %30R"'
+    export SINFO_SORT=%P
+    alias si='sinfo -a'
+    alias getnode='salloc --nodes=1 --time 360 --partition=guppy01,guppy02,guppy05,guppy06,guppy07 --ntasks-per-node=1 --cpus-per-task=16'
+    alias getroc='salloc --nodes=1 --time 12:00:00 --partition=porgy05 --ntasks-per-node=2 --cpus-per-task=10 --gres=gpu:2'
+    alias getintel='salloc --nodes=1 --time 12:00:00 --partition=guppy07 --ntasks-per-node=2 --cpus-per-task=10'
+    alias geta100='salloc --nodes=1 --time 12:00:00 --partition=guppy06 --ntasks-per-node=2 --cpus-per-task=8 --gres=gpu:2'
   
     # apptainer
     if [[ "$HOSTNAME" == *porgy05 ]]; then
@@ -120,7 +122,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     # perf stuff
     ulimit -s unlimited
-    export OMP_NUM_THREADS=1
+    export OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}
     export OMP_STACKSIZE=2048m
     export NCORE=32
     export HDF5_USE_FILE_LOCKING=FALSE
@@ -150,7 +152,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     alias devpy='source $HOME/pyvenv/devpy/bin/activate'
 
     # intel stuff
-    export MKL_NUM_THREADS=1
+    export MKL_NUM_THREADS=${MKL_NUM_THREADS:-1}
     alias ifxgpu='ifx -fiopenmp -fopenmp-targets=spir64 -g'
 
     # cray stuff
@@ -206,8 +208,8 @@ elif [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac* ]]; then
     export NCORE=16
     alias vi=nvim
     alias vimdiff='nvim -d'
-    export OMP_NUM_THREADS=1
-    export MKL_NUM_THREADS=1
+    export OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}
+    export MKL_NUM_THREADS=${MKL_NUM_THREADS:-1}
  
     alias devpy='source $HOME/pyvenv/devpy/bin/activate'
     alias llm='source $HOME/pyvenv/llm/bin/activate'

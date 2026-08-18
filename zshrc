@@ -83,7 +83,11 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != porgy02 ]]; then
   fi
   unset __mamba_setup
   # <<< mamba initialize <<<
-  alias conda="micromamba"
+  # NB: a function, not an alias -- zsh refuses to define a function whose name
+  # is an existing alias, which breaks `module load conda/vasp-plugin`: its load
+  # hook sources miniconda's conda.sh, which defines conda(). A function can be
+  # overridden by conda.sh, an alias cannot.
+  conda() { micromamba "$@" }
 
   eval "$(zoxide init zsh)"
 
@@ -113,3 +117,9 @@ if [[ -n "$VIRTUAL_ENV" ]]; then
   # Display the virtual environment name in brackets, with a color
   PROMPT="%F{220}($(basename $VIRTUAL_ENV))%f $PROMPT"
 fi
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/fsc/home/hampel/google-cloud-sdk/path.zsh.inc' ]; then . '/fsc/home/hampel/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/fsc/home/hampel/google-cloud-sdk/completion.zsh.inc' ]; then . '/fsc/home/hampel/google-cloud-sdk/completion.zsh.inc'; fi

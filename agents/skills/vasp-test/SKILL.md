@@ -128,17 +128,20 @@ grep -c "ERROR:" testsuite.log        # 0 = all selected tests passed
 - Per-test work happens under a scratch `WORK/<test>/` (the recipe does `cd $WORK/$JOB`); the run's
   OUTCAR/OSZICAR live there if you need to inspect a failure.
 
-## Step 5 — clean up test output
+## Step 5 — test output
 Test runs leave output (`WORK/`, per-test artifacts, `testsuite.log`, the compiled `compare_numbertable_new`
-tool) inside the `testsuite/` dir. Clean it with the dedicated **`cleantest`** target (run inside the
-`testsuite/` folder, or the build dir's copy):
+tool) inside the `testsuite/` dir. **Do not clean it up** — the user wants it kept (e.g. for inspecting
+runs). Only clean when explicitly asked, using the dedicated **`cleantest`** target (run inside the
+`testsuite/` folder):
 ```bash
-cd <vasp-source-root>/testsuite   # or <builddir>/testsuite
+cd <vasp-source-root>/testsuite
 make cleantest                    # runs tests/cleanall + removes the numbertable tool
 ```
 Note: `cleantest` is a **testsuite** target, separate from the **build's** `make veryclean` (vasp-build
 skill). It only touches test output, not the compiled binaries. The top-level makefile exposes
 `test`/`test_all` but not `cleantest`, so call it from `testsuite/` (or `make -C testsuite cleantest`).
+The build dir's `testsuite/` copy lacks `../makefile.include`, so `make cleantest` fails there —
+clean from the source tree's `testsuite/` instead.
 
 ## Gotchas
 - **Load the build's toolchain module** before testing; a mismatch (wrong MKL/MPI/CUDA) causes crashes
@@ -150,5 +153,9 @@ skill). It only touches test output, not the compiled binaries. The top-level ma
 - **`VASP_PATH` must point at the dir containing `bin/`** — for a CMake build that's `build_<tc>/`,
   not the source root.
 - Don't commit edits to the shared `~/git/vasp/*.conf` templates unless asked; copy them per-run.
+- **`make test` (top-level / cmake `test` target) does not take a conf argument** — it runs
+  `runtest --fast` with no conf. To use a conf: copy the template to a scratch path, adjust
+  `VASP_PATH`/`VASP_TESTSUITE_TESTS`/`nthrds`, `source` it, then run `make test` (the exported
+  vars apply). `runtest <conf>` only works when invoked directly.
 - GPU `-x` passthroughs (e.g. `VASP_CUBLAS_MATH_MODE`, `CUDA_VISIBLE_DEVICES`) go in the `gpu=` string;
   see `~/git/vasp/nvidia_gpu.conf` for worked examples.
