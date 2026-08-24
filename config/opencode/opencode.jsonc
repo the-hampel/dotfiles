@@ -39,8 +39,8 @@
         "apiKey": "gimli2006"
       },
       "models": {
-        "Qwopus3.6-27B-v2-MLX-4bit": {
-          "name": "Qwen3.6-27B"
+        "Ornith-1.0-35B-4bit": {
+          "name": "Ornith-1.0-35B-4bit"
         }
       }
     },
