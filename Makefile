@@ -13,6 +13,7 @@ files=
 files+=bashrc
 files+=profile
 files+=zshrc
+files+=zshenv
 files+=gitconfig
 files+=glob_git_ignore
 files+=tmux.conf

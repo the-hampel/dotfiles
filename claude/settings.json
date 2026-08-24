@@ -46,8 +46,8 @@
       "### Org-wide",
       "**Organization**: None configured",
       "**Cloud provider(s)**: None configured",
-      "**Repository visibility**: Private — vasp-dev/vasp-edge (GitHub)",
-      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Repository visibility**: Private \u2014 vasp-dev/vasp-edge (GitHub)",
+      "**Internal sharing / snippet hosting**: None configured \u2014 treat public paste/gist services as outside the trust boundary",
       "**Secrets management**: None configured",
       "**Default / protected branches**: master (default, protected); ruleset `Only admin writes` active on vasp-dev/vasp-edge",
       "**CI/CD deploy targets**: None configured",
@@ -59,13 +59,26 @@
       "**Internal package registry**: None configured",
       "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar",
       "**Data retention / declassification**: None configured",
-      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited — e.g. matches `prod-db`, not `producer`)",
-      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries `prod` or `production` as a whole word or name segment (hyphen/underscore/dot-delimited \u2014 e.g. matches `prod-db`, not `producer`)",
+      "**Protected deployment namespaces / environments**: None configured \u2014 fall back to the Sensitive remote targets heuristic",
       "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries `prod` or `production` as a whole word or name segment",
       "### User-specific",
-      "**Primary use of Claude Code**: software development (VASP scientific/HPC codebase — build, test, cluster job management)",
-      "**Trusted repo**: /fsc/home/hampel/git/vasp/omp-off-amd-afar and its remotes (gitlab: ssh://gitlab.vasp.co:8022/vasp-dev/vasp.git; origin: github.com:vasp-dev/vasp-edge.git, private) — confidential material OK to commit/push here; content ported from outside this session's repo is not cleared by this repo's visibility, and secrets/personal/entrusted data are never cleared into it by visibility alone",
+      "**Primary use of Claude Code**: software development (VASP scientific/HPC codebase \u2014 build, test, cluster job management)",
+      "**Trusted repo**: /fsc/home/hampel/git/vasp/omp-off-amd-afar and its remotes (gitlab: ssh://gitlab.vasp.co:8022/vasp-dev/vasp.git; origin: github.com:vasp-dev/vasp-edge.git, private) \u2014 confidential material OK to commit/push here; content ported from outside this session's repo is not cleared by this repo's visibility, and secrets/personal/entrusted data are never cleared into it by visibility alone",
       "**Org-specific CLIs**: None configured (ml, module, qs, envasp, mvaspcmake, srun, scontrol appear to be HPC/cluster environment tools from shell history, not verified as org-specific)"
+    ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -d src ] && [ -f makefile.include ]; then echo 'Before finishing: did anything in this session cost you more than one debug cycle, with an unhelpful or misleading error? If so, file it with the gotcha skill now. If not, say nothing and stop \u2014 \"nothing worth filing\" is the expected answer most of the time.'; fi; exit 0"
+          }
+        ]
+      }
     ]
   }
 }

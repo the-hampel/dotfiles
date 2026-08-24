@@ -239,7 +239,6 @@ alias mpireport='mpirun bash -c '\''echo "rank=$OMPI_COMM_WORLD_RANK $PMI_RANK h
 alias oc='opencode'
 alias df='df -h'                          # human-readable sizes
 alias la='ls --color=auto -lh'
-alias cp="cp -i"                          # confirm before overwriting something
 alias free='free -m'                      # show sizes in MB
 alias np='nano -w PKGBUILD'
 alias more=less

@@ -3,35 +3,31 @@
   "model": "vLLM_spark/Qwen3.6-35B-NVFP4",
   "autoupdate": true,
   "permission": {
-    "edit": "ask",
+    // Edits anywhere in the project dir (and allowed external dirs like /tmp) run without prompts
+    "edit": {
+      "*": "allow"
+    },
     "bash": {
+      // Allow everything, like --auto (last matching rule wins, so the
+      // destructive rules below still apply)
+      "*": "allow",
+
+      // Keep destructive / hard-to-undo commands gated
+      "rm *": "ask",
+      "rmdir *": "ask",
+      "git push*": "ask",
+      "git reset --hard*": "ask",
+      "git clean*": "ask",
+      "chmod *": "ask",
+      "chown *": "ask",
+      "dd *": "ask",
+      "mkfs*": "deny"
+    },
+    "external_directory": {
+      // Only /tmp is trusted outside the project dir; everything else still asks
       "*": "ask",
-
-      // Safe / read-only commands
-      "ls*": "allow",
-      "git status*": "allow",
-      "git diff*": "allow",
-      "git log*": "allow",
-      "git show*": "allow",
-      "git rev-parse*": "allow",
-      "git branch --show-current": "allow",
-      "git branch -vv": "allow",
-      "git remote -v": "allow",
-      "grep *": "allow",
-      "rg *": "allow",
-      "find *": "allow",
-      "cat *": "allow",
-      "wc *": "allow",
-      "head *": "allow",
-      "tail *": "allow",
-      "mpirun *": "allow",
-
-      // Copy is safe when it won't overwrite
-      "cp -n*": "allow",
-      "cp --no-clobber*": "allow",
-
-      // Explicitly keep destructive commands gated
-      "rm *": "ask"
+      "/tmp": "allow",
+      "/tmp/*": "allow"
     }
   },
   "provider": {
