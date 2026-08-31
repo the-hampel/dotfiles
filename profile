@@ -122,7 +122,13 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     # perf stuff
     ulimit -s unlimited
-    export OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}
+    # NO OMP_NUM_THREADS / MKL_NUM_THREADS here (removed 2026-08-31).  The slurm
+    # TaskProlog hook fills both from --cpus-per-task, but only when they are
+    # UNSET -- a value the submitter set always wins.  Exporting them from the
+    # login shell therefore propagated into every sbatch job and defeated the
+    # hook: measured on wahoo06 at --cpus-per-task=8, the task got OMP=8 MKL=1,
+    # i.e. MKL single-threaded while OpenMP was not.  Leave them unset here and
+    # let the hook decide; off slurm, set them per run.
     export OMP_STACKSIZE=2048m
     export NCORE=32
     export HDF5_USE_FILE_LOCKING=FALSE
@@ -151,8 +157,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     alias devpy='source $HOME/pyvenv/devpy/bin/activate'
 
-    # intel stuff
-    export MKL_NUM_THREADS=${MKL_NUM_THREADS:-1}
+    # intel stuff (MKL_NUM_THREADS: see the note under "perf stuff" above)
     alias ifxgpu='ifx -fiopenmp -fopenmp-targets=spir64 -g'
 
     # cray stuff
