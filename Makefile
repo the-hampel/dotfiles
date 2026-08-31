@@ -78,6 +78,11 @@ files+=claude/skills/vasp-build
 files+=agents/skills/vasp-test
 files+=claude/skills/vasp-test
 
+# vasp-run skill: same dual-mirror pattern. Carries examples/ (slurm job
+# templates), which the directory-level symlink brings along.
+files+=agents/skills/vasp-run
+files+=claude/skills/vasp-run
+
 files+=config/ruff/ruff.toml
 
 files+=local/share/fzf/completion.bash
