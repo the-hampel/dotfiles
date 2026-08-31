@@ -1,0 +1,40 @@
+#!/bin/bash
+# Run Claude Code against the local vLLM box (Spark) instead of api.anthropic.com.
+#
+# vLLM serves a native Anthropic /v1/messages endpoint, so no translation proxy
+# is needed -- just repoint the base URL. The base URL is process-global, so this
+# is a separate session: everything in it goes to vLLM, nothing to Anthropic.
+#
+# Usage: claude-spark [normal claude args...]
+
+SPARK_URL="${SPARK_URL:-http://10.23.0.111:8000}"
+SPARK_MODEL="${SPARK_MODEL:-Qwen3.8-27B-NVFP4}"
+
+# Point at vLLM. Dummy token so the real OAuth/subscription credential is never
+# sent to the local box (ANTHROPIC_AUTH_TOKEN -> "Authorization: Bearer").
+# NB: no /v1 suffix -- the Anthropic SDK appends /v1/messages itself.
+# (opencode needs the /v1 because the OpenAI-compatible SDK appends /chat/completions.)
+export ANTHROPIC_BASE_URL="$SPARK_URL"
+export ANTHROPIC_AUTH_TOKEN="${SPARK_API_KEY:-dummy}"
+
+# Route every tier to the local model: main, the /model picker default, and the
+# small/background model used for titles, summaries and cheap side calls.
+export ANTHROPIC_MODEL="$SPARK_MODEL"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="$SPARK_MODEL"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="$SPARK_MODEL"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="$SPARK_MODEL"
+export ANTHROPIC_SMALL_FAST_MODEL="$SPARK_MODEL"
+
+# Give it a row in /model.
+export ANTHROPIC_CUSTOM_MODEL_OPTION="$SPARK_MODEL"
+export ANTHROPIC_CUSTOM_MODEL_OPTION_NAME="vLLM (Spark)"
+export ANTHROPIC_CUSTOM_MODEL_OPTION_DESCRIPTION="$SPARK_MODEL on 10.23.0.111"
+
+# Claude Code doesn't know this model's context window, so it would assume 200k.
+# vLLM reports max_model_len=262144. Honoured only for non-"claude-*" names.
+export CLAUDE_CODE_MAX_CONTEXT_TOKENS="${SPARK_CONTEXT:-262144}"
+
+# Local box, no usage-based billing -- the cost display would be meaningless.
+export DISABLE_COST_WARNINGS=1
+
+exec claude "$@"
