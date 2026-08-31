@@ -87,12 +87,12 @@ module load slurm/25-05-1-1
      tolerances (false failures).
 4. **Threads: do not set them in a slurm job.** A site TaskProlog hook fills
    `OMP_NUM_THREADS` and `MKL_NUM_THREADS` from `--cpus-per-task` — *but only if they are unset*,
-   because a value the submitter set always wins. A login shell here exports
-   `MKL_NUM_THREADS=1`, sbatch propagates it, and the hook then honours it, so **`unset
-   OMP_NUM_THREADS MKL_NUM_THREADS` in the batch step** and let the hook decide. Measured on
-   wahoo06 with `--cpus-per-task=8`: submitted as-is the task gets `OMP=8 MKL=1` (every MKL rank
-   single-threaded); after the unset, `OMP=8 MKL=8`. Off slurm there is no hook — set both by hand.
-   With no `--cpus-per-task` the hook falls back to **1**, which is right for a pure-MPI run.
+   because a value the submitter set always wins, and sbatch propagates whatever the submitting
+   shell has. Keep **`unset OMP_NUM_THREADS MKL_NUM_THREADS`** in the batch step and let the hook
+   decide. Measured on wahoo06 with `--cpus-per-task=8`: with `MKL_NUM_THREADS=1` inherited from
+   the submitting shell the task gets `OMP=8 MKL=1` — MKL single-threaded while OpenMP is not,
+   which is easy to miss — and unset, `OMP=8 MKL=8`. Off slurm there is no hook, so set both by
+   hand. With no `--cpus-per-task` the hook falls back to **1**, which is right for a pure-MPI run.
 
 ---
 
@@ -288,13 +288,14 @@ taskset -c 0-7 mpirun -np 1 --bind-to none $BIN/vasp_std > stdout.log 2>&1
 
 Each of these has cost someone hours.
 
-1. **The login shell exports `MKL_NUM_THREADS=1`, and a slurm job inherits it.** The TaskProlog
-   hook supplies both thread counts from `--cpus-per-task` *only when they are unset*, so the
-   inherited 1 wins and MKL runs single-threaded while OpenMP does not — a mixed state that is easy
-   to miss. `unset OMP_NUM_THREADS MKL_NUM_THREADS` in the batch step (measured: `OMP=8 MKL=1`
-   before, `OMP=8 MKL=8` after). Off slurm, set both by hand. Ground truth is always VASP's own
-   `running N mpi-ranks, with M threads/rank` banner; `nproc` reporting 1 on a big node is the tell
-   that something pinned `OMP_NUM_THREADS` (it honours the variable).
+1. **An inherited `OMP_NUM_THREADS`/`MKL_NUM_THREADS` silently beats the TaskProlog hook.** The
+   hook supplies both from `--cpus-per-task` *only when they are unset*, and sbatch propagates the
+   submitting shell's environment. The login profile stopped exporting them on 2026-08-31, but a
+   shell, tmux window or agent started before that still carries the old values — so keep the
+   `unset` in the batch step (measured on wahoo06: inherited `MKL_NUM_THREADS=1` gives the task
+   `OMP=8 MKL=1`; unset gives `OMP=8 MKL=8`). Off slurm, set both by hand. Ground truth is always
+   VASP's own `running N mpi-ranks, with M threads/rank` banner; `nproc` reporting 1 on a big node
+   is the tell that something pinned `OMP_NUM_THREADS` (it honours the variable).
 2. **`module purge` at the top of an sbatch, never `--export=NONE`.** sbatch inherits the submitting
    shell's modules, so a stale `vasp-intel-dev` blocks the nvhpc toolchain; but `--export=NONE`
    cascades to the `srun` step, whose task then has no module environment at all and OMPI aborts in

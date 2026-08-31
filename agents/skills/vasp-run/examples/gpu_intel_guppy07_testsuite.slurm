@@ -30,11 +30,13 @@ module load $(module avail 2>&1 | tr ' ' '\n' | grep '^vasp-intel-dev/' | sort -
 module unload libxc 2>/dev/null || true
 
 # threads: do NOT set them. The slurm TaskProlog hook fills OMP_NUM_THREADS and
-# MKL_NUM_THREADS from --cpus-per-task, but ONLY if they are unset -- and a login
-# shell here exports MKL_NUM_THREADS=1, which sbatch propagates and the hook then
-# honours (measured: task gets OMP=8 MKL=1, so every MKL rank runs single-threaded).
-# Unsetting them in the batch step hands the decision back to the hook (measured:
-# OMP=8 MKL=8 with --cpus-per-task=8).
+# MKL_NUM_THREADS from --cpus-per-task, but ONLY if they are unset -- a value the
+# submitter set always wins. The unset here is belt-and-braces: the login profile
+# stopped exporting them on 2026-08-31, but any process started BEFORE that (a
+# tmux window, an ssh session, a long-running agent) still carries the old values
+# and sbatch propagates whatever the submitting shell has. Measured on wahoo06 at
+# --cpus-per-task=8: with MKL_NUM_THREADS=1 inherited the task gets OMP=8 MKL=1
+# (MKL single-threaded while OpenMP is not); unset, it gets OMP=8 MKL=8.
 unset OMP_NUM_THREADS MKL_NUM_THREADS
 export I_MPI_OFFLOAD=1 OMP_TARGET_OFFLOAD=DEFAULT OMP_STACKSIZE=2048m I_MPI_PIN_DOMAIN=omp
 export NEO_CACHE_DIR=$HOME/.intel_caches/neo_cache   NEO_CACHE_PERSISTENT=1

@@ -31,11 +31,13 @@ module load vasp-nvhpc_mkl-dev/26.3_mkl-2026.0.0_ompi-5.0.9 || { echo "ABORT: to
 command -v mpirun >/dev/null || { echo "ABORT: toolchain did not load"; exit 1; }
 
 # threads: do NOT set them. The slurm TaskProlog hook fills OMP_NUM_THREADS and
-# MKL_NUM_THREADS from --cpus-per-task, but ONLY if they are unset -- and a login
-# shell here exports MKL_NUM_THREADS=1, which sbatch propagates and the hook then
-# honours (measured: task gets OMP=8 MKL=1, so every MKL rank runs single-threaded).
-# Unsetting them in the batch step hands the decision back to the hook (measured:
-# OMP=8 MKL=8 with --cpus-per-task=8).
+# MKL_NUM_THREADS from --cpus-per-task, but ONLY if they are unset -- a value the
+# submitter set always wins. The unset here is belt-and-braces: the login profile
+# stopped exporting them on 2026-08-31, but any process started BEFORE that (a
+# tmux window, an ssh session, a long-running agent) still carries the old values
+# and sbatch propagates whatever the submitting shell has. Measured on wahoo06 at
+# --cpus-per-task=8: with MKL_NUM_THREADS=1 inherited the task gets OMP=8 MKL=1
+# (MKL single-threaded while OpenMP is not); unset, it gets OMP=8 MKL=8.
 unset OMP_NUM_THREADS MKL_NUM_THREADS
 export OMP_STACKSIZE=2048m
 unset OMP_PROC_BIND OMP_PLACES        # let slurm bind; these can pin every rank onto one core set
