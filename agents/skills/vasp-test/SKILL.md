@@ -6,8 +6,13 @@ description: |
   tests via VASP_TESTSUITE_TESTS, wires up the VASP_TESTSUITE_EXE_{STD,NCL,GAM} launch commands
   (using the toolchain .conf templates in ~/git/vasp/*.conf), uses 4 MPI ranks (refs were generated
   with 4), binds one MPI rank per GPU for GPU builds, and scans output for "ERROR:" failures.
+  ALSO covers the separate unit-test/ suite: in-process Fortran unit tests that all link into one
+  test_all.x per variant, driven by `make -C unit-test`, and supported ONLY by the classic
+  makefile.include build (not CMake).
   Use when: running VASP tests, "run the testsuite", "make test", testing a VASP code change,
-  running a regression/reference test, checking a specific test case (e.g. CrS_RPR), or validating a build.
+  running a regression/reference test, checking a specific test case (e.g. CrS_RPR), validating a
+  build, or anything about the UNIT tests: "run the unit tests", "make -C unit-test", test_all.x,
+  a unit test that fails to compile, or unit tests appearing to fail en masse.
 allowed-tools:
   - Bash
   - Read
@@ -24,7 +29,9 @@ Each entry under `testsuite/tests/<name>/` is a **complete VASP calculation** (i
 KPOINTS/POTCAR) plus a `runrecipe.sh` that runs VASP and then compares the result against committed
 reference values — typically `check_energy` / `check_forces` / `check_stress` (see any
 `runrecipe.sh`). So these are **end-to-end regression tests of full SCF/relaxation/GW/… runs**, not
-unit tests. A test passes if its numbers match the reference within tolerance; it **fails by printing
+unit tests. VASP *does* also have real unit tests, under `unit-test/` — a **separate system with a
+separate build path**, covered in its own section at the end of this file. Steps 0–5 below are the
+regression testsuite only. If the user says "unit test", jump straight to that section. A test passes if its numbers match the reference within tolerance; it **fails by printing
 a line containing `ERROR:`**. Because the references were generated with a specific parallel layout,
 the run setup (rank count, mapping) matters — see below.
 
@@ -142,6 +149,81 @@ skill). It only touches test output, not the compiled binaries. The top-level ma
 `test`/`test_all` but not `cleantest`, so call it from `testsuite/` (or `make -C testsuite cleantest`).
 The build dir's `testsuite/` copy lacks `../makefile.include`, so `make cleantest` fails there —
 clean from the source tree's `testsuite/` instead.
+
+## Unit tests (`unit-test/`) — a different system
+
+Do not confuse the two:
+
+| | what it is | how it builds |
+|---|---|---|
+| `testsuite/` | full VASP runs vs stored reference numbers (everything above) | CMake **or** classic |
+| `unit-test/` | in-process Fortran unit tests (`.pf` sources) | **classic `makefile.include` only** |
+
+### Unit tests do NOT work with the CMake build
+
+`unit-test/` has its own `makefile` + `make-test.mk` and is **not wired into CMake at all**. The
+root `CMakeLists.txt` adds only `testsuite/` (behind `if(VASP_TESTSUITE)`) and its
+`enable_testing()` line is commented out — there is no `add_subdirectory(unit-test)` and no ctest
+target.
+
+That is structural, not an oversight: `make-test.mk` recursively calls
+`make -C ../../build/<variant>` to preprocess and compile exactly the VASP objects a given test
+needs, selecting them with `deps2link.awk` over the classic `.depend_mod` / `.depend_free`
+dependency files. It needs the classic `build/std` object layout and the classic dependency
+machinery; a CMake build dir has neither.
+
+**So unit tests require a classic `makefile.include` build** (see the vasp-build skill, "Classic
+makefile build"), even when CMake would otherwise be preferred. Say so rather than silently
+switching build systems.
+
+### Running them
+
+```bash
+# from the repo root, AFTER a classic build has populated build/<variant>/
+make -k -C unit-test std                       # one variant
+make -k -C unit-test std gam ncl rspec.xml     # all three + combined XML report
+
+# under slurm, give it a launcher (CI uses 4 ranks):
+make -k -C unit-test std VASP_UNITTEST_RUN="srun"
+```
+
+`VASP_UNITTEST_RUN` is the launcher prefix; unset runs the binary serially in place.
+`make -C unit-test clean` removes the whole `std.test/ gam.test/ ncl.test/` trees.
+
+### One binary holds every test — read failures carefully
+
+All tests link into a **single executable per variant**, `unit-test/<variant>.test/test_all.x`
+(~25 MB); each `test_<name>.run` target just invokes it. So **one compile error takes out the
+entire suite**, and the output looks like dozens of failures when nothing ran at all:
+
+```
+test_vdwforcefield.F90(56): error #6633: The type of the actual argument differs ...
+make[2]: *** [make-test.mk:196: test_vdwforcefield.o] Error 1
+make[2]: Target 'test_acfdt_struct_def.run' not remade because of errors.
+make[2]: Target 'test_bandgap_tools.run' not remade because of errors.
+...                                          (x27)
+```
+
+Those `not remade because of errors` lines are make **declining to run** targets because the link
+never happened — they are not 27 test failures. `-k` does not help: it continues past the error,
+but there is still no binary. Before reporting "N tests failed", check whether anything ran:
+
+```bash
+grep -cE '\[  .*ok.*  \]' <log>      # 0 => nothing ran; look for a compile error instead
+grep -c 'not remade because of errors' <log>
+```
+
+A clean pass ends with `All tests passed` and exit 0.
+
+### Toolchain-dependent compile failures are normal here
+
+Unit-test sources compile with whatever toolchain is loaded, and front-ends differ in strictness:
+a test that builds under `aocc`/flang can fail to compile under `ifx`. Tests guarded on an
+optional feature only compile when that feature is enabled — e.g. the dftd4 test needs `-DDFTD4`,
+which `print-extras` emits only if the loaded toolchain actually carries dftd3/dftd4
+(`DFTD4_ROOT` set). So the same commit can be green on one toolchain and fail to build on
+another for reasons unrelated to the change under test. Confirm with a control run — same node,
+same toolchain, unmodified tree — before blaming a code change.
 
 ## Gotchas
 - **Load the build's toolchain module** before testing; a mismatch (wrong MKL/MPI/CUDA) causes crashes

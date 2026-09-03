@@ -6,11 +6,13 @@ description: |
   script, submit it with srun, and check that the run actually ran instead of silently
   failing. CPU runs go to wahoo06 by default; GPU runs to guppy06 (2x A100), guppy07
   (2x Intel Max 1100), porgy05 (4x AMD MI210, Cray container) or a wahoo workstation
-  (NVIDIA, some outside slurm). Carries ready-to-copy job scripts in examples/.
+  (NVIDIA, some outside slurm). Also covers the one REMOTE site, AAC7 (AMD Accelerator
+  Cloud, `ssh aac`): MI300A APUs, Cray CCE + ROCm, its own slurm and its own filesystem.
+  Carries ready-to-copy job scripts in examples/.
   Use when: running VASP, "submit a VASP job", sbatch/srun for VASP, launching on A100 /
-  Intel Max / MI210 / RTX, choosing rank and thread counts, benchmarking a VASP run,
-  re-running a case, or diagnosing a job that produced no OUTCAR. For BUILDING see the
-  vasp-build skill; for the regression testsuite see vasp-test.
+  Intel Max / MI210 / MI300A / AAC / RTX, choosing rank and thread counts, benchmarking a
+  VASP run, re-running a case, or diagnosing a job that produced no OUTCAR. For BUILDING
+  see the vasp-build skill; for the regression testsuite see vasp-test.
 allowed-tools:
   - Bash
   - Read
@@ -34,8 +36,9 @@ srun -n $SLURM_NTASKS --cpu-bind=cores $BIN/vasp_std
 ```
 
 needs **no `--mpi=`, no `--map-by`, no `-c`**, and slurm does the binding. Verified against
-hand-mapped `mpirun` on a 2-GPU job: 34.83 s vs 34.86 s, identical masks. One exception,
-porgy05, where the Cray container brings its own launcher — see §5.4.
+hand-mapped `mpirun` on a 2-GPU job: 34.83 s vs 34.86 s, identical masks. Two places differ:
+porgy05, where the Cray container brings its own launcher (§5.4), and the remote AAC7 site,
+where `srun` is still right but wraps the binary in a NUMA/GPU binding script (§5.6).
 
 ---
 
@@ -58,6 +61,12 @@ nvidia-smi -L 2>/dev/null || rocm-smi --showproductname 2>/dev/null \
 | `sinfo` answers, `SLURM_JOB_ID` set | inside an allocation | run `srun` directly, do not nest sbatch |
 | `sinfo` fails / not found | a workstation outside slurm, or a laptop | run locally (§5.5), pin by hand |
 | hostname is `wahoo04` | Blackwell workstation, **not in slurm** — plain `ssh`, no queue | §5.5 |
+| hostname is `uan1`, partitions named `192C4G1H_MI300A_*` | **AAC7**, a remote site — separate filesystem, separate slurm | §5.6 |
+
+**One machine in this skill is not on the cluster at all.** AAC7 (MI300A) is reached with
+`ssh aac` and shares **no filesystem** with deep blue — inputs, source and results all travel
+by `rsync`. If the task names MI300A, "aac", or an AMD APU, go to §5.6 first; nothing in
+Steps 2-4 about local partitions applies there.
 
 **Two slurm controllers coexist on this cluster.** `guppy06`, `guppy07`, `wahoo01/02/06` are on
 `slurm/25-05-1-1`; some `porgy*` nodes still answer the old `slurm/23.02.3`. A node reported
@@ -93,6 +102,9 @@ module load slurm/25-05-1-1
    the submitting shell the task gets `OMP=8 MKL=1` — MKL single-threaded while OpenMP is not,
    which is easy to miss — and unset, `OMP=8 MKL=8`. Off slurm there is no hook, so set both by
    hand. With no `--cpus-per-task` the hook falls back to **1**, which is right for a pure-MPI run.
+   **The hook is a deep-blue thing.** On AAC7 there is none, so unset means 1 there and you must
+   set `OMP_NUM_THREADS` yourself (§5.6). Either way, VASP's `running N mpi-ranks, with M
+   threads/rank` banner is the only ground truth.
 
 ---
 
@@ -105,6 +117,7 @@ module load slurm/25-05-1-1
 | **NVIDIA datacenter** — the reference machine | **guppy06** | `-p guppy06` | 2x A100-SXM4-80GB (cc80) | `--ntasks=2 --cpus-per-task=8 --gres=gpu:2` |
 | **Intel GPU** | **guppy07** | `-p guppy07` | 2x Max 1100 (PVC) | `--ntasks=2 --cpus-per-task=32 --gres=gpu:2` |
 | **AMD GPU** | **porgy05** | `-p porgy05` | 4x MI210 (`gfx90a`) | `--ntasks=4 --cpus-per-task=6 --gres=gpu:4` |
+| **AMD APU, remote** | **AAC7** (`ssh aac` → `uan1`) | `-p 192C4G1H_MI300A_RHEL9_A1` | 4x MI300A (`gfx942`) per node, ~13 nodes | `--ntasks-per-node=4 --cpus-per-task=24 --gres=gpu:4` |
 | NVIDIA consumer / Blackwell | wahoo04 (RTX PRO 6000, cc120, **no slurm**), wahoo07 (RTX 5060 Ti), wahoo03 (4090), wahoo05/06 (4060 Ti), wahoo01/02 (GP100, cc60) | ssh or `-p wahooNN` | 1 each | 1 rank, 8 threads |
 | 2x A30 | porgy04 | `-p porgy04` | 2x A30 | `--ntasks=2 --cpus-per-task=8 --gres=gpu:2` |
 
@@ -139,11 +152,17 @@ Start from `examples/` in this skill directory and change the paths:
 | `examples/gpu_intel_guppy07.slurm` | Intel Max 1100, 1 or 2 cards, via `srun_ze.sh` |
 | `examples/gpu_intel_guppy07_testsuite.slurm` | Intel Max 1100, regression testsuite |
 | `examples/gpu_amd_porgy05.slurm` | AMD MI210 inside the Cray ccpe container |
+| `examples/gpu_amd_mi300a_aac7.slurm` | AMD MI300A on the remote AAC7 site (§5.6) |
 | `examples/workstation_local.sh` | no slurm (wahoo04 and friends): ssh + taskset |
 
 **What has been exercised, so you know how much to trust each one:** `cpu_wahoo06.slurm` was run
-end to end on 2026-08-31 (4 ranks x 8 threads, `rc=0`, correct rank banner). The A100, Intel and AMD
-scripts are transcribed from the drivers that produced the recorded results on those machines
+end to end on 2026-08-31 (4 ranks x 8 threads, `rc=0`, correct rank banner).
+`gpu_amd_mi300a_aac7.slurm` is a cleaned-up copy of the driver that produced the 2026-08-31 PdO4
+MI300A results (18 converged runs at 1/2/4 ranks, std and gam), so its environment block is
+measured, not guessed, and the file itself was then run end to end on AAC7 the same day
+(`rc=0`, `running 4 mpi-ranks, with 8 threads/rank`, `4 GPUs detected`). The A100, Intel and
+MI210 scripts are transcribed from the drivers that produced the recorded results on those
+machines
 (`~/scratch/gpu_test/chefsi_validation/guppy06_a100_*.sbatch`, `~/git/vasp/intel_gpu.conf` +
 `srun_ze.sh`, `~/git/vasp/porgy05_cray_conf/*.slurm`) rather than re-run here; all default paths in
 them were checked to exist. Re-check `sinfo` and the build dir before trusting any of them blindly.
@@ -282,6 +301,88 @@ taskset -c 0-7 mpirun -np 1 --bind-to none $BIN/vasp_std > stdout.log 2>&1
 - Before a timing run, check the card is idle: `nvidia-smi --query-gpu=memory.used,utilization.gpu
   --format=csv,noheader`.
 
+### 5.6 AMD MI300A on AAC7 — the remote site
+
+**AAC7 = AMD Accelerator Cloud.** It is not part of deep blue: different slurm, different
+modules, different home directory, **no shared filesystem**. Everything you want there you put
+there, and everything you want back you fetch back.
+
+```bash
+ssh aac                     # ~/.ssh/config: Host aac -> aac7.amd.com, User ahampel
+                            # lands on the login node uan1 (128 cores, RHEL 9)
+```
+
+Home is `/shared/midgard/home/ahampel` (NFS, 11 T). There is also `/shareddata`.
+
+**Hardware.** ~13 compute nodes, each **4x MI300A** (`gfx942`, APU: CPU and GPU share HBM),
+4 NUMA domains, 96 physical cores / 192 logical, ~500 GB. GPU *i* is NUMA-local to domain *i*.
+Partitions: `192C4G1H_MI300A_RHEL9_A1` (**the default**), `..._RHEL9`, `..._RHEL9_A0` (mostly
+drained). Time limit 5 days. Node names look like `x9000c1s2b0n0`. Check with plain
+`sinfo` / `squeue -u $USER` — the slurm client is in `/usr/bin`, no module needed.
+
+**Toolchain: Cray CCE, sourced from a script, not a module line you type.**
+
+```bash
+source ~/git/vasp/cce21_scripts/env_cce21.sh
+```
+
+It loads `PrgEnv-cray/8.7.0`, `craype-x86-genoa`, `craype-accel-amd-gfx942`, `cray-fftw`,
+`cray-hdf5`, `rocm-new/7.2.1`, and adds `$ROCM_PATH/lib` to `LIBRARY_PATH` — that last part is
+load-bearing: cray-mpich injects `-lamdhip64` into every `ftn` link line but ships no matching
+`-L`, and compute nodes (unlike the login node) do not resolve it from the ld cache.
+
+> **`module` does not exist in a non-login shell there.** `ssh aac 'module load ...'` fails with
+> *"module: command not found"*. Use `ssh aac 'bash -lc "..."'` for one-offs, and start every
+> sbatch script with **`#!/bin/bash -l`**. This is the first thing that bites.
+
+**Build** — classic `makefile.include` build (not cmake), on the **login node**, ~15 min for
+`std`+`gam` at `-j32`. CCE 21 additionally needs a source rewrite; see the vasp-build skill and
+`~/git/vasp/cce21_scripts/{build.sh,fix_if_clause.py,scan_if_clause.py}`.
+
+**Run.** Use `examples/gpu_amd_mi300a_aac7.slurm`. One rank per die, `--ntasks-per-node=4
+--cpus-per-task=24 --gres=gpu:4`, and the launcher is plain `srun` plus a binding wrapper:
+
+```bash
+srun -N $NODES -n $RANKS --ntasks-per-node=4 --gpus-per-node=4 \
+     ~/git/vasp/cce21_scripts/bind_gpu_mn.sh $BIN/vasp_std > stdout.txt 2>&1
+```
+
+Always the `_mn` wrapper: it keys off `SLURM_LOCALID`, so it is correct on one node *and* more.
+The plain `bind_gpu.sh` keys off the global rank and is single-node only. Both print
+`GRANK=.. RANK=.. GPU=.. NUMA=.. CPU=..` per rank — read it, it is your binding check.
+
+Site-specific things the example script sets, each for a reason:
+
+- **`OMP_NUM_THREADS=8` by hand.** There is no TaskProlog hook here, so the Step-1 "let the hook
+  decide" rule does *not* apply — unset means 1.
+- **`unset NCCL_LAUNCH_ORDER_IMPLICIT`.** `=1` makes multi-rank RCCL segfault on this machine.
+- **`assign -y on g:all` with `FILENV`** — Cray Fortran buffers hard; without it OUTCAR and
+  OSZICAR lag minutes behind the run and a progress check tells you nothing.
+- **`ROCFFT_RTC_CACHE_PATH` per run, `ROCFFT_RTC_SYS_CACHE_PATH=/dev/null`.**
+- `HSA_XNACK=0`, `GPU_MAX_HW_QUEUES=8`, `MPICH_GPU_SUPPORT_ENABLED=1`, `ulimit -s unlimited`.
+
+**Multi-node is a correctness check, not a benchmark.** RCCL has no OFI/Slingshot plugin in
+ROCm 7.2.1, so inter-node collectives fall back to sockets (~7x slower unless you set
+`LUSENCCL=.FALSE.`), cray-mpich GPU IPC can fail with
+`hsa_amd_ipc_memory_attach: HSA_STATUS_ERROR_INVALID_ARGUMENT` (raise `MPICH_GPU_IPC_THRESHOLD`),
+and 8 ranks over 2 nodes has still died with a GPU memory access fault. Energies reproduce
+across nodes; timings from >1 node do not belong in the notes.
+
+**Moving work in and out.** Source trees go over as `rsync` of `src/` — exclude the gitignored
+`CMakeLists.txt` symlinks, which are broken on the far side. `git fetch` does work there
+(`origin` on that tree is github-edge, not gitlab), but a branch that has been force-pushed or
+not pushed at all is faster and safer to rsync. Results come back the same way:
+
+```bash
+rsync -az --exclude 'CMakeLists.txt' --exclude '*.preif' \
+      ~/git/vasp/<tree>/src/  aac:/shared/midgard/home/ahampel/git/vasp/<tree>/src/
+rsync -az aac:/shared/midgard/home/ahampel/benchmark/<case>/  ~/scratch/.../
+```
+
+Keep a `PROVENANCE.txt` next to the far-side tree naming the local `git rev-parse HEAD` and
+whether the working tree was dirty — an rsynced tree has no branch identity of its own, and
+`git status` over there will be misleading.
+
 ---
 
 ## Traps
@@ -320,5 +421,14 @@ Each of these has cost someone hours.
    deterministic, plus identical step count and final energy elsewhere", and establish a case's own
    run-to-run baseline before reading a last-digit difference as a code change.
 9. **Check the queue with the right slurm client** before concluding a partition is busy (Step 0).
+10. **On AAC7, `module` does not exist outside a login shell.** `ssh aac 'module load ...'` fails
+    with *"command not found"*; sbatch scripts need `#!/bin/bash -l`. Use
+    `ssh aac 'bash -lc "..."'` for one-offs. Related: `srun` from the AAC7 **login node** (outside
+    an allocation) fails in `MPIR_pmi_init` and looks like a hang — always submit.
+11. **One anomalous timing is a measurement, not a result — check the GPU before the solver.** A
+    4-GPU MI300A run once came out 3x slow with no error; its flat profile was 2-7x slower per call
+    in *every* GPU region, `init_offload` (which does no science) included — contention or a sick
+    card, not code. A repeat on the same node was normal. Compare the per-call cost of a
+    science-free region first, and never publish a single unrepeated timing.
 10. **Licensed inputs**: `POTCAR` files are license-restricted. Do not copy them out of the cluster
     or into a world-readable location without asking.

@@ -240,7 +240,11 @@ freshly built (`ls -la "$BUILD"/bin/vasp_std`).
 
 ---
 
-## Step 2 — Classic makefile build (only when the user asks for "the old build" / "without cmake")
+## Step 2 — Classic makefile build (when the user asks for "the old build" / "without cmake", or for unit tests)
+
+**Also required for the `unit-test/` suite** — those tests are driven off the classic `build/<variant>/`
+object layout and are not wired into CMake at all, so "run the unit tests" implies this build path
+even when CMake would otherwise be preferred. See the **vasp-test** skill for running them.
 
 Targets here are **`std`, `gam`, `ncl`** (not the `vasp_` names). The build is **not** auto-parallel —
 you must pass `-j` yourself, and `DEPS=1` regenerates dependencies.
