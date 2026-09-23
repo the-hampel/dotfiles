@@ -93,8 +93,26 @@ files+=local/share/okular/shell.rc
 
 files+=vim/colors/gruvbox.vim
 
+# Project-level CLAUDE.md files. These are symlinked into the project checkout
+# rather than into $HOME, so they cannot use the $(HOME)/.% pattern rule above.
+# Format: <path below $HOME>:<source in this repo>. A target whose parent
+# directory does not exist is skipped, so machines without that checkout are
+# left alone.
+project_docs=git/triqs/CLAUDE.md:claude/projects/triqs.md
+
 all: install
 
 .PHONY: install
-install: $(addprefix $(HOME)/.,$(files))
+install: $(addprefix $(HOME)/.,$(files)) project-docs
+
+.PHONY: project-docs
+project-docs:
+	@for spec in $(project_docs); do \
+	  dst=$(HOME)/$${spec%%:*}; src=$${spec#*:}; dir=$$(dirname $$dst); \
+	  if [ -d "$$dir" ]; then \
+	    ln -snf $(PWD)/$$src $$dst && echo "linked   $$dst -> $$src"; \
+	  else \
+	    echo "skipped  $$dst (no $$dir)"; \
+	  fi; \
+	done
 

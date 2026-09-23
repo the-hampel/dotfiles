@@ -81,5 +81,10 @@
       "**Trusted repo**: /fsc/home/hampel/git/vasp/omp-off-amd-afar and its remotes (gitlab: ssh://gitlab.vasp.co:8022/vasp-dev/vasp.git; origin: github.com:vasp-dev/vasp-edge.git, private) — confidential material OK to commit/push here; content ported from outside this session's repo is not cleared by this repo's visibility, and secrets/personal/entrusted data are never cleared into it by visibility alone",
       "**Org-specific CLIs**: None configured (ml, module, qs, envasp, mvaspcmake, srun, scontrol appear to be HPC/cluster environment tools from shell history, not verified as org-specific)"
     ]
+  },
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
   }
 }

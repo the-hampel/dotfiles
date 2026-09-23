@@ -85,6 +85,7 @@ The boxes actually worth targeting for GPU work:
 | node | CPUs | accelerator | cc | programming model / toolchain |
 |---|---|---|---|---|
 | **`porgy05`** | 96 | **4x AMD Instinct MI210**, 64 GB (`gfx90a`) | — | **OpenMP target offload** — Cray CCE 19, **only inside the ccpe container** |
+| MI300A APU (remote, `ssh aac` -> `uan1`) | **AAC7**, Cray CCE 21 | see the AAC7 section - **the `fix_if_clause.py` patch is mandatory or results are silently wrong** |
 | **`guppy07`** | 112 | **2x Intel Data Center GPU Max 1100** (PVC) | — | **OpenMP target offload** — `vasp-intel-dev` (ifx) |
 | **`guppy06`** | 48 | **2x NVIDIA A100-SXM4-80GB** | `80` | **OpenACC** — `vasp-nvhpc_mkl-dev` / `vasp-nvhpc-dev` |
 | **`wahoo04`** | 64 | **1x RTX PRO 6000 Blackwell Max-Q**, 96 GB | `120` | OpenACC — **needs nvhpc ≥ 25.3** (see below) |
@@ -103,6 +104,40 @@ CPU-only: `porgy01`–`porgy03` (128c), `guppy05` (24c).
 
 Don't guess when it matters — verify. **Use `sinfo -a`**: plain `sinfo` hides most of these
 partitions, which is an easy way to conclude a node doesn't exist.
+
+### Rocky 8 vs Rocky 9 — bites `license_support` builds
+
+The cluster is mid-migration and the two halves ship different OpenSSL sonames:
+
+| | nodes (verified with `scontrol show node <n>`) | `/usr/lib64/libssl.so` -> |
+|---|---|---|
+| **el8** | `porgy01`-`porgy03` (el8_10), `porgy04` (el8_9), **`porgy05`** (el8_10), **`guppy06`** (el8_10), `guppy05` (el8_6), `tuna18` | `libssl.so.1.1` |
+| **el9** | **`guppy07`** (el9_3), `wahoo01` (el9_8), `wahoo02` (el9_4), **`wahoo06`** (el9_8) | `libssl.so.3` |
+
+`wahoo06` — the default CPU build box — is **el9**, while the A100 node `guppy06` and the
+MI210 node `porgy05` are **el8**. With `license_support` among the extras, `print-extras`
+emits a bare `LLIBS += -lssl -lcrypto`: no `-L`, no `-rpath`. The link therefore records
+whichever soname the *build host* happens to have, with nothing pinning where it came from:
+
+    built on porgy02 (el8)  ->  DT_NEEDED libssl.so.1.1   resolves on any el8 node
+    built on wahoo06 (el9)  ->  DT_NEEDED libssl.so.3     dies on el8 at startup with
+      vasp_std: error while loading shared libraries: libssl.so.3:
+      cannot open shared object file: No such file or directory
+
+Both verified by building the same tree on both nodes. So a GPU build destined for `guppy06`
+or `porgy05` has to be built on an **el8** box, not on `wahoo06`. `guppy07` is el9, same as
+`wahoo06`, so the Intel Max path is unaffected.
+
+Nothing in the module system prevents the mismatch and the link emits no warning — it
+surfaces much later as a loader error on the run node, naming a library that looks like it
+should be present. Before submitting a long job with a freshly built binary:
+
+    readelf -d <binary> | grep -i 'NEEDED.*ssl'
+
+Conda is **not** involved, despite `conda/vasp-plugin` carrying its own `libssl.so.3`:
+`LIBRARY_PATH` is unset and GNU `ld` ignores `LD_LIBRARY_PATH`, so loading it before a build
+does not change the link (verified). The workstations outside slurm (`wahoo03`-`wahoo05`,
+`wahoo07`) were not checked.
 ```bash
 sinfo -a -o "%14N %12P %6c %26G %10T"                    # gres carries no GPU *type*
 ssh <node> nvidia-smi --query-gpu=name,compute_cap,memory.total --format=csv,noheader
@@ -142,6 +177,59 @@ sbatch --export=ALL,VASP_DIR=$PWD,TARGET=std,CLEAN=1 build_cray.slurm
   `CPP_OPTIONS += -DVASP_HDF5` plus `cray-hdf5` loaded inside the container.
 - MPI runs need the helper's `--pals` (job-local palsd, ranks stay in the slurm cgroup);
   a build launches no MPI and does not.
+
+### AMD MI300A APU, REMOTE → AAC7 (`ssh aac`), Cray CCE 21
+
+Separate site, separate filesystem, separate slurm (`uan1`, partitions
+`192C4G1H_MI300A_*`). See the `vasp-run` skill §5.6 for running; this is the build.
+
+> ## 🛑 CCE 21 SILENTLY PRODUCES WRONG RESULTS UNLESS YOU PATCH THE SOURCE 🛑
+>
+> **You MUST run `~/git/vasp/cce21_scripts/fix_if_clause.py <tree>/src/*.F` before every
+> CCE 21 build.** It rewrites `IF(cond)` to `IF(TARGET:cond)` on combined OpenMP target
+> constructs. On a combined construct a bare `IF(cond)` applies to *every* constituent
+> construct, and where `cond` is not compile-time constant **CCE 21 miscompiles the device
+> path and silently discards the region's stores** — the kernel runs and writes nothing.
+>
+> **There is no error and no warning.** You get empty device buffers, and the run dies far
+> downstream with something that names the wrong thing entirely — typically
+> `LAPACK: Routine ZPOTRF failed!` in the first orthonormalization, or a `ZGETRF of (1+GQ)
+> failed` inside the solver. It looks exactly like a numerical or eigensolver bug in
+> whatever you happen to be working on. It is neither.
+>
+> **This is not going upstream and will not be fixed soon** (Alex, 2026-09-09) — the bare
+> `IF` form is what VASP wants everywhere else, so the patch stays a local build step.
+> `.preif` backups next to `src/*.F` are the marker that a tree HAS been patched; a tree
+> without them has not been.
+>
+> Cost of not knowing this: a full session of misattribution — first blaming a local commit,
+> then a phantom regression in a commit range, then the compiler generally — because an
+> unpatched tree fails in a way that points anywhere but here.
+
+Use the project's own scripts; do not hand-roll the environment (`~/envcce21.sh` in the
+home directory sets up the compiler but does **not** apply the patch):
+```bash
+source ~/git/vasp/cce21_scripts/env_cce21.sh     # PrgEnv-cray/8.7.0, craype-accel-amd-gfx942,
+                                                  # rocm-new/7.2.1, and the -lamdhip64 LIBRARY_PATH fix
+python3 ~/git/vasp/cce21_scripts/fix_if_clause.py <tree>/src/*.F   # <-- never skip
+~/git/vasp/cce21_scripts/build.sh <tree> [std gam ncl]             # sweeps 0-byte .f90 first
+```
+- `cce21_scripts/` also holds `fixbuild.sh` (patch + rebuild one variant), `add_inlinenever.py`,
+  `bind_gpu*.sh`, and a `README.md` for the set.
+- CCE **21 cannot compile every tree**: an older (pre-2026-09 rebase) source hits
+  `ftn-2116 ftn: INTERNAL` in `elphon_accumulators_high.F`. `cce/19.0.0` and `cce/20.0.0`
+  are also available (`module swap cce cce/20.0.0`) — the historical AAC binaries named
+  `*.cce20_*` were built that way, with a matching `makefile.include.cce20.bak` that differs
+  in `FCL = $(FC) -O1` and **`USENCCL` commented out**. Do not assume the `makefile.include`
+  currently in a tree is the one that built the binary sitting in its `bin/`; check
+  `log.build` for the recorded link line.
+- Runtime env comes from **`~/git/vasp/amd_gpu.conf`**, not from the build env: it sets
+  `HSA_XNACK=0` (page-migration / unified-memory semantics on the APU), `MPICH_GPU_SUPPORT_ENABLED=1`,
+  `GPU_MAX_HW_QUEUES=8`, `HSA_NO_SCRATCH_RECLAIM=0` and the Cray Fortran I/O `FILENV`.
+  Running without it is its own class of silent breakage.
+- Compute nodes have **no route to github** — clone and fetch on the login node.
+- The partition needs `--gres=gpu:4` explicitly; without it `hipInit` reports
+  `hipErrorNoDevice` and nothing offloads.
 
 ### Intel Max 1100 OpenMP offload → `guppy07`
 
@@ -297,5 +385,9 @@ Binaries land in `bin/{vasp_std,vasp_gam,vasp_ncl}`.
 - **GPU builds want a compute node.** `CMAKE_CUDA_ARCHITECTURES=native` and Intel AoT device
   detection both read the local hardware, and the Cray toolchain only exists inside the container
   on `porgy05`. Build where you will run.
+- **Build on the same OS generation you will run on.** el8 and el9 nodes are mixed (see
+  Step 0b); with `license_support` the OpenSSL soname is baked in from the build host, so an
+  el9-built binary fails to start on el8. The default build box `wahoo06` is el9; `guppy06`
+  and `porgy05` are el8.
 - **LibXC is incompatible with every OMP-offload build.** CMake turns it off itself; for the
   classic build make sure the module isn't loaded.
