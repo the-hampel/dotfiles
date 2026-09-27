@@ -101,6 +101,9 @@ fi
 
 source $ZSH/oh-my-zsh.sh
 
+# Drop the git plugin's gc alias (git commit --verbose).
+unalias gc 2>/dev/null
+
 # Set up fzf key bindings and fuzzy completion after OMZ.
 if command -v fzf >/dev/null 2>&1; then
   source <(fzf --zsh)
