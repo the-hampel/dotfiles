@@ -52,6 +52,9 @@
   "modelSettings": {
     "claude-opus-5-5": {
       "effortLevel": "high"
+    },
+    "qwen3.8-27b-nvfp4": {
+      "effortLevel": "high"
     }
   },
   "awaySummaryEnabled": false,
