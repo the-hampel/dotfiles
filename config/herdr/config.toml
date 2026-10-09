@@ -1,0 +1,43 @@
+onboarding = false
+
+[ui]
+status_indicators = "symbols"
+
+[ui.sound]
+enabled = false
+
+[theme]
+name = "gruvbox"
+auto_switch = false
+
+[ui.toast]
+delivery = "off"
+
+[terminal]
+default_shell = "/usr/bin/zsh"
+
+# tmux-style bindings, added on top of the herdr defaults (prefix stays ctrl+b)
+[keys]
+focus_pane_left = ["prefix+h", "prefix+left"]
+focus_pane_down = "prefix+down"  # prefix+j moved to next_workspace
+focus_pane_up = ["prefix+k", "prefix+up"]
+focus_pane_right = ["prefix+l", "prefix+right"]
+cycle_pane_next = ["prefix+o", "prefix+tab"]
+open_notification_target = "prefix+shift+o"  # default prefix+o, freed for tmux's next-pane
+last_pane = "prefix+;"
+split_vertical = ["prefix+%", "prefix+v"]
+split_horizontal = ["prefix+\"", "prefix+minus"]
+resize_pane_left = "prefix+ctrl+left"
+resize_pane_down = "prefix+ctrl+down"
+resize_pane_up = "prefix+ctrl+up"
+resize_pane_right = "prefix+ctrl+right"
+detach = ["prefix+d", "prefix+q"]
+rename_tab = ["prefix+comma", "prefix+shift+t"]
+close_tab = ["prefix+&", "prefix+shift+x"]
+edit_scrollback = ["prefix+[", "prefix+e"]
+previous_workspace = ["prefix+u", "prefix+("]
+next_workspace = ["prefix+j", "prefix+)"]
+
+[session]
+# Resume claude/opencode panes into their conversations after a server restart (default, made explicit)
+resume_agents_on_restore = true
