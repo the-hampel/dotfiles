@@ -123,3 +123,15 @@ if [ -f '/fsc/home/hampel/google-cloud-sdk/path.zsh.inc' ]; then . '/fsc/home/ha
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/fsc/home/hampel/google-cloud-sdk/completion.zsh.inc' ]; then . '/fsc/home/hampel/google-cloud-sdk/completion.zsh.inc'; fi
+
+# Claude Code agents (sources: claude/agents-src, linked to ~/.claude/agents).
+# `ca <agent> [claude args]` starts a session as that agent from any directory;
+# `ca` alone lists them. Inside a session: type @ and pick the agent.
+ca() {
+  if [ $# -eq 0 ]; then ls -1 ~/.claude/agents/ 2>/dev/null | sed 's/\.md$//'; return; fi
+  local a=$1; shift; claude --agent "$a" "$@"
+}
+alias cmake-agent='ca vasp-cmake' gpu-agent='ca vasp-gpu' spack-agent='ca vasp-spack' \
+      slurm-agent='ca slurm-master' builder-agent='ca vasp-builder' \
+      triqs-core-agent='ca triqs-core' triqs-emb-agent='ca triqs-embedding' \
+      triqs-solvers-agent='ca triqs-solvers' triqs-update-agent='ca triqs-stack-updater'

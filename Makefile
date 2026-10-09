@@ -54,6 +54,12 @@ files+=claude/settings.json
 files+=claude/statusline-command.sh
 files+=claude/skills/journal/SKILL.md
 
+# Claude Code custom agents (claude --agent <name>, or @<name> in a session).
+# Built from claude/agents-src/ by claude/agents-src/build.sh; the whole dir is linked.
+files+=claude/agents
+# peer-review skill: fresh-context review via the `reviewer` agent.
+files+=claude/skills/peer-review
+
 # global skills
 files+=agents/skills/code-review-skill
 files+=claude/skills/code-review-skill
