@@ -134,4 +134,4 @@ ca() {
 alias cmake-agent='ca vasp-cmake' gpu-agent='ca vasp-gpu' spack-agent='ca vasp-spack' \
       slurm-agent='ca slurm-master' builder-agent='ca vasp-builder' \
       triqs-core-agent='ca triqs-core' triqs-emb-agent='ca triqs-embedding' \
-      triqs-solvers-agent='ca triqs-solvers' triqs-update-agent='ca triqs-stack-updater'
+      triqs-solvers-agent='ca triqs-solvers'
