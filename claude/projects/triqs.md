@@ -16,22 +16,31 @@ same everywhere.
 ### VASP cluster (hostname `*.vasp.co`)
 
 ```bash
-module load vasp-gnu_mkl-dev/15.2_mkl-2026.0.0_ompi-5.0.10_py-3.14
+module load vasp-llvm_mkl-dev/22.1_mkl-2026.0.0_ompi-5.0.10_py-3.14
 source ~/pyvenv/devpy/bin/activate
 ```
 
-- The **module** provides the toolchain (gcc / MKL / OpenMPI) and the scientific
+- The **module** provides the toolchain (clang/clang++ 22 with the LLVM/Clang
+  libraries that clair needs, gfortran 15, MKL, OpenMPI) and the scientific
   Python stack (numpy, scipy, h5py, mpi4py, matplotlib, ase, …), exposed via
-  `PYTHONPATH`. Without it `import numpy` fails.
+  `PYTHONPATH`. Without it `import numpy` fails. It sets `CC=clang CXX=clang++`.
+  The older `vasp-gnu_mkl-dev/15.2_mkl-2026.0.0_ompi-5.0.10_py-3.14` has the
+  same Python and `PYTHONPATH` but gcc, which cannot build clair; do not mix the
+  two in one install prefix.
 - The **venv** `~/pyvenv/devpy` is created with `--system-site-packages` on top
   of that Python. **It is also the CMake install prefix**
   (`CMAKE_INSTALL_PREFIX=$VIRTUAL_ENV`), so `make install` drops compiled
   modules and Python packages into the venv's `site-packages`. Activating the
   venv is what makes `triqs`, `triqs_dft_tools`, `triqs_dftkit`, … importable.
+  The venv must also provide `mako` (legacy Cpp2Py fails to configure without
+  it), which the module does not.
+- **Unset `PYTHON_ROOT` before `cmake`** (the stack script does). The module's
+  python sets it, and CMake's FindPython then picks the module's interpreter
+  instead of the venv's, so `mako` is "missing".
 - Order matters: load the module **before** activating the venv (the venv
   inherits the module's `PYTHONPATH`).
 - **The module name drifts** when the toolchain is rebuilt (the OpenMPI part has
-  already moved 5.0.9 → 5.0.10). Check `module -t avail | grep vasp-gnu_mkl-dev`
+  already moved 5.0.9 → 5.0.10). Check `module -t avail | grep vasp-llvm_mkl-dev`
   before trusting the string above. Loading a name that no longer exists fails
   *quietly* if you redirect stderr, and the next symptom is `ImportError:
   libhdf5.so.310: cannot open shared object file` from `import h5`. That looks
@@ -47,12 +56,13 @@ source ~/pyvenv/devpy/bin/activate
 Build in dependency order; `update_triqs_stack.sh` (below) encodes it as:
 
 ```
-triqs dftkit modest cthyb ctseg hubbardI hartree_fock maxent dft_tools solid_dmft
+clair triqs dftkit modest cthyb ctseg hubbardI hartree_fock maxent dft_tools solid_dmft
 ```
 
 | dir              | what it is                          |
 |------------------|-------------------------------------|
-| `triqs/`         | TRIQS core library (build first)    |
+| `clair/`         | clair-c2py binding generator (needs clang; build first) |
+| `triqs/`         | TRIQS core library                  |
 | `dftkit/`        | DFT converters (PLOVASP/VASP, w90, …) |
 | `dft_tools/`     | DFTTools (VASP/Wien2k/… interfaces) |
 | `modest/`        | VASP CSC driver / interface         |
@@ -73,9 +83,14 @@ cleans the build dir and runs configure → make → ctest → `make install`.
 - A successful **triqs** install forces every dependent repo to rebuild.
 - Useful flags: `--force` (rebuild everything), `--no-test`, `--no-pull`.
 - Per-repo logs plus a `summary.txt` land in `~/git/triqs/triqs_stack_logs/<timestamp>/`.
-- Preconditions: a venv must be active (`$VIRTUAL_ENV`) and the toolchain module
-  loaded. Only the venv is enforced; the module name in the script header is not
-  checked and can go stale like the one above.
+- Preconditions: a venv must be active (`$VIRTUAL_ENV`) and `$CXX` must be
+  clang; both are enforced. The module name itself is not checked.
+- It builds with `-DUpdate_Python_Bindings=OFF`, i.e. from the checked-in
+  `*.wrap.cxx`. To regenerate the bindings of one repo, configure it with
+  `-DUpdate_Python_Bindings=ON`: clair-c2py (installed into the venv by the
+  `clair` step) then rewrites the `*.wrap.cxx` **in the source tree**. Expect
+  spelling-only diffs in the generated types (`std::basic_string<char, …>` for
+  `std::string`, unsimplified `get_value_t<expr<…>>`); do not commit those alone.
 
 Use the manual loop below when iterating on a single repo.
 

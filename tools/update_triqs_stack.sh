@@ -22,8 +22,9 @@
 #
 # Preconditions (checked up front, aborts if missing):
 #   * a python venv is active   ($VIRTUAL_ENV set)
-#   * the module
-#     vasp-gnu_mkl-dev/15.2_mkl-2026.0.0_ompi-5.0.9_py-3.14 is loaded
+#   * the C++ compiler ($CXX) is clang: clair only builds with clang.
+#     On the VASP cluster load the module
+#     vasp-llvm_mkl-dev/22.1_mkl-2026.0.0_ompi-5.0.10_py-3.14 before the venv.
 #
 # Options:
 #   --force                rebuild every repo even if no new changes were pulled
@@ -41,11 +42,13 @@ set -uo pipefail
 ROOT="$HOME/git/triqs"
 
 # repos in build / dependency order
+# NB: clair comes first: it installs clair-c2py, which -DUpdate_Python_Bindings=ON
+# needs on PATH to regenerate the *.wrap.cxx bindings of every later repo.
 # NB: dftkit must come before the packages that depend on it (dft_tools,
 # solid_dmft). It used to be bundled via CPM, but modest (0d82894) and dft_tools
 # (09876517) now consume it as a separately-installed package, so it has to be
 # built+installed before them.
-REPOS=(triqs dftkit modest cthyb ctseg hubbardI hartree_fock maxent dft_tools solid_dmft)
+REPOS=(clair triqs dftkit modest cthyb ctseg hubbardI hartree_fock maxent dft_tools solid_dmft)
 
 NC_TEST=4                      # MPIEXEC_MAX_NUMPROCS, matches make_dev.sh
 NCORE="${NCORE:-8}"            # parallel make jobs (8 = safe default if unset)
@@ -86,6 +89,8 @@ done
 fail() { echo "ERROR: $*" >&2; exit 1; }
 
 [[ -n "${VIRTUAL_ENV:-}" ]] || fail "no python venv active (VIRTUAL_ENV is unset). Activate your venv first."
+"${CXX:-c++}" --version 2>/dev/null | grep -qi clang \
+    || fail "C++ compiler '${CXX:-c++}' is not clang, which clair requires. Load the llvm toolchain module first."
 
 : "${TRIQS_ROOT:=$VIRTUAL_ENV}"   # install prefix, as in make_dev.sh
 

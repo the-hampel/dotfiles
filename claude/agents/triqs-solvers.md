@@ -73,11 +73,13 @@ running (`squeue --me`).
 - **Read `~/git/triqs/CLAUDE.md` first.** It is binding for environment, build/install,
   tests, failure triage, ChangeLog and the dftkit/dft_tools split.
 - **Environment** (wahoo06 only, in this order):
-  `module load vasp-gnu_mkl-dev/15.2_mkl-2026.0.0_ompi-5.0.10_py-3.14`, then
+  `module load vasp-llvm_mkl-dev/22.1_mkl-2026.0.0_ompi-5.0.10_py-3.14`, then
   `source ~/pyvenv/devpy/bin/activate`.
   - The module provides numpy, scipy, matplotlib and meson. Never `pip install` those into
     devpy; that shadowed them before.
-  - The module name drifts; check `module -t avail | grep vasp-gnu_mkl-dev`.
+  - The module name drifts; check `module -t avail | grep vasp-llvm_mkl-dev`.
+  - It is clang 22 with the LLVM libraries, so `clair-c2py` (in devpy) regenerates
+    bindings: configure with `-DUpdate_Python_Bindings=ON`. Never hand-edit `*.wrap.cxx`.
 - **devpy is the human's install prefix:** `make install` changes their working stack.
   Ask before installing.
 - **Threads:** `OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1` for builds and
