@@ -237,7 +237,7 @@ for repo in "${REPOS[@]}"; do
         cmake -DCMAKE_EXPORT_COMPILE_COMMANDS=1 \
               -DCMAKE_INSTALL_PREFIX="$TRIQS_ROOT" \
               -DBuild_Documentation=OFF \
-              -DUpdate_Python_Bindings=OFF \
+              -DUpdate_Python_Bindings=ON \
               -DMPIEXEC_MAX_NUMPROCS="$NC_TEST" \
               -S "$src" -B "$bld" \
         && make -C "$bld" -j"$NCORE"
@@ -290,8 +290,10 @@ for repo in "${REPOS[@]}"; do
             install_state="installed"
             [[ "$test_state" == *FAILED* ]] && install_state="installed (tests failed)"
             echo "    install OK"
-            # a successful triqs install invalidates every dependent repo
-            [[ "$repo" == "triqs" ]] && force_rest=true
+            # a successful triqs OR clair install invalidates every dependent
+            # repo: triqs is the core lib; clair provides clair-c2py, so a fresh
+            # tool means all downstream Python bindings must be regenerated.
+            [[ "$repo" == "triqs" || "$repo" == "clair" ]] && force_rest=true
         else
             install_state="INSTALL-FAIL"
             echo "    INSTALL FAILED"

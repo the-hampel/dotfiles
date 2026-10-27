@@ -91,6 +91,10 @@ files+=claude/skills/vasp-test
 files+=agents/skills/vasp-run
 files+=claude/skills/vasp-run
 
+# transcribe skill: same dual-mirror pattern (WhisperX meeting transcription).
+files+=agents/skills/transcribe
+files+=claude/skills/transcribe
+
 files+=config/ruff/ruff.toml
 
 files+=local/share/fzf/completion.bash
