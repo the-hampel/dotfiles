@@ -2,6 +2,16 @@ onboarding = false
 
 [ui]
 status_indicators = "symbols"
+# right edge of the tab bar (the sidebar has no free-form entries)
+# commands run on the herdr server host; the slurm entry stays empty where squeue is missing
+tab_bar_right = [
+  { type = "command", interval_seconds = 30, timeout_seconds = 5, command = '''command -v squeue >/dev/null || exit 0; squeue -u "$USER" -h -o %T | awk '$1=="RUNNING"{r++} $1=="PENDING"{p++} END{printf "jobs %dR %dP", r, p}' ''' },
+  { type = "command", interval_seconds = 10, timeout_seconds = 2, command = '''awk '{printf "load %s", $1}' /proc/loadavg''' },
+  { type = "command", interval_seconds = 10, timeout_seconds = 2, command = '''awk '/^MemTotal:/{t=$2} /^MemAvailable:/{a=$2} END{printf "mem %.0f/%.0fG", (t-a)/2^20, t/2^20}' /proc/meminfo''' },
+  { type = "hostname" },
+  { type = "datetime", format = "%a %d.%m. %H:%M" },
+]
+tab_bar_right_separator = " │ "
 
 [ui.sound]
 enabled = false
