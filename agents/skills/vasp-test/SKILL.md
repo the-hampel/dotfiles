@@ -43,10 +43,14 @@ the run setup (rank count, mapping) matters — see below.
   The cmake `test` target depends on `copy_tests`, which rsyncs `testsuite/` →
   `<builddir>/testsuite/` (including `runtest`). So on a fresh build dir `<builddir>/testsuite/runtest`
   does **not** exist yet. Before invoking `runtest` directly in a build dir, **check it's there**;
-  if not, either run `make test` (or `--target test`) once to populate it, or run from the source
-  tree's `testsuite/` instead:
+  if not, populate it with `cmake --build <builddir> --target copy_tests numbertable`.
+  **CMake builds run the testsuite in the build dir, never from the source `testsuite/`.**
+  `runtest` detects a CMake tree by `../CMakeCache.txt` and then builds its comparison tool with
+  `cmake --build`; started from the source tree it finds no cache, falls back to the classic
+  `make numbertable` and dies with `../makefile.include: No such file or directory` /
+  `ERROR: failed to build ./tools/compare_numbertable_new` before running any test.
   ```bash
-  ls <builddir>/testsuite/runtest 2>/dev/null || echo "not copied yet — run 'make test' once, or use <src>/testsuite"
+  ls <builddir>/testsuite/runtest 2>/dev/null || cmake --build <builddir> --target copy_tests numbertable
   ```
 - `runtest [--fast|--all] [conf]` sources the optional **conf** file (`$1`), which must export the
   launch commands and (optionally) the test list. A **non-empty `VASP_TESTSUITE_TESTS` overrules**
@@ -107,12 +111,12 @@ lines, and the test list in one place): `gnu.conf`, `intel.conf`, `nvidia_gpu.co
 `intel_gpu.conf`, `cray_cpu.conf`, `nec.conf`. Copy one, set **`VASP_PATH`** (explicit, not `$PWD`),
 set **`VASP_TESTSUITE_TESTS`**, and run:
 ```bash
-cd <vasp-source-root>/testsuite
+cd <builddir>/testsuite          # CMake; classic build: <vasp-source-root>/testsuite
 ./runtest /abs/path/to/your.conf 2>&1 | tee testsuite.log
 ```
 **Or inline**, without a conf file:
 ```bash
-cd <vasp-source-root>/testsuite
+cd <builddir>/testsuite          # CMake; classic build: <vasp-source-root>/testsuite
 VASP_PATH=/abs/path/to/build_or_src
 export VASP_TESTSUITE_TESTS="CrS_RPR"
 export VASP_TESTSUITE_EXE_STD="mpirun $mpi $gpu $VASP_PATH/bin/vasp_std"
@@ -229,7 +233,8 @@ same toolchain, unmodified tree — before blaming a code change.
 - **Load the build's toolchain module** before testing; a mismatch (wrong MKL/MPI/CUDA) causes crashes
   or bogus diffs.
 - **CMake: `runtest` is only in the build dir after the `test` target has run once** (it's rsynced by
-  `copy_tests`). Check before calling it directly; otherwise run from the source `testsuite/`.
+  `copy_tests`). Check before calling it directly and populate it with
+  `--target copy_tests numbertable`; never fall back to the source `testsuite/` on a CMake build.
 - **Rank count discipline:** 4 (default) / 8 / 16 on CPU; `#GPUs` on GPU. Never 6 or odd mappings.
 - **OpenMPI binding — never use `--oversubscribe`:** even if `nproc` reports 1, keep `--map-by numa:PE=$nthrds --bind-to core`. The oversubscribe fallback pins all ranks to one core.
 - **`VASP_PATH` must point at the dir containing `bin/`** — for a CMake build that's `build_<tc>/`,
