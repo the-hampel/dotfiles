@@ -27,6 +27,7 @@
       "Bash(echo *)"
     ]
   },
+  "model": "sonnet",
   "disableClaudeAiConnectors": true,
   "hooks": {
     "Stop": [
@@ -63,12 +64,16 @@
   "effortLevel": "xhigh",
   "modelSettings": {
     "claude-opus-5-5": {
-      "effortLevel": "high"
+      "effortLevel": "medium"
     },
     "qwen3.8-27b-nvfp4": {
       "effortLevel": "high"
+    },
+    "claude-fable-5-1": {
+      "effortLevel": "high"
     }
   },
+  "idleCompaction": false,
   "awaySummaryEnabled": false,
   "tui": "fullscreen",
   "autoDreamEnabled": true,
