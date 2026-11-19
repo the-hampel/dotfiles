@@ -27,7 +27,7 @@
       "Bash(echo *)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus",
   "disableClaudeAiConnectors": true,
   "hooks": {
     "Stop": [
@@ -71,13 +71,16 @@
     },
     "claude-fable-5-1": {
       "effortLevel": "high"
+    },
+    "claude-sonnet-5-5": {
+      "effortLevel": "high"
     }
   },
-  "idleCompaction": false,
   "awaySummaryEnabled": false,
   "tui": "fullscreen",
   "autoDreamEnabled": true,
   "theme": "dark-ansi",
+  "idleCompaction": false,
   "skipAutoPermissionPrompt": true,
   "autoMode": {
     "environment": [
