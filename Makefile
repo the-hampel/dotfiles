@@ -105,6 +105,10 @@ files+=claude/skills/vasp-run
 files+=agents/skills/transcribe
 files+=claude/skills/transcribe
 
+# obsidian skill: plain-file vault access for Pi/OpenCode (~/.agents/skills) and Claude Code.
+files+=agents/skills/obsidian
+files+=claude/skills/obsidian
+
 files+=config/ruff/ruff.toml
 
 files+=local/share/fzf/completion.bash
