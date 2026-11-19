@@ -8,6 +8,8 @@ ConditionPathExists=/wahoo06.local/hampel_temp/ollama/bin/ollama
 [Service]
 Environment=OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
 Environment=OLLAMA_KEEP_ALIVE=24h
+# Listen on all interfaces so other machines (e.g. the MacBook) can reach it. No auth: internal network only.
+Environment=OLLAMA_HOST=0.0.0.0:11434
 ExecStart=/wahoo06.local/hampel_temp/ollama/bin/ollama serve
 # Preload d3:9b so the first request after a boot/restart is not a ~50 s cold load.
 # d3 only answers /v1/systemone (generate/chat are rejected), so warm it with a trivial
