@@ -62,7 +62,7 @@ function limitPart(label: string, l: Limit, withDay: boolean): string {
 	const p = Math.round(l.pct);
 	const col = p >= 80 ? C.red : p >= 50 ? C.yellow : C.green;
 	const r = fmtReset(l.reset, withDay);
-	return `${col}${label}:${p}%${C.reset}${r ? `${C.dim}(r:${r})${C.reset}` : ""}`;
+	return `${col}${label}:${p}%${C.reset}${r ? ` ${C.dim}${r}${C.reset}` : ""}`;
 }
 
 export default function (pi: ExtensionAPI) {
@@ -115,7 +115,7 @@ export default function (pi: ExtensionAPI) {
 					if (used != null) {
 						const u = Math.round(used);
 						const [emoji, col] = u >= 90 ? ["🚨", C.red] : u >= 70 ? ["🔥", C.yellow] : u >= 20 ? ["⚡", C.green] : ["🟢", C.green];
-						const tok = usage?.tokens != null ? `${C.dim}(${fmtTok(usage.tokens)}/${fmtTok(usage.contextWindow)})${C.reset}` : "";
+						const tok = "";
 						parts.push(`${emoji} ctx:${col}${u}%${C.reset}${tok}`);
 					} else {
 						parts.push(`🟢 ctx:${C.dim}--%${C.reset}`);
@@ -129,7 +129,9 @@ export default function (pi: ExtensionAPI) {
 					const model = ctx.model ? (ctx.model.name ?? ctx.model.id) : "no-model";
 					const think = pi.getThinkingLevel();
 					let modelStr = `${C.magenta}🤖 ${model}${think && think !== "off" ? ` ${C.dim}(${think})` : ""}${C.reset}`;
-					if (last?.model && ctx.model && last.model !== ctx.model.id) {
+					// The router already reports the physical model on the status line below.
+					const routed = footerData.getExtensionStatuses().has("router");
+					if (!routed && last?.model && ctx.model && last.model !== ctx.model.id) {
 						const lvl = last.thinkingLevel && last.thinkingLevel !== "off" ? `:${last.thinkingLevel}` : "";
 						modelStr += ` ${C.dim}→${C.reset} ${C.magenta}${last.model.replace(/^claude-/, "")}${lvl}${C.reset}`;
 					}

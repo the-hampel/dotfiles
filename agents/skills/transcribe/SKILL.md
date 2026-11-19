@@ -1,6 +1,6 @@
 ---
 name: transcribe
-description: Transcribe a local meeting/audio recording (e.g. iPhone Voice Memo .m4a) fully offline with WhisperX, label who spoke when (speaker diarization), map speakers to real names, then produce a cleaned transcript with rambling/filler removed plus a summary with decisions and action items. Use when the user hands over an audio file to transcribe, mentions a meeting recording, voice memo, "transcribe", "who said what", or wants meeting notes/minutes from audio. Arguments: audio path, optionally number of speakers, speaker names, language.
+description: "Transcribe a local meeting/audio recording (e.g. iPhone Voice Memo .m4a) fully offline with WhisperX, label who spoke when (speaker diarization), map speakers to real names, then produce a cleaned transcript with rambling/filler removed plus a summary with decisions and action items. Use when the user hands over an audio file to transcribe, mentions a meeting recording, voice memo, \"transcribe\", \"who said what\", or wants meeting notes/minutes from audio. Arguments: audio path, optionally number of speakers, speaker names, language."
 ---
 
 # Meeting transcription (local, WhisperX + pyannote)

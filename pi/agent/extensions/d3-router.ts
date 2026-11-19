@@ -167,7 +167,7 @@ export default function (pi: ExtensionAPI) {
 	pi.registerVirtualModel<RouterState>({
 		provider: "router",
 		id: "auto",
-		name: "Auto (d3: Sonnet/Opus)",
+		name: "d3",
 		thinkingLevels: ["low", "medium", "high"],
 		contextWindow: 1_000_000,
 		maxTokens: 128_000,

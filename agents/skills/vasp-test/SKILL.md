@@ -6,9 +6,8 @@ description: |
   tests via VASP_TESTSUITE_TESTS, wires up the VASP_TESTSUITE_EXE_{STD,NCL,GAM} launch commands
   (using the toolchain .conf templates in ~/git/vasp/*.conf), uses 4 MPI ranks (refs were generated
   with 4), binds one MPI rank per GPU for GPU builds, and scans output for "ERROR:" failures.
-  ALSO covers the separate unit-test/ suite: in-process Fortran unit tests that all link into one
-  test_all.x per variant, driven by `make -C unit-test`, and supported ONLY by the classic
-  makefile.include build (not CMake).
+  ALSO covers the separate unit-test/ suite (in-process Fortran tests linked into one test_all.x
+  per variant, `make -C unit-test`, classic makefile.include build only, not CMake).
   Use when: running VASP tests, "run the testsuite", "make test", testing a VASP code change,
   running a regression/reference test, checking a specific test case (e.g. CrS_RPR), validating a
   build, or anything about the UNIT tests: "run the unit tests", "make -C unit-test", test_all.x,
