@@ -129,9 +129,7 @@ export default function (pi: ExtensionAPI) {
 					const model = ctx.model ? (ctx.model.name ?? ctx.model.id) : "no-model";
 					const think = pi.getThinkingLevel();
 					let modelStr = `${C.magenta}🤖 ${model}${think && think !== "off" ? ` ${C.dim}(${think})` : ""}${C.reset}`;
-					// The router already reports the physical model on the status line below.
-					const routed = footerData.getExtensionStatuses().has("router");
-					if (!routed && last?.model && ctx.model && last.model !== ctx.model.id) {
+					if (last?.model && ctx.model && last.model !== ctx.model.id) {
 						const lvl = last.thinkingLevel && last.thinkingLevel !== "off" ? `:${last.thinkingLevel}` : "";
 						modelStr += ` ${C.dim}→${C.reset} ${C.magenta}${last.model.replace(/^claude-/, "")}${lvl}${C.reset}`;
 					}
