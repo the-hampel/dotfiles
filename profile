@@ -210,6 +210,8 @@ elif [[ "$HOSTNAME" == ProBook* || "$HOSTNAME" == Mac* ]]; then
     ulimit -s unlimited
     ulimit -c unlimited
     export OLLAMA_KEEP_ALIVE=360m
+    # pi d3 router: use the ollama on wahoo06
+    export PI_D3_URL="http://wahoo06.vasp.co:11434/v1"
 
     # default editor
     export EDITOR="nvim"
