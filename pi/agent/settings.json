@@ -1,0 +1,9 @@
+{
+  "lastChangelogVersion": "1.5.2",
+  "defaultProvider": "router",
+  "defaultModel": "auto",
+  "warnings": {
+    "anthropicExtraUsage": false
+  },
+  "defaultThinkingLevel": "high"
+}

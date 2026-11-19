@@ -60,6 +60,11 @@ files+=claude/settings.json
 files+=claude/statusline-command.sh
 files+=claude/skills/journal/SKILL.md
 
+# pi coding agent (~/.pi/agent). auth.json, sessions/, install/ stay local.
+files+=pi/agent/settings.json
+files+=pi/agent/extensions/statusline.ts
+files+=pi/agent/extensions/d3-router.ts
+
 # Claude Code custom agents (claude --agent <name>, or @<name> in a session).
 # Built from claude/agents-src/ by claude/agents-src/build.sh; the whole dir is linked.
 files+=claude/agents
