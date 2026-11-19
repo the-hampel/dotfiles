@@ -26,8 +26,16 @@ const D3_MODEL = process.env.PI_D3_MODEL ?? "d3:9b";
 
 const SONNET = "claude-sonnet-5-5";
 const OPUS = "claude-opus-5-5";
+/** Top tier, expensive: only for the hardest tasks. Override with PI_D3_FABLE; set PI_D3_FABLE=off to disable. */
+const FABLE = process.env.PI_D3_FABLE ?? "claude-fable-5-2";
+const FABLE_ON = FABLE !== "off";
+const FABLE_THRESHOLD = 0.6;
 const SWITCH_CONFIDENCE = 0.7;
 const CLASSIFY_TIMEOUT_MS = 8_000;
+/** Persona bias (set by the `pa` wrapper): shifts the Opus decision threshold. */
+const PERSONA = process.env.PI_PERSONA;
+const BIAS = process.env.PI_ROUTER_BIAS; // "opus" | "sonnet" | other = neutral
+const OPUS_THRESHOLD = BIAS === "opus" ? 0.3 : BIAS === "sonnet" ? 0.7 : 0.5;
 /** Failed tool calls within one turn after which a Sonnet turn is escalated to Opus. */
 const ESCALATE_AFTER_ERRORS = 3;
 
@@ -88,6 +96,7 @@ async function decide(request: ModelRouteRequest<RouterState>, ctx: ExtensionCon
 				prompt: lastUserText(request.messages).slice(0, 12_000),
 				recent_conversation: recentContext(request.messages),
 				recent_tool_errors: toolErrors(request.messages, false).slice(-8),
+				persona: PERSONA ? `Session persona: ${PERSONA} (prefers ${BIAS ?? "no"} model)` : "none",
 				user_profile: "Computational physicist working on VASP (Fortran/MPI/GPU) and TRIQS (C++/Python).",
 			},
 			questions: {
@@ -97,6 +106,12 @@ async function decide(request: ModelRouteRequest<RouterState>, ctx: ExtensionCon
 						"Which model should handle `prompt`? Consider `recent_conversation` for short follow-ups. Several `recent_tool_errors` mean the previous model is struggling: prefer opus.",
 					criteria: {
 						sonnet: "Routine coding, edits, running commands, builds, explanations, simple debugging, Q&A",
+						...(FABLE_ON
+							? {
+									fable:
+										"Exceptionally hard, open-ended research-grade problems: deep multi-file design from scratch, elusive heisenbugs after earlier attempts failed, novel algorithm/numerics derivations. Rare; most hard tasks are still opus",
+								}
+							: {}),
 						opus: "Hard reasoning: subtle bugs, numerical/physics correctness, architecture or cross-cutting design, performance analysis, large refactors",
 					},
 				},
@@ -119,6 +134,7 @@ async function decide(request: ModelRouteRequest<RouterState>, ctx: ExtensionCon
 	if (m?.type !== "choice" || e?.type !== "choice") throw new Error(`unexpected answers ${JSON.stringify(result.answers)}`);
 	return {
 		opusProb: m.probabilities.opus ?? 0,
+		fableProb: FABLE_ON ? (m.probabilities.fable ?? 0) : 0,
 		effort: (EFFORTS.includes(e.choice as Effort) ? e.choice : "medium") as Effort,
 	};
 }
@@ -204,14 +220,16 @@ export default function (pi: ExtensionAPI) {
 			try {
 				const d = await decide(request, ctx);
 				if (!d) throw new Error("no decision");
-				let model = d.opusProb >= 0.5 ? OPUS : SONNET;
+				// Persona bias is applied to "opus or better" vs sonnet; fable needs its own high bar.
+				const upProb = d.opusProb + d.fableProb;
+				let model = d.fableProb >= FABLE_THRESHOLD ? FABLE : upProb >= OPUS_THRESHOLD ? OPUS : SONNET;
 				// Hysteresis: only leave the current model when d3 is confident.
 				if (prev && model !== prev.model) {
-					const conf = model === OPUS ? d.opusProb : 1 - d.opusProb;
+					const conf = model === SONNET ? 1 - upProb - (0.5 - OPUS_THRESHOLD) : model === FABLE ? d.fableProb : upProb + (0.5 - OPUS_THRESHOLD);
 					if (conf < SWITCH_CONFIDENCE) model = prev.model;
 				}
 				next = { model, effort: capEffort(d.effort, request.thinkingLevel) };
-				note = `p(opus)=${d.opusProb.toFixed(2)}`;
+				note = `p(opus)=${d.opusProb.toFixed(2)}${FABLE_ON ? ` p(fable)=${d.fableProb.toFixed(2)}` : ""}${PERSONA ? `, ${PERSONA}` : ""}`;
 			} catch (err) {
 				next = prev ?? { model: SONNET, effort: capEffort("medium", request.thinkingLevel) };
 				note = `d3 unavailable: ${err instanceof Error ? err.message : String(err)}`;
@@ -219,7 +237,7 @@ export default function (pi: ExtensionAPI) {
 
 			if (process.env.PI_D3_DEBUG) console.error(`[d3-router] ${next.model}:${next.effort} (${note})`);
 			if (ctx.hasUI) {
-				const short = next.model === OPUS ? "opus" : "sonnet";
+				const short = next.model === FABLE ? "fable" : next.model === OPUS ? "opus" : "sonnet";
 				ctx.ui.setStatus("router", `d3 → ${short}:${next.effort} (${note})`);
 			}
 			const changed = !prev || prev.model !== next.model || prev.effort !== next.effort;

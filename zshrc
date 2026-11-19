@@ -131,6 +131,14 @@ ca() {
   if [ $# -eq 0 ]; then ls -1 ~/.claude/agents/ 2>/dev/null | sed 's/\.md$//'; return; fi
   local a=$1; shift; claude --agent "$a" "$@"
 }
+# pa: Pi persona (same sources as ca); d3 router gets a model bias from the persona.
+pa() {
+  local d=~/.pi/agent/personas
+  if [ $# -eq 0 ]; then local f; for f in $d/*.md(N); do print -- ${f:t:r}; done; return; fi
+  local a=$1; shift
+  [ -f $d/$a.md ] || { echo "no persona: $a" >&2; return 1; }
+  ( source $d/$a.env; export PI_PERSONA PI_ROUTER_BIAS; pi --append-system-prompt $d/$a.md "$@" )
+}
 alias cmake-agent='ca vasp-cmake' gpu-agent='ca vasp-gpu' spack-agent='ca vasp-spack' \
       slurm-agent='ca slurm-master' builder-agent='ca vasp-builder' \
       triqs-core-agent='ca triqs-core' triqs-emb-agent='ca triqs-embedding' \
