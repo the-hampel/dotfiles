@@ -86,7 +86,7 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
 
     # ollama models
     export OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
-    export OLLAMA_KEEP_ALIVE=360m
+    export OLLAMA_KEEP_ALIVE=24h
     alias ollama="/wahoo06.local/hampel_temp/ollama/bin/ollama"
     alias ollama-porgy="OLLAMA_MODELS=/home/hampel/ollama/models /home/hampel/ollama/bin/ollama"
     alias llm="micromamba activate llm"
@@ -114,8 +114,11 @@ elif [[ "$HOSTNAME" == *.vasp.co && "$HOSTNAME" != *porgy02 ]]; then
     export PATH=/wahoo06.local/hampel_temp/apptainer/bin:$PATH
     source $HOME/git/dotfiles/tools/ccpe_container_env.sh
 
-    export OLLAMA_MODELS=/home/hampel/ollama/models
-    alias ollama="/home/hampel/ollama/bin/ollama"
+    # porgy05 has its own ollama (AMD); every other host keeps the wahoo06 one set above
+    if [[ "$HOSTNAME" == *porgy05 ]]; then
+        export OLLAMA_MODELS=/home/hampel/ollama/models
+        alias ollama="/home/hampel/ollama/bin/ollama"
+    fi
 
     # seafile
     alias sfs='seaf-cli status'

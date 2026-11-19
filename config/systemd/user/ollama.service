@@ -1,0 +1,20 @@
+# User service for the wahoo06 ollama install (not the system-wide one).
+# Needs linger (loginctl enable-linger $USER) to start at boot without a login.
+#   systemctl --user daemon-reload && systemctl --user enable --now ollama
+[Unit]
+Description=Ollama server (wahoo06 install)
+ConditionPathExists=/wahoo06.local/hampel_temp/ollama/bin/ollama
+
+[Service]
+Environment=OLLAMA_MODELS=/wahoo06.local/hampel_temp/ollama/models
+Environment=OLLAMA_KEEP_ALIVE=24h
+ExecStart=/wahoo06.local/hampel_temp/ollama/bin/ollama serve
+# Preload d3:9b so the first request after a boot/restart is not a ~50 s cold load.
+# d3 only answers /v1/systemone (generate/chat are rejected), so warm it with a trivial
+# question. Runs in the background so the unit reports active right away.
+ExecStartPost=-/bin/sh -c '( for i in $(seq 30); do curl -sf -o /dev/null http://127.0.0.1:11434/api/version && break; sleep 1; done; curl -sf -o /dev/null -H "Content-Type: application/json" -d "{\\"model\\":\\"d3:9b\\",\\"state\\":\\"warmup\\",\\"questions\\":{\\"q\\":{\\"type\\":\\"noul\\",\\"instructions\\":\\"Is this a test?\\",\\"criteria\\":{\\"true\\":\\"yes\\",\\"false\\":\\"no\\"}}}}" http://127.0.0.1:11434/v1/systemone ) >/dev/null 2>&1 &'
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

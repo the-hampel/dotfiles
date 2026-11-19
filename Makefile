@@ -54,6 +54,8 @@ files+=config/gh-dash/config.yml
 
 files+=config/herdr/config.toml
 
+files+=config/systemd/user/ollama.service
+
 files+=claude/settings.json
 files+=claude/statusline-command.sh
 files+=claude/skills/journal/SKILL.md
