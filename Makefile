@@ -64,6 +64,7 @@ files+=claude/skills/journal/SKILL.md
 files+=pi/agent/settings.json
 files+=pi/agent/extensions/statusline.ts
 files+=pi/agent/extensions/d3-router.ts
+files+=pi/agent/extensions/guard.ts
 files+=pi/agent/personas
 
 # Claude Code custom agents (claude --agent <name>, or @<name> in a session).
