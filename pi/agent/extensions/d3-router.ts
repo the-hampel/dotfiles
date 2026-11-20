@@ -16,7 +16,8 @@
  * - If Ollama is down or d3 errors, it falls back to the previous model, else Sonnet/medium.
  * - Compaction summaries and other `direct` requests go to Sonnet.
  *
- * The decision is shown in the footer via setStatus("router", ...).
+ * The actual model is already in the statusline; set PI_D3_STATUS=1 to also get a second
+ * footer line with the router decision (probabilities), or PI_D3_DEBUG=1 to log it to stderr.
  */
 import type { Message } from "@earendil-works/pi-ai";
 import type { ExtensionAPI, ExtensionContext, ModelRouteRequest } from "@earendil-works/pi-coding-agent";
@@ -24,6 +25,7 @@ import type { ExtensionAPI, ExtensionContext, ModelRouteRequest } from "@earendi
 const OLLAMA_URL = process.env.PI_D3_URL ?? "http://localhost:11434/v1";
 const D3_MODEL = process.env.PI_D3_MODEL ?? "d3:9b";
 
+const SHOW_STATUS = process.env.PI_D3_STATUS === "1";
 const SONNET = "claude-sonnet-5-5";
 const OPUS = "claude-opus-5-5";
 /** Top tier, expensive: only for the hardest tasks. Override with PI_D3_FABLE; set PI_D3_FABLE=off to disable. */
@@ -206,7 +208,7 @@ export default function (pi: ExtensionAPI) {
 			) {
 				const next: RouterState = { model: OPUS, effort: capEffort("high", request.thinkingLevel) };
 				if (process.env.PI_D3_DEBUG) console.error(`[d3-router] escalate -> ${next.model}:${next.effort}`);
-				if (ctx.hasUI) ctx.ui.setStatus("router", `escalated → opus:${next.effort} (repeated tool errors)`);
+				if (SHOW_STATUS && ctx.hasUI) ctx.ui.setStatus("router", `escalated → opus:${next.effort} (repeated tool errors)`);
 				return { model: find(OPUS), thinkingLevel: next.effort, state: next };
 			}
 
@@ -236,7 +238,7 @@ export default function (pi: ExtensionAPI) {
 			}
 
 			if (process.env.PI_D3_DEBUG) console.error(`[d3-router] ${next.model}:${next.effort} (${note})`);
-			if (ctx.hasUI) {
+			if (SHOW_STATUS && ctx.hasUI) {
 				const short = next.model === FABLE ? "fable" : next.model === OPUS ? "opus" : "sonnet";
 				ctx.ui.setStatus("router", `d3 → ${short}:${next.effort} (${note})`);
 			}
