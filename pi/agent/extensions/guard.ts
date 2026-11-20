@@ -45,6 +45,23 @@ const ASK_BASH: [RegExp, string][] = [
 	[/(\.ssh\/|\.gnupg\/|\.pi\/agent\/auth\.json|\.netrc|id_(rsa|ed25519))/, "credential files"],
 ];
 
+/**
+ * Intent: if YOUR latest message explicitly asks for the action, the matching ASK label is
+ * auto-approved for that turn (a note is shown). Labels not listed here (force push, pipe to
+ * shell, disk-destructive, credentials, private/) always ask. A negation ("don't push") cancels it.
+ */
+const INTENT: Record<string, RegExp> = {
+	"git push": /\b(push|publish|ship it)\b/i,
+	"git force/delete push": /\bforce[- ]?push|push\b.*--force|\bforce\b.*\bpush\b/i,
+	"git tag": /\b(tag|release)\b/i,
+	"MR/PR/issue state change": /\b(mr|pr|merge request|pull request|merge|issue|comment|release|close)\b/i,
+	"slurm cancel/admin": /\b(cancel|scancel|kill)\b/i,
+	"recursive rm": /\b(delete|remove|rm|clean ?up|wipe)\b/i,
+	"git reset --hard": /\breset\b/i,
+	"git clean -f": /\bclean\b/i,
+};
+const NEGATION = /\b(don'?t|do not|never|without|no need to|not)\b[^.!?\n]{0,40}\b/i;
+
 /** Path fragments that may NEVER be written/edited. */
 const BLOCK_WRITE = [
 	/(^|\/)\.git\//,
@@ -69,9 +86,29 @@ function abs(p: string, cwd: string): string {
 export default function (pi: ExtensionAPI) {
 	let enabled = process.env.PI_GUARD !== "off";
 	const allowed = new Set<string>(); // labels approved for the rest of the session
+	let lastUser = ""; // latest message typed by the user
+
+	pi.on("input", async (event: any) => {
+		if (event.source !== "extension") lastUser = String(event.text ?? "");
+		return { action: "continue" };
+	});
+
+	function userAsked(label: string): boolean {
+		const re = INTENT[label];
+		if (!re || !lastUser) return false;
+		const m = re.exec(lastUser);
+		if (!m) return false;
+		// negation shortly before the matched word cancels the intent
+		const before = lastUser.slice(Math.max(0, m.index - 40), m.index);
+		return !NEGATION.test(before + " ");
+	}
 
 	async function ask(ctx: any, what: string, label: string, detail: string) {
 		if (allowed.has(label)) return undefined;
+		if (userAsked(label)) {
+			if (ctx.hasUI) ctx.ui.notify(`guard: allowed (${label}), you asked for it`, "info");
+			return undefined;
+		}
 		if (!ctx.hasUI) return { block: true, reason: `guard: ${what} (${label}) blocked, no UI to confirm` };
 		const yes = "Yes";
 		const always = `Yes, and don't ask again this session for: ${label}`;
